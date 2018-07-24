@@ -79,10 +79,10 @@ you re all good
 ------
 
 if error 
-oops maybe some deps to add, don't hesitate to ask me.
+OOOps! maybe some deps to add, some stuff to look over GOOGLE... as i did a lot before..  don't loose time hesitate to ask me on my twitter: https://twitter.com/simon_skiscool.
 
 if no error:
-continu in root folder install dependencies
+So continue in root folder install dependencies
 
 > npm install
 > 
@@ -124,7 +124,7 @@ So no need to test, it won't work.
 
 Just made some stuff around like create the navigation-drawer and debug things . 
 
-You can look on https://github.com/Weakky/prisma-ecommerce to have a fully code working... good to have a referance but
+You can look on https://github.com/Weakky/prisma-ecommerce to have a fully code working... good to have a reference but
 
 I really think it's better to start back from scratch and to do something from white paper to well understand and create all things properly.
 
