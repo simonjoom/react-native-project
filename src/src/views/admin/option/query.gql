@@ -1,0 +1,69 @@
+mutation upsertOption(
+    $name: String!
+    $values: [OptionValue!]!
+    $category: Category!
+    shop: Shop!
+  ) {
+    upsertOption(
+      name: $name
+      values: $values
+      category: $category
+      shop: $shop
+    ) {
+      id
+      name
+      values{
+        id
+        name
+      }
+      shop {
+        id
+        name
+      }
+      category {
+        id
+        name
+      }
+      }
+    }
+mutation deleteOption($name: String) {
+  deleteOption(where: { name: $name }) {
+    name
+  }
+}
+query option($name: String) {
+  option(where: { name: $name }) {
+      id
+      name
+      shop {
+        id
+        name
+      }
+      category {
+        id
+        name
+      }
+      values{ 
+        id
+        name
+      }
+      }
+  }
+query options {
+  options {
+    id
+    name
+      shop {
+        id
+        name
+      }
+      category {
+        id
+        name
+      }
+      values{ 
+        id
+        name
+      }
+  }
+}

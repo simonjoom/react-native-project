@@ -1,0 +1,136 @@
+# import User, Product, ProductConnection, Brand, Category, Variant, Option, Attribute, SelectedOption, Cart, OrderLineItem, PageInfo, AggregateProduct, ProductConnection, ProductSubscriptionPayload, OrderSubscriptionPayload; Order, OrderStatus, Shop from "./generated/prisma.graphql"
+# import ProductCreateInput, BrandCreateInput, CategoryCreateInput from "./generated/prisma.graphql"
+# import ProductWhereInput, ProductOrderByInput from "./generated/prisma.graphql"
+# import ResortWhereUniqueInput, ResortCreateInput, ResortUpdateInput,  from "./generated/prisma.graphql"
+ 
+
+input OptionValueInput {
+  id: ID
+  value: String!
+}
+
+input SelectedOptionInput {
+  optionId: ID!
+  valueId: ID!
+}
+
+input ProductVariantInput {
+  id: ID
+  price: Float!
+  available: Boolean!
+  selectedOptions: [SelectedOptionInput!]!
+}
+
+input OrderableProductInput {
+  id: ID,
+  productId: ID!
+  position: Int!
+}
+
+type Subscription {
+  updatedProduct: ProductSubscriptionPayload
+  waitFor3DSecure(orderId: ID!): OrderSubscriptionPayload
+}
+
+type PayPayload {
+  order: Order
+  redirectUrl: String
+}
+
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type UserIdPayload {
+  id: ID!
+}
+
+type TriggerPasswordResetPayload {
+  mailMaybeSent: Boolean!
+}
+
+type Query {
+  me: User
+
+  allProducts: [Product!]
+  allBrands(categoryId: ID): [Brand!]
+  allOptions(categoryId: ID): [Option!]!
+  allAttributes(categoryId: ID): [Attribute!]!
+  allCategories: [Category!]
+  allOrders: [Order!]!
+  allCustomers: [User!]!
+  allShops: [Shop!]!
+  allResorts: [Resort!]!
+  
+  #product(id: ID!): Product
+
+  searchProducts(
+    productName: String
+    brandsIds: [ID],
+    attributesIds: [ID],
+    optionsValuesIds: [ID],
+    categoryId: ID,
+    first: Int!,
+    skip: Int!
+  ): ProductConnection!
+}
+
+type Mutation {
+  signup(email: String!, password: String!, firstName: String!, lastName: String!): AuthPayload!
+  signupAdmin(email: String!, password: String!, firstName: String!, lastName: String!, shopId: ID!): AuthPayload!
+  login(email: String!, password: String!): AuthPayload!
+  loginAdmin(email: String!, password: String!): AuthPayload!
+  resetPassword(email: String!): TriggerPasswordResetPayload!
+  changePassword(oldPassword: String!, newPassword: String!): UserIdPayload!
+
+  # Upsert mutations
+  myupsertBrand(brandId: ID, categoryId: ID!, name: String!): Brand
+  myupsertAttribute(attributeId: ID, categoryId: ID!, value: String!): Attribute
+  myupsertCategory(categoryId: ID, name: String!): Category
+  myupsertOption(optionId: ID, name: String!, values: [OptionValueInput!]!, categoryId: ID!): Option
+
+  myupsertProduct(
+    productId: ID,
+    name: String!,
+    description: String,
+    categoryId: ID!,
+    brandId: ID!,
+    available: Boolean!,
+    optionIds: [ID!]!,
+    variants: [ProductVariantInput!]!,
+    attributesIds: [ID!]!,
+    unavailableOptionsValuesIds: [ID!]!,
+    displayPrice: Float!,
+    imageUrl: String
+  ): Product
+
+  #Shop mutations
+  myupsertBestSellerProducts(bestSellerProducts: [OrderableProductInput!]!): Shop!
+  myupsertNewProducts(newProducts: [OrderableProductInput!]!): Shop!
+  myupdateMOTD(MOTD: String!): Shop!
+
+  # Delete mutations
+  mydeleteProduct(productId: ID!): Product
+  mydeleteOption(optionId: ID!): Option
+  mydeleteBrand(brandId: ID): Brand
+  mydeleteAttribute(attributeId: ID!): Attribute
+  mydeleteCategory(categoryId: ID!): Category
+
+  #Cart mutations
+  addItemToCart(variantId: ID!, quantity: Int!): OrderLineItem!
+  addOrderToCart(orderId: ID!, replace: Boolean!): [OrderLineItem!]!
+  removeItemFromCart(lineItemId: ID!): OrderLineItem!
+  updateItemFromCart(lineItemId: ID!, variantId: ID!, quantity: Int!): OrderLineItem!
+
+  #Order mutations
+  setOrderAsPrepared(orderId: ID!): Order #Can be updated only by admins (eg: to set order as prepared)
+
+  #Stripe mutations
+  pay(stripeTokenId: String!): PayPayload
+
+  #User mutations
+  myupdateUser(firstName: String, lastName: String, oneSignalUserId: String): User
+  myupdateUserAdmin(firstName: String, lastName: String, oneSignalUserId: String, selectedShopId: ID): UserAdmin
+}

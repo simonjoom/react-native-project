@@ -1,0 +1,67 @@
+mutation upsertResort(
+  $name: String!
+  $description: String
+  $address: String
+  $zipCode: String
+  $city: String!
+  $phoneNumber: String!
+) {
+  upsertResort(
+    where: { name: $name }
+    create: {
+      name: $name
+      address: $address
+      description: $description
+      zipCode: $zipCode
+      city: $city
+      phoneNumber: $phoneNumber
+    }
+    update: {
+      address: $address
+      description: $description
+      zipCode: $zipCode
+      city: $city
+      phoneNumber: $phoneNumber
+    }
+  ) {
+    id
+    name
+    description
+    address
+    zipCode
+    city
+    phoneNumber
+  }
+}
+mutation deleteResort($name: String) {
+  deleteResort(where: { name: $name }) {
+    id
+    name
+    description
+    address
+    zipCode
+    city
+    phoneNumber
+  }
+}
+query resort($name: String) {
+  resort(where: { name: $name }) {
+    id
+    name
+    description
+    address
+    zipCode
+    city
+    phoneNumber
+  }
+}
+query resorts {
+  resorts {
+    id
+    name
+    address
+    zipCode
+    city
+    phoneNumber
+  }
+}

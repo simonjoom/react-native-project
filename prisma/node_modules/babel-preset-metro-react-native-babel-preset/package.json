@@ -1,0 +1,94 @@
+{
+  "_from": "metro-react-native-babel-preset",
+  "_id": "metro-react-native-babel-preset@0.42.2",
+  "_inBundle": false,
+  "_integrity": "sha512-sbPMjOE3MvSxl+ghtqxvxJnxSFgjl5QLK4J5Sqw/LZd1LZOlE/AUzsU3XvA8C6Xeiep+Qk0aDtowgsFzZAesFw==",
+  "_location": "/metro-react-native-babel-preset",
+  "_phantomChildren": {
+    "@babel/code-frame": "7.0.0-beta.54",
+    "@babel/helper-function-name": "7.0.0-beta.54",
+    "@babel/helper-get-function-arity": "7.0.0-beta.54",
+    "@babel/helper-split-export-declaration": "7.0.0-beta.54",
+    "@babel/parser": "7.0.0-beta.54",
+    "@babel/traverse": "7.0.0-beta.54",
+    "@babel/types": "7.0.0-beta.54",
+    "esutils": "2.0.2",
+    "globals": "11.7.0",
+    "lodash": "4.17.10",
+    "regenerator-transform": "0.13.3",
+    "regexpu-core": "4.2.0"
+  },
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "metro-react-native-babel-preset",
+    "name": "metro-react-native-babel-preset",
+    "escapedName": "metro-react-native-babel-preset",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/metro-react-native-babel-preset/-/metro-react-native-babel-preset-0.42.2.tgz",
+  "_shasum": "16edf00ec13b5231f9f1f7194161557f4563ed51",
+  "_spec": "metro-react-native-babel-preset",
+  "_where": "/Users/simon/react-native-project",
+  "bugs": {
+    "url": "https://github.com/facebook/metro/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@babel/plugin-proposal-class-properties": "7.0.0-beta.54",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "7.0.0-beta.54",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.54",
+    "@babel/plugin-proposal-optional-catch-binding": "7.0.0-beta.54",
+    "@babel/plugin-proposal-optional-chaining": "7.0.0-beta.54",
+    "@babel/plugin-transform-arrow-functions": "7.0.0-beta.54",
+    "@babel/plugin-transform-block-scoping": "7.0.0-beta.54",
+    "@babel/plugin-transform-classes": "7.0.0-beta.54",
+    "@babel/plugin-transform-computed-properties": "7.0.0-beta.54",
+    "@babel/plugin-transform-destructuring": "7.0.0-beta.54",
+    "@babel/plugin-transform-exponentiation-operator": "7.0.0-beta.54",
+    "@babel/plugin-transform-flow-strip-types": "7.0.0-beta.54",
+    "@babel/plugin-transform-for-of": "7.0.0-beta.54",
+    "@babel/plugin-transform-function-name": "7.0.0-beta.54",
+    "@babel/plugin-transform-literals": "7.0.0-beta.54",
+    "@babel/plugin-transform-modules-commonjs": "7.0.0-beta.54",
+    "@babel/plugin-transform-object-assign": "7.0.0-beta.54",
+    "@babel/plugin-transform-parameters": "7.0.0-beta.54",
+    "@babel/plugin-transform-react-display-name": "7.0.0-beta.54",
+    "@babel/plugin-transform-react-jsx": "7.0.0-beta.54",
+    "@babel/plugin-transform-react-jsx-source": "7.0.0-beta.54",
+    "@babel/plugin-transform-regenerator": "7.0.0-beta.54",
+    "@babel/plugin-transform-shorthand-properties": "7.0.0-beta.54",
+    "@babel/plugin-transform-spread": "7.0.0-beta.54",
+    "@babel/plugin-transform-sticky-regex": "7.0.0-beta.54",
+    "@babel/plugin-transform-template-literals": "7.0.0-beta.54",
+    "@babel/plugin-transform-unicode-regex": "7.0.0-beta.54",
+    "@babel/template": "7.0.0-beta.54",
+    "metro-babel7-plugin-react-transform": "0.42.2"
+  },
+  "deprecated": false,
+  "description": "Babel preset for React Native applications",
+  "homepage": "https://github.com/facebook/metro#readme",
+  "keywords": [
+    "babel",
+    "preset",
+    "react-native"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "name": "metro-react-native-babel-preset",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/facebook/metro.git"
+  },
+  "scripts": {
+    "cleanup-release": "test ! -e build && mv src build && mv src.real src",
+    "prepare-release": "test -d build && rm -rf src.real && mv src src.real && mv build src"
+  },
+  "version": "0.42.2"
+}

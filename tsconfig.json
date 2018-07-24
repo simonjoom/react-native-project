@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "sourceMap": true,
+    "noUnusedLocals": false,
+    "rootDir": "prisma/src",
+    "outDir": "prisma/dist"
+  },    
+  "include": [
+    "prisma/src/**/*.ts",
+    "prisma/src/**/*.js",
+    "prisma/src/*.js",
+    ],
+    "exclude": [
+        "node_modules",
+        "**/node_modules",
+        "**/*.spec.ts"
+    ]
+}

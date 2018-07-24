@@ -1,0 +1,95 @@
+{
+  "_from": "react-scripts@next",
+  "_id": "react-scripts@2.0.0-next.3e165448",
+  "_inBundle": false,
+  "_integrity": "sha512-4rDqBGTvnP9Q39SGjKFKA9ufUgQEC6IBI2SSZmu5EuBwU3g50wSaletMbohayJyNeCr1RWSBiPpFpQgn7gzvJQ==",
+  "_location": "/react-scripts",
+  "_phantomChildren": {
+    "asap": "2.0.6",
+    "chalk": "2.4.1",
+    "convert-source-map": "1.5.1",
+    "core-js": "2.5.7",
+    "debug": "3.1.0",
+    "esutils": "2.0.2",
+    "find-cache-dir": "1.0.0",
+    "globals": "11.7.0",
+    "graceful-fs": "4.1.11",
+    "invariant": "2.2.4",
+    "js-tokens": "3.0.2",
+    "jsesc": "2.5.1",
+    "json5": "0.5.1",
+    "loader-utils": "1.1.0",
+    "lodash": "4.17.10",
+    "micromatch": "2.3.11",
+    "mkdirp": "0.5.1",
+    "path-parse": "1.0.5",
+    "semver": "5.5.0",
+    "source-map": "0.5.7",
+    "to-fast-properties": "2.0.0",
+    "trim-right": "1.0.1",
+    "universalify": "0.1.2"
+  },
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "react-scripts@next",
+    "name": "react-scripts",
+    "escapedName": "react-scripts",
+    "rawSpec": "next",
+    "saveSpec": null,
+    "fetchSpec": "next"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-scripts/-/react-scripts-2.0.0-next.3e165448.tgz",
+  "_shasum": "137701a8def3ecea533d17b861f485671030fee4",
+  "_spec": "react-scripts@next",
+  "_where": "/Users/simon/react-native-project",
+  "bin": {
+    "react-scripts": "./bin/react-scripts.js"
+  },
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">1%",
+      "last 4 versions",
+      "Firefox ESR",
+      "not ie < 11"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/facebook/create-react-app/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "babel-core": "7.0.0-bridge.0"
+  },
+  "deprecated": false,
+  "description": "Configuration and scripts for Create React App.",
+  "engines": {
+    "node": ">=6"
+  },
+  "files": [
+    "bin",
+    "config",
+    "scripts",
+    "template",
+    "utils"
+  ],
+  "homepage": "https://github.com/facebook/create-react-app#readme",
+  "license": "MIT",
+  "name": "react-scripts",
+  "optionalDependencies": {
+    "fsevents": "1.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/facebook/create-react-app.git"
+  },
+  "version": "2.0.0-next.3e165448"
+}

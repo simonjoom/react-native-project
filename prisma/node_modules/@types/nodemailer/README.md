@@ -1,0 +1,16 @@
+# Installation
+> `npm install --save @types/nodemailer`
+
+# Summary
+This package contains type definitions for Nodemailer (https://github.com/nodemailer/nodemailer).
+
+# Details
+Files were exported from https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/nodemailer
+
+Additional Details
+ * Last updated: Wed, 20 Jun 2018 00:10:18 GMT
+ * Dependencies: node, stream, events, http, tls, url, net
+ * Global values: none
+
+# Credits
+These definitions were written by Rogier Schouten <https://github.com/rogierschouten>, Piotr Roszatycki <https://github.com/dex4er>, Daniel Chao <https://github.com/bioball>.

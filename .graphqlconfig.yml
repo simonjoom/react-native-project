@@ -1,0 +1,18 @@
+projects:
+  aromaclop:
+    schemaPath: "prisma/src/schema.graphql"
+    includes: ["**/*.graphql"]
+    extensions:
+      endpoints:
+        dev: "http://localhost:4000"
+  database:
+    schemaPath: "prisma/src/generated/prisma.graphql"
+    includes: ["**/*.graphql"]
+    extensions:
+      prisma: prisma/database/prisma.yml
+      codegen:
+      - generator: prisma-binding
+        language: typescript
+        output:
+          binding: prisma/src/generated/prisma.ts
+

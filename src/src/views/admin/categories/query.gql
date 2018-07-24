@@ -1,0 +1,42 @@
+mutation upsertCategory($id: ID!, $shopid: ID!, $name: String!) {
+  upsertCategory(
+    where: { id: $id }
+    create: { name: $name, shop: { connect: { id: $shopid } } }
+    update: { name: $name }
+  ) {
+    id
+    name
+  }
+}
+
+mutation deleteCategory($id: ID) {
+  deleteCategory(where: { id: $id }) {
+    name
+  }
+}
+
+query categories($id: ID) {
+  categories(where: { id: $id }) {
+    id
+    name
+    options {
+      name
+    }
+    shop {
+      name
+    }
+  }
+}
+
+query categories {
+  categories {
+    id
+    name
+    options {
+      name
+    }
+    shop {
+      name
+    }
+  }
+}

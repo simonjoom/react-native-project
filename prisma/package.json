@@ -1,0 +1,43 @@
+{
+  "name": "aromaclop-prisma",
+  "scripts": {
+    "start": "dotenv -- nodemon -e ts,graphql -x ts-node src/index.ts",
+    "dev": "npm-run-all --parallel start playground",
+    "debug": "dotenv -- nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
+    "playground": "graphql playground",
+    "build": "rimraf dist && tsc",
+    "deploy": "scripts/deploy.sh",
+    "backup": "scripts/backup.sh"
+  },
+  "dependencies": {
+    "graphql-yoga": "latest",
+    "prisma": "latest",
+    "prisma-binding": "^2.1.1",
+    "merge-graphql-schemas": "latest",
+    "bcryptjs": "2.4.3",
+    "bluebird": "^3.5.1",
+    "generate-password": "latest",
+    "jsonwebtoken": "latest",
+    "lodash": "^4.17.10",
+    "nodemailer": "^4.6.7",
+    "onesignal-node": "^1.1.2",
+    "stripe": "^6.0.0",
+    "validator": "^10.4.0"
+  },
+  "devDependencies": {
+    "apollo-errors": "latest",
+    "apollo-link-error": "1.1.0",
+    "@types/bcryptjs": "2.4.1",
+    "@types/email-templates": "^3.5.0",
+    "@types/lodash": "^4.14.108",
+    "@types/nodemailer": "^4.6.2",
+    "@types/stripe": "^5.0.10",
+    "dotenv-cli": "1.4.0",
+    "email-templates": "latest",
+    "nodemon": "latest",
+    "npm-run-all": "4.1.2",
+    "rimraf": "latest",
+    "ts-node": "latest",
+    "typescript": "latest"
+  }
+}

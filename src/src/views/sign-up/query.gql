@@ -1,0 +1,25 @@
+
+    mutation signUp($email: String!, $password: String!, $firstName: String!, $lastName: String!) {
+      signup(email: $email, password: $password, firstName: $firstName, lastName: $lastName) {
+        token
+      }
+    }
+  
+  query allResorts {
+    id
+    name
+    address
+    zipCode
+    city
+    phoneNumber
+  }
+    
+  query allShops {
+    id
+    name
+    address
+    zipCode
+    city
+    phoneNumber
+    openingHours
+  }

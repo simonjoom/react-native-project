@@ -1,0 +1,92 @@
+mutation signUp(
+  $email: String!
+  $password: String!
+  $firstName: String!
+  $lastName: String!
+  $shopId: ID!
+) {
+  signupAdmin(
+    email: $email
+    password: $password
+    firstName: $firstName
+    lastName: $lastName
+    shopId: $shopId
+  ) {
+    token
+  }
+}
+
+
+query users {
+  users(where: {}) {
+    id
+    email
+    firstName
+    lastName
+    role
+    cart {
+      id
+    }
+    orders {
+      id
+    }
+    oneSignalUserId
+  }
+}
+
+
+
+query userAdmins {
+  userAdmins(where: {}) {
+    id
+    email
+    firstName
+    lastName
+    selectedShop {
+      id
+    }
+    role
+    stripeCustomerId
+    oneSignalUserId
+  }
+}
+query allUsers{
+  users(where: {}) {
+    id
+    email
+    firstName
+    lastName
+    role
+    cart {
+      id
+    }
+    orders {
+      id
+    }
+    oneSignalUserId
+  }
+    userAdmins(where: {}) {
+    id
+    email
+    firstName
+    lastName
+    selectedShop {
+      id
+    }
+    role
+    stripeCustomerId
+    oneSignalUserId
+  }
+}
+
+query allShops {
+  allShops {
+    id
+    name
+    address
+    zipCode
+    city
+    phoneNumber
+    openingHours
+  }
+}

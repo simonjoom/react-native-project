@@ -1,0 +1,98 @@
+mutation upsertShop(
+  $name: String!
+  $address: String
+  $zipCode: String
+  $resort: [Resort!]!
+  $phoneNumber: String!
+  $openingHours: String!
+  $motd: String
+  $productsIds: [ID!]!
+  $newProductsIds: [ID!]!
+  $bestSellerProductsIds: [ID!]!
+) {
+  upsertShop(
+    where: { name: $name }
+    create: {
+      name: $name
+      address: $address
+      zipCode: $zipCode
+      phoneNumber: $phoneNumber
+      openingHours: $openingHours
+    }
+    update: {
+      address: $address
+      zipCode: $zipCode
+      phoneNumber: $phoneNumber
+      openingHours: $openingHours
+    }
+  ) {
+    id
+    name
+    address
+    zipCode
+    resort{
+      name
+    }
+    phoneNumber
+    openingHours
+    products {
+      name
+    }
+    newProducts {
+      position
+    }
+    bestSellerProducts {
+      position
+    }
+  }
+}
+mutation deleteShop($name: String) {
+  deleteShop(where: { name: $name }) {
+    id
+    name
+  }
+}
+query shop($name: String) {
+  shop(where: { name: $name }) {
+    id
+    name
+    address
+    zipCode
+    resort{
+      name
+    }
+    phoneNumber
+    openingHours
+    products {
+      name
+    }
+    newProducts {
+      position
+    }
+    bestSellerProducts {
+      position
+    }
+  }
+}
+query shops {
+  shops {
+    id
+    name
+    address
+    zipCode
+    resort{
+      name
+    }
+    phoneNumber
+    openingHours
+    products {
+      name
+    }
+    newProducts {
+      position
+    }
+    bestSellerProducts {
+      position
+    }
+  }
+}
