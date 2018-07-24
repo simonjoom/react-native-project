@@ -18,16 +18,25 @@ I think it's much more efficient to work in full JS and compile for browser who 
 
 Now react-native-web is well stable even if i did some mods to add some feature
 
---> added a modal with react-native-web-modal
---> fixed a bug with icon react-native-vector-icons
+- --> added a modal with react-native-web-modal
+- --> fixed a bug with icon react-native-vector-icons
+
+The repo better work with **VSCode**
+
+I recommand to install extension VSCode GraphQL PRisma
+install the one prisma.vscode-graphql Version 0.0.10 
+the others are not from prisma and won't work the same (do not install the one from kumar Harsh)
+
+Add extension as well Prettier code formatter 1.5.0
 
 
-inside:
+
+Inside this project already well set up:
 - Webpack 4(latest) / react-scripts modified to support react-native-web
 - expo
 - expo-web
  
-Apollo2/prisma for backend
+Apollo2/prisma for backend 
 
 Resources:
 https://www.apollographql.com/
@@ -40,7 +49,9 @@ I think expo should be nice to use for this project. See the Api. Expo helped me
 
 The apollo and prisma is properly set up to have a super cool development coupled with hot-reload of react-scripts.
 
+
 On the directory downloaded from my github
+
 
 To install the project:
 
