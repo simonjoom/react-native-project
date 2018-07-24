@@ -11,19 +11,30 @@ class Shop extends Component {
     super(props);
     this.initfetch = [
       {
-        name: "String!", //use the first as unique key
-        address: "String!",
-        zipCode: "String!",
-        city: "String!",
-        phoneNumber: "String!",
-        openingHours: "String!",
-        MOTD: "String",
-        products: "[Product!]!",
-        newProducts: "[OrderableProduct!]!",
-        bestSellerProducts: "[OrderableProduct!]!"
+        name: "",
+        address: "",
+        zipCode: "",
+        city: "",
+        phoneNumber: "",
+        openingHours: "",
+        MOTD: "",
+        products: "",
+        newProducts: "",
+        bestSellerProducts: ""
       }
     ];
-    
+    this.initplaceholder = {
+      name: "String!", //use the first as unique key
+      address: "String!",
+      zipCode: "String!",
+      city: "String!",
+      phoneNumber: "String!",
+      openingHours: "String!",
+      MOTD: "String",
+      products: "[Product!]!",
+      newProducts: "[OrderableProduct!]!",
+      bestSellerProducts: "[OrderableProduct!]!"
+    };
   }
 
   render() {
@@ -45,7 +56,7 @@ class Shop extends Component {
 
     let datas = data.shops;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
-    const selector=Object.keys(datas[0])[0];
+    const selector = Object.keys(this.initplaceholder)[0];
     //{shops && shops.map((shop, i) => (<Title key={"tt" + i}>{shop.name}</Title>))}
     return (
       <KeyboardAwareCenteredView>
@@ -62,6 +73,7 @@ class Shop extends Component {
         {!error && (
           <Helper
             tofetch={datas}
+            placeholder={this.initplaceholder}
             selector={selector}
             navigation={navigation}
             deleteQuery={deleteShop}

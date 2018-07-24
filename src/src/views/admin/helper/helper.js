@@ -9,6 +9,11 @@ import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenter
 import Picker from "react-native-picker";
 import { Plus } from "src/components/icons";
 
+function isEntitie(obj) {
+  return obj.indexOf("[") !== -1 && obj.indexOf("]") !== -1;
+  //it's a node like "[Product!]!","[OrderableProduct!]!",
+}
+
 function removeEmpty(obj) {
   const o = JSON.parse(JSON.stringify(obj)); // Clone source oect.
 
@@ -41,7 +46,7 @@ class Helper extends Component {
     this.focusNextField = this.focusNextField.bind(this);
     this.renderFields = this.renderFields.bind(this);
 
-   // this.navigate = this.props.navigation.navigate;
+    // this.navigate = this.props.navigation.navigate;
     this.state.fields = removeEmpty(this.props.tofetch[0]);
   }
 
@@ -122,26 +127,31 @@ class Helper extends Component {
       />
     );
   }
-/*{fields[key].map(item =>
+  /*{fields[key].map(item =>
                 this.renderFields(item, stylesmall, key, "small")
               )}*/
-  renderFields(fields, style, skey, type) {
-    console.log(fields);
+  renderFields(fields, placeholder, style, skey, type) {
     if (fields)
       return Object.keys(fields).map((key, index) => {
-        if (typeof fields[key] === "object") {
+        if (typeof fields[key] === "object" || isEntitie(placeholder[key])) {
           console.log("array:", fields[key]);
-          return (
-            <View style={[{ marginLeft: 10 }, stylesmall]}>
-              <Text style={style}>{key.toUpperCase()}</Text>
-              <Plus navigation={this.props.navigation} route={key} />
-            </View>
-          );
+          if (fields[key])
+            return (
+              <View style={[{ marginLeft: 10 }, stylesmall]} key={key + "_field_" + skey + index}>
+                <Text style={style}>{key.toUpperCase()}</Text>
+                <Plus navigation={this.props.navigation} route={key} />
+              </View>
+            );
+          else return <Text key={key + "_field_" + skey + index} style={style}>{key.toUpperCase()}</Text>;
         } else {
+          console.log(fields,placeholder[key]);
+
           return (
             <Input
               autoFocus
               type={type}
+              placeholder={placeholder[key]}
+              placeholderTextColor="gray"
               style={style}
               key={key + "_field_" + skey + index}
               ref={skey + index}
@@ -168,6 +178,7 @@ class Helper extends Component {
   render() {
     const {
       tofetch,
+      placeholder,
       selector,
       deleteQuery,
       selectQuery,
@@ -176,14 +187,14 @@ class Helper extends Component {
       mutate_result_select
     } = this.props;
     const selected = this.state.selected;
-    console.log("updateResort", tofetch);
+    console.log("selector", tofetch);
     //  const resorts = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allResorts;
 
     //{resorts && resorts.map((resort, i) => (<Title key={"tt" + i}>{resort.name}</Title>))}
     return (
       <KeyboardAwareCenteredView>
         {this.state.fields &&
-          this.renderFields(this.state.fields, styleb, "", "big")}
+          this.renderFields(this.state.fields,placeholder, styleb, "", "big")}
         {this.renderPicker(
           tofetch,
           selected,
