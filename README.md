@@ -173,6 +173,9 @@ Nota extension web.js take priority for browser. So we will use only .web.js bef
 
 The ui have to be changed , the interest is to have a utility working for all types of node running with prisma. So it could be work not only with my database. By example i could add very fast one shop, in 2 click. change this shop-data and connect or change the nodes of this shop (like user_owners by example)
 
+![https://github.com/simonjoom/react-native-project/blob/master/copyscreen.png](https://github.com/simonjoom/react-native-project/blob/master/copyscreen.png)
+
+
 
 
 ### frontend
