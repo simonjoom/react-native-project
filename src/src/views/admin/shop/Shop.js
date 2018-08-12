@@ -51,7 +51,7 @@ class Shop extends Component {
       return null;
     }
     //const selected = this.state.selected;
-    console.log("updateShop", data.shops, this.props);
+    console.log("updateShop", data, this.props);
     //  const shops = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allShops;
 
     let datas = data.shops;

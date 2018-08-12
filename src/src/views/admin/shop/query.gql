@@ -36,7 +36,7 @@ mutation upsertShop(
     phoneNumber
     openingHours
     products {
-      name
+      id
     }
     newProducts {
       position
@@ -64,7 +64,7 @@ query shop($name: String) {
     phoneNumber
     openingHours
     products {
-      name
+      id
     }
     newProducts {
       position
@@ -86,7 +86,7 @@ query shops {
     phoneNumber
     openingHours
     products {
-      name
+      id
     }
     newProducts {
       position
