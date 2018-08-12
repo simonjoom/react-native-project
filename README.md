@@ -217,12 +217,6 @@ Yeah it's seems complicate, but it's nice, this is compatible for every database
 react-native-picker is defined in src/myPicker.js
 see https://github.com/jarvisluong/react-native-picker-js
 
-TODO 
-
-**I have an issue on Label resort, 
-i don't know why the label of input of resort is crushed by labels of Shop**
-
-
 
 The ui have to be changed , the interest is to have a utility working for all types of node running with prisma. So it could be work not only with my database. By example i could add very fast one shop, in 2 click. change this shop-data and connect or change the nodes of this shop (like user_owners by example)
 
