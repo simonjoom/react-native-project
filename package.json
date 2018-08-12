@@ -132,7 +132,7 @@
     "react-native-picker": "^4.3.7",
     "react-native-settings-list": "^1.8.0",
     "react-native-tab-view": "^0.0.73",
-    "react-native-vector-icons": "latest",
+    "react-native-vector-icons": "file:react-native-vector-icons",
     "react-native-web": "^0.8.8",
     "react-native-web-linear-gradient": "^1.0.2",
     "react-native-web-modal": "file:react-native-web-modal",
