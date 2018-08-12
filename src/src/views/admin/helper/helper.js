@@ -48,8 +48,7 @@ class Helper extends Component {
     this.renderFields = this.renderFields.bind(this);
     
     // this.navigate = this.props.navigation.navigate;
-    this.state.fields[props.etat] = removeEmpty(this.props.tofetch[0]);
-    console.log("this.state.fields"+props.etat,this.state.fields )
+    this.state.fields = removeEmpty(this.props.tofetch[0]);
   }
 
   validateFields() {
@@ -190,7 +189,7 @@ class Helper extends Component {
     } = this.props;
     const selected = this.state.selected;
     
-    console.log("this.state.fields"+this.props.etat,select_result_select )
+    console.log("this.state.fields",select_result_select )
     console.log("selector", tofetch,this.state.fields,placeholder);
     //  const resorts = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allResorts;
 
@@ -198,7 +197,7 @@ class Helper extends Component {
     return (
       <KeyboardAwareCenteredView>
         {this.state.fields &&
-          this.renderFields(this.state.fields[this.props.etat],placeholder, styleb, select_result_select, "big")}
+          this.renderFields(this.state.fields,placeholder, styleb, select_result_select, "big")}
         {this.renderPicker(
           tofetch,
           selected,

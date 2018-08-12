@@ -81,7 +81,6 @@ class Shop extends Component {
             upsertQuery={upsertShop}
             select_result_select="shop"
             mutate_result_select="shops"
-            etat="shop"
           />
         )}
 

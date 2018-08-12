@@ -71,7 +71,6 @@ class Resort extends Component {
             upsertQuery={upsertResort}
             select_result_select="resort"
             mutate_result_select="resorts"
-            etat="resort"
           />
         )}
 
