@@ -14,7 +14,7 @@ class Shop extends Component {
         name: "",
         address: "",
         zipCode: "",
-        city: "",
+        resort: "",
         phoneNumber: "",
         openingHours: "",
         MOTD: "",
@@ -27,7 +27,7 @@ class Shop extends Component {
       name: "String!", //use the first as unique key
       address: "String!",
       zipCode: "String!",
-      city: "String!",
+      resort: "[Resort!]!",
       phoneNumber: "String!",
       openingHours: "String!",
       MOTD: "String",

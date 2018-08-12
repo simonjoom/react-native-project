@@ -10,34 +10,34 @@
     "backup": "scripts/backup.sh"
   },
   "dependencies": {
-    "graphql-yoga": "latest",
-    "prisma": "latest",
-    "prisma-binding": "^2.1.1",
-    "merge-graphql-schemas": "latest",
     "bcryptjs": "2.4.3",
     "bluebird": "^3.5.1",
     "generate-password": "latest",
+    "graphql-yoga": "^1.16.0",
     "jsonwebtoken": "latest",
     "lodash": "^4.17.10",
+    "merge-graphql-schemas": "latest",
     "nodemailer": "^4.6.7",
-    "onesignal-node": "^1.1.2",
-    "stripe": "^6.0.0",
-    "validator": "^10.4.0"
+    "onesignal-node": "^1.2.0",
+    "prisma": "^1.13.7",
+    "prisma-binding": "^2.1.4",
+    "stripe": "^6.7.0",
+    "validator": "^10.5.0"
   },
   "devDependencies": {
-    "apollo-errors": "latest",
-    "apollo-link-error": "1.1.0",
     "@types/bcryptjs": "2.4.1",
     "@types/email-templates": "^3.5.0",
-    "@types/lodash": "^4.14.108",
+    "@types/lodash": "^4.14.116",
     "@types/nodemailer": "^4.6.2",
-    "@types/stripe": "^5.0.10",
+    "@types/stripe": "^5.0.21",
+    "apollo-errors": "latest",
+    "apollo-link-error": "1.1.0",
     "dotenv-cli": "1.4.0",
-    "email-templates": "latest",
+    "email-templates": "^4.0.3",
     "nodemon": "latest",
     "npm-run-all": "4.1.2",
     "rimraf": "latest",
-    "ts-node": "latest",
-    "typescript": "latest"
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.1"
   }
 }

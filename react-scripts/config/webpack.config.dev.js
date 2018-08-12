@@ -299,10 +299,10 @@ module.exports = {
                         },
                       },
                     ],
-        ['@babel/plugin-transform-runtime', { helpers: false, polyfill: false, regenerator: true }],
+        ['@babel/plugin-transform-runtime', { helpers: false, regenerator: true }],
       ],
       // The 'react-native' preset is recommended to match React Native's packager
-      presets: ['metro-react-native-babel-preset'],
+      presets: ["module:metro-react-native-babel-preset"],
       /*
                   presets: [require.resolve('babel-preset-react-app')],
                   plugins: [
@@ -360,9 +360,9 @@ module.exports = {
         "loose": true
       }
     ],
-        ['@babel/plugin-transform-runtime', { helpers: false, polyfill: false, regenerator: true }],
+        ['@babel/plugin-transform-runtime', { helpers: false, regenerator: true }],
       ],
-                  presets: ['metro-react-native-babel-preset'],
+                  presets: ['module:metro-react-native-babel-preset'],
                 /*  presets: [
                     require.resolve('babel-preset-react-app/dependencies'),
                   ],*/
