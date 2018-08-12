@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/public-greenslayer-136/my-app/dev
-# timestamp: Sat Jul 21 2018 22:33:45 GMT+0200 (Central European Summer Time)
+# timestamp: Sun Aug 12 2018 15:25:31 GMT+0200 (Central European Summer Time)
 
 type AggregateAttribute {
   count: Int!
@@ -326,11 +326,6 @@ input BrandCreateInput {
   shop: ShopCreateOneInput!
 }
 
-input BrandCreateOneInput {
-  create: BrandCreateInput
-  connect: BrandWhereUniqueInput
-}
-
 """An edge in a connection."""
 type BrandEdge {
   """The item at the end of the edge."""
@@ -395,29 +390,10 @@ input BrandSubscriptionWhereInput {
   node: BrandWhereInput
 }
 
-input BrandUpdateDataInput {
-  name: String
-  category: CategoryUpdateOneInput
-  shop: ShopUpdateOneInput
-}
-
 input BrandUpdateInput {
   name: String
   category: CategoryUpdateOneInput
   shop: ShopUpdateOneInput
-}
-
-input BrandUpdateOneInput {
-  create: BrandCreateInput
-  connect: BrandWhereUniqueInput
-  delete: Boolean
-  update: BrandUpdateDataInput
-  upsert: BrandUpsertNestedInput
-}
-
-input BrandUpsertNestedInput {
-  update: BrandUpdateDataInput!
-  create: BrandCreateInput!
 }
 
 input BrandWhereInput {
@@ -511,9 +487,6 @@ input BrandWhereInput {
   name_not_ends_with: String
   category: CategoryWhereInput
   shop: ShopWhereInput
-  _MagicalBackRelation_BrandToProduct_every: ProductWhereInput
-  _MagicalBackRelation_BrandToProduct_some: ProductWhereInput
-  _MagicalBackRelation_BrandToProduct_none: ProductWhereInput
 }
 
 input BrandWhereUniqueInput {
@@ -758,15 +731,6 @@ input CategoryWhereInput {
   options_some: OptionWhereInput
   options_none: OptionWhereInput
   shop: ShopWhereInput
-  _MagicalBackRelation_BrandToCategory_every: BrandWhereInput
-  _MagicalBackRelation_BrandToCategory_some: BrandWhereInput
-  _MagicalBackRelation_BrandToCategory_none: BrandWhereInput
-  _MagicalBackRelation_CategoryToProduct_every: ProductWhereInput
-  _MagicalBackRelation_CategoryToProduct_some: ProductWhereInput
-  _MagicalBackRelation_CategoryToProduct_none: ProductWhereInput
-  _MagicalBackRelation_AttributeToCategory_every: AttributeWhereInput
-  _MagicalBackRelation_AttributeToCategory_some: AttributeWhereInput
-  _MagicalBackRelation_AttributeToCategory_none: AttributeWhereInput
 }
 
 input CategoryWhereUniqueInput {
@@ -1132,99 +1096,99 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
+  createBrand(data: BrandCreateInput!): Brand!
   createAttribute(data: AttributeCreateInput!): Attribute!
   createSelectedOption(data: SelectedOptionCreateInput!): SelectedOption!
-  createProduct(data: ProductCreateInput!): Product!
   createUser(data: UserCreateInput!): User!
-  createUserAdmin(data: UserAdminCreateInput!): UserAdmin!
   createFile(data: FileCreateInput!): File!
   createOrder(data: OrderCreateInput!): Order!
   createOrderableProduct(data: OrderableProductCreateInput!): OrderableProduct!
   createOptionValue(data: OptionValueCreateInput!): OptionValue!
+  createProduct(data: ProductCreateInput!): Product!
   createOrderLineItem(data: OrderLineItemCreateInput!): OrderLineItem!
   createVariant(data: VariantCreateInput!): Variant!
   createShop(data: ShopCreateInput!): Shop!
-  createBrand(data: BrandCreateInput!): Brand!
+  createUserAdmin(data: UserAdminCreateInput!): UserAdmin!
   createResort(data: ResortCreateInput!): Resort!
   createCategory(data: CategoryCreateInput!): Category!
   createOption(data: OptionCreateInput!): Option!
+  updateBrand(data: BrandUpdateInput!, where: BrandWhereUniqueInput!): Brand
   updateAttribute(data: AttributeUpdateInput!, where: AttributeWhereUniqueInput!): Attribute
   updateSelectedOption(data: SelectedOptionUpdateInput!, where: SelectedOptionWhereUniqueInput!): SelectedOption
-  updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateUserAdmin(data: UserAdminUpdateInput!, where: UserAdminWhereUniqueInput!): UserAdmin
   updateFile(data: FileUpdateInput!, where: FileWhereUniqueInput!): File
   updateOrder(data: OrderUpdateInput!, where: OrderWhereUniqueInput!): Order
   updateOrderableProduct(data: OrderableProductUpdateInput!, where: OrderableProductWhereUniqueInput!): OrderableProduct
   updateOptionValue(data: OptionValueUpdateInput!, where: OptionValueWhereUniqueInput!): OptionValue
+  updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   updateOrderLineItem(data: OrderLineItemUpdateInput!, where: OrderLineItemWhereUniqueInput!): OrderLineItem
   updateVariant(data: VariantUpdateInput!, where: VariantWhereUniqueInput!): Variant
   updateShop(data: ShopUpdateInput!, where: ShopWhereUniqueInput!): Shop
-  updateBrand(data: BrandUpdateInput!, where: BrandWhereUniqueInput!): Brand
+  updateUserAdmin(data: UserAdminUpdateInput!, where: UserAdminWhereUniqueInput!): UserAdmin
   updateResort(data: ResortUpdateInput!, where: ResortWhereUniqueInput!): Resort
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateOption(data: OptionUpdateInput!, where: OptionWhereUniqueInput!): Option
+  deleteBrand(where: BrandWhereUniqueInput!): Brand
   deleteAttribute(where: AttributeWhereUniqueInput!): Attribute
   deleteSelectedOption(where: SelectedOptionWhereUniqueInput!): SelectedOption
-  deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteUser(where: UserWhereUniqueInput!): User
-  deleteUserAdmin(where: UserAdminWhereUniqueInput!): UserAdmin
   deleteFile(where: FileWhereUniqueInput!): File
   deleteOrder(where: OrderWhereUniqueInput!): Order
   deleteOrderableProduct(where: OrderableProductWhereUniqueInput!): OrderableProduct
   deleteOptionValue(where: OptionValueWhereUniqueInput!): OptionValue
+  deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteOrderLineItem(where: OrderLineItemWhereUniqueInput!): OrderLineItem
   deleteVariant(where: VariantWhereUniqueInput!): Variant
   deleteShop(where: ShopWhereUniqueInput!): Shop
-  deleteBrand(where: BrandWhereUniqueInput!): Brand
+  deleteUserAdmin(where: UserAdminWhereUniqueInput!): UserAdmin
   deleteResort(where: ResortWhereUniqueInput!): Resort
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteOption(where: OptionWhereUniqueInput!): Option
+  upsertBrand(where: BrandWhereUniqueInput!, create: BrandCreateInput!, update: BrandUpdateInput!): Brand!
   upsertAttribute(where: AttributeWhereUniqueInput!, create: AttributeCreateInput!, update: AttributeUpdateInput!): Attribute!
   upsertSelectedOption(where: SelectedOptionWhereUniqueInput!, create: SelectedOptionCreateInput!, update: SelectedOptionUpdateInput!): SelectedOption!
-  upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  upsertUserAdmin(where: UserAdminWhereUniqueInput!, create: UserAdminCreateInput!, update: UserAdminUpdateInput!): UserAdmin!
   upsertFile(where: FileWhereUniqueInput!, create: FileCreateInput!, update: FileUpdateInput!): File!
   upsertOrder(where: OrderWhereUniqueInput!, create: OrderCreateInput!, update: OrderUpdateInput!): Order!
   upsertOrderableProduct(where: OrderableProductWhereUniqueInput!, create: OrderableProductCreateInput!, update: OrderableProductUpdateInput!): OrderableProduct!
   upsertOptionValue(where: OptionValueWhereUniqueInput!, create: OptionValueCreateInput!, update: OptionValueUpdateInput!): OptionValue!
+  upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   upsertOrderLineItem(where: OrderLineItemWhereUniqueInput!, create: OrderLineItemCreateInput!, update: OrderLineItemUpdateInput!): OrderLineItem!
   upsertVariant(where: VariantWhereUniqueInput!, create: VariantCreateInput!, update: VariantUpdateInput!): Variant!
   upsertShop(where: ShopWhereUniqueInput!, create: ShopCreateInput!, update: ShopUpdateInput!): Shop!
-  upsertBrand(where: BrandWhereUniqueInput!, create: BrandCreateInput!, update: BrandUpdateInput!): Brand!
+  upsertUserAdmin(where: UserAdminWhereUniqueInput!, create: UserAdminCreateInput!, update: UserAdminUpdateInput!): UserAdmin!
   upsertResort(where: ResortWhereUniqueInput!, create: ResortCreateInput!, update: ResortUpdateInput!): Resort!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   upsertOption(where: OptionWhereUniqueInput!, create: OptionCreateInput!, update: OptionUpdateInput!): Option!
+  updateManyBrands(data: BrandUpdateInput!, where: BrandWhereInput): BatchPayload!
   updateManyAttributes(data: AttributeUpdateInput!, where: AttributeWhereInput): BatchPayload!
   updateManySelectedOptions(data: SelectedOptionUpdateInput!, where: SelectedOptionWhereInput): BatchPayload!
-  updateManyProducts(data: ProductUpdateInput!, where: ProductWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
-  updateManyUserAdmins(data: UserAdminUpdateInput!, where: UserAdminWhereInput): BatchPayload!
   updateManyFiles(data: FileUpdateInput!, where: FileWhereInput): BatchPayload!
   updateManyOrders(data: OrderUpdateInput!, where: OrderWhereInput): BatchPayload!
   updateManyOrderableProducts(data: OrderableProductUpdateInput!, where: OrderableProductWhereInput): BatchPayload!
   updateManyOptionValues(data: OptionValueUpdateInput!, where: OptionValueWhereInput): BatchPayload!
+  updateManyProducts(data: ProductUpdateInput!, where: ProductWhereInput): BatchPayload!
   updateManyOrderLineItems(data: OrderLineItemUpdateInput!, where: OrderLineItemWhereInput): BatchPayload!
   updateManyVariants(data: VariantUpdateInput!, where: VariantWhereInput): BatchPayload!
   updateManyShops(data: ShopUpdateInput!, where: ShopWhereInput): BatchPayload!
-  updateManyBrands(data: BrandUpdateInput!, where: BrandWhereInput): BatchPayload!
+  updateManyUserAdmins(data: UserAdminUpdateInput!, where: UserAdminWhereInput): BatchPayload!
   updateManyResorts(data: ResortUpdateInput!, where: ResortWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateInput!, where: CategoryWhereInput): BatchPayload!
   updateManyOptions(data: OptionUpdateInput!, where: OptionWhereInput): BatchPayload!
+  deleteManyBrands(where: BrandWhereInput): BatchPayload!
   deleteManyAttributes(where: AttributeWhereInput): BatchPayload!
   deleteManySelectedOptions(where: SelectedOptionWhereInput): BatchPayload!
-  deleteManyProducts(where: ProductWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
-  deleteManyUserAdmins(where: UserAdminWhereInput): BatchPayload!
   deleteManyFiles(where: FileWhereInput): BatchPayload!
   deleteManyOrders(where: OrderWhereInput): BatchPayload!
   deleteManyOrderableProducts(where: OrderableProductWhereInput): BatchPayload!
   deleteManyOptionValues(where: OptionValueWhereInput): BatchPayload!
+  deleteManyProducts(where: ProductWhereInput): BatchPayload!
   deleteManyOrderLineItems(where: OrderLineItemWhereInput): BatchPayload!
   deleteManyVariants(where: VariantWhereInput): BatchPayload!
   deleteManyShops(where: ShopWhereInput): BatchPayload!
-  deleteManyBrands(where: BrandWhereInput): BatchPayload!
+  deleteManyUserAdmins(where: UserAdminWhereInput): BatchPayload!
   deleteManyResorts(where: ResortWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   deleteManyOptions(where: OptionWhereInput): BatchPayload!
@@ -1648,15 +1612,6 @@ input OptionValueWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
-  _MagicalBackRelation_OptionValueToProduct_every: ProductWhereInput
-  _MagicalBackRelation_OptionValueToProduct_some: ProductWhereInput
-  _MagicalBackRelation_OptionValueToProduct_none: ProductWhereInput
-  _MagicalBackRelation_OptionValueToSelectedOption_every: SelectedOptionWhereInput
-  _MagicalBackRelation_OptionValueToSelectedOption_some: SelectedOptionWhereInput
-  _MagicalBackRelation_OptionValueToSelectedOption_none: SelectedOptionWhereInput
-  _MagicalBackRelation_OptionOptionValues_every: OptionWhereInput
-  _MagicalBackRelation_OptionOptionValues_some: OptionWhereInput
-  _MagicalBackRelation_OptionOptionValues_none: OptionWhereInput
 }
 
 input OptionValueWhereUniqueInput {
@@ -1757,12 +1712,6 @@ input OptionWhereInput {
   values_none: OptionValueWhereInput
   category: CategoryWhereInput
   shop: ShopWhereInput
-  _MagicalBackRelation_OptionToProduct_every: ProductWhereInput
-  _MagicalBackRelation_OptionToProduct_some: ProductWhereInput
-  _MagicalBackRelation_OptionToProduct_none: ProductWhereInput
-  _MagicalBackRelation_OptionToSelectedOption_every: SelectedOptionWhereInput
-  _MagicalBackRelation_OptionToSelectedOption_some: SelectedOptionWhereInput
-  _MagicalBackRelation_OptionToSelectedOption_none: SelectedOptionWhereInput
 }
 
 input OptionWhereUniqueInput {
@@ -1774,7 +1723,6 @@ type Order implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   owner(where: UserWhereInput): User!
-  receiver(where: ShopWhereInput): Shop!
   lineItems(where: OrderLineItemWhereInput, orderBy: OrderLineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OrderLineItem!]
   totalPrice: Float!
   totalRefunded: Float!
@@ -2085,7 +2033,6 @@ input OrderCreateInput {
   totalTax: Float!
   orderStatus: OrderStatus!
   owner: UserCreateOneWithoutOrdersInput!
-  receiver: ShopCreateOneInput!
   lineItems: OrderLineItemCreateManyInput
 }
 
@@ -2099,7 +2046,6 @@ input OrderCreateWithoutOwnerInput {
   totalRefunded: Float!
   totalTax: Float!
   orderStatus: OrderStatus!
-  receiver: ShopCreateOneInput!
   lineItems: OrderLineItemCreateManyInput
 }
 
@@ -2382,9 +2328,6 @@ input OrderLineItemWhereInput {
   variant: VariantWhereInput
   owner: UserWhereInput
   shop: ShopWhereInput
-  _MagicalBackRelation_OrderLineItems_every: OrderWhereInput
-  _MagicalBackRelation_OrderLineItems_some: OrderWhereInput
-  _MagicalBackRelation_OrderLineItems_none: OrderWhereInput
 }
 
 input OrderLineItemWhereUniqueInput {
@@ -2470,7 +2413,6 @@ input OrderUpdateInput {
   totalTax: Float
   orderStatus: OrderStatus
   owner: UserUpdateOneWithoutOrdersInput
-  receiver: ShopUpdateOneInput
   lineItems: OrderLineItemUpdateManyInput
 }
 
@@ -2488,7 +2430,6 @@ input OrderUpdateWithoutOwnerDataInput {
   totalRefunded: Float
   totalTax: Float
   orderStatus: OrderStatus
-  receiver: ShopUpdateOneInput
   lineItems: OrderLineItemUpdateManyInput
 }
 
@@ -2673,7 +2614,6 @@ input OrderWhereInput {
   """All values that are not contained in given list."""
   orderStatus_not_in: [OrderStatus!]
   owner: UserWhereInput
-  receiver: ShopWhereInput
   lineItems_every: OrderLineItemWhereInput
   lineItems_some: OrderLineItemWhereInput
   lineItems_none: OrderLineItemWhereInput
@@ -2701,19 +2641,15 @@ type PageInfo {
 type Product implements Node {
   id: ID!
   deletedAt: DateTime
-  shop(where: ShopWhereInput): Shop!
-  name: String!
-  description: String
-  brand(where: BrandWhereInput): Brand!
-  SKU: String
+  User(where: UserAdminWhereInput): UserAdmin!
   category(where: CategoryWhereInput): Category!
+  SKU: String
   options(where: OptionWhereInput, orderBy: OptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Option!]
   unavailableOptionsValues(where: OptionValueWhereInput, orderBy: OptionValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OptionValue!]
   variants(where: VariantWhereInput, orderBy: VariantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Variant!]
   attributes(where: AttributeWhereInput, orderBy: AttributeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Attribute!]
   displayPrice: Float!
   available: Boolean!
-  imageUrl: String
   orderables(where: OrderableProductWhereInput, orderBy: OrderableProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OrderableProduct!]
 }
 
@@ -2729,14 +2665,10 @@ type ProductConnection {
 
 input ProductCreateInput {
   deletedAt: DateTime
-  name: String!
-  description: String
   SKU: String
   displayPrice: Float!
   available: Boolean!
-  imageUrl: String
-  shop: ShopCreateOneWithoutProductsInput!
-  brand: BrandCreateOneInput!
+  User: UserAdminCreateOneInput!
   category: CategoryCreateOneInput!
   options: OptionCreateManyInput
   unavailableOptionsValues: OptionValueCreateManyInput
@@ -2745,13 +2677,13 @@ input ProductCreateInput {
   orderables: OrderableProductCreateManyWithoutProductInput
 }
 
-input ProductCreateManyWithoutAttributesInput {
-  create: [ProductCreateWithoutAttributesInput!]
+input ProductCreateManyInput {
+  create: [ProductCreateInput!]
   connect: [ProductWhereUniqueInput!]
 }
 
-input ProductCreateManyWithoutShopInput {
-  create: [ProductCreateWithoutShopInput!]
+input ProductCreateManyWithoutAttributesInput {
+  create: [ProductCreateWithoutAttributesInput!]
   connect: [ProductWhereUniqueInput!]
 }
 
@@ -2767,14 +2699,10 @@ input ProductCreateOneWithoutVariantsInput {
 
 input ProductCreateWithoutAttributesInput {
   deletedAt: DateTime
-  name: String!
-  description: String
   SKU: String
   displayPrice: Float!
   available: Boolean!
-  imageUrl: String
-  shop: ShopCreateOneWithoutProductsInput!
-  brand: BrandCreateOneInput!
+  User: UserAdminCreateOneInput!
   category: CategoryCreateOneInput!
   options: OptionCreateManyInput
   unavailableOptionsValues: OptionValueCreateManyInput
@@ -2784,48 +2712,23 @@ input ProductCreateWithoutAttributesInput {
 
 input ProductCreateWithoutOrderablesInput {
   deletedAt: DateTime
-  name: String!
-  description: String
   SKU: String
   displayPrice: Float!
   available: Boolean!
-  imageUrl: String
-  shop: ShopCreateOneWithoutProductsInput!
-  brand: BrandCreateOneInput!
+  User: UserAdminCreateOneInput!
   category: CategoryCreateOneInput!
   options: OptionCreateManyInput
   unavailableOptionsValues: OptionValueCreateManyInput
   variants: VariantCreateManyWithoutProductInput
   attributes: AttributeCreateManyWithoutProductsInput
-}
-
-input ProductCreateWithoutShopInput {
-  deletedAt: DateTime
-  name: String!
-  description: String
-  SKU: String
-  displayPrice: Float!
-  available: Boolean!
-  imageUrl: String
-  brand: BrandCreateOneInput!
-  category: CategoryCreateOneInput!
-  options: OptionCreateManyInput
-  unavailableOptionsValues: OptionValueCreateManyInput
-  variants: VariantCreateManyWithoutProductInput
-  attributes: AttributeCreateManyWithoutProductsInput
-  orderables: OrderableProductCreateManyWithoutProductInput
 }
 
 input ProductCreateWithoutVariantsInput {
   deletedAt: DateTime
-  name: String!
-  description: String
   SKU: String
   displayPrice: Float!
   available: Boolean!
-  imageUrl: String
-  shop: ShopCreateOneWithoutProductsInput!
-  brand: BrandCreateOneInput!
+  User: UserAdminCreateOneInput!
   category: CategoryCreateOneInput!
   options: OptionCreateManyInput
   unavailableOptionsValues: OptionValueCreateManyInput
@@ -2847,18 +2750,12 @@ enum ProductOrderByInput {
   id_DESC
   deletedAt_ASC
   deletedAt_DESC
-  name_ASC
-  name_DESC
-  description_ASC
-  description_DESC
   SKU_ASC
   SKU_DESC
   displayPrice_ASC
   displayPrice_DESC
   available_ASC
   available_DESC
-  imageUrl_ASC
-  imageUrl_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -2868,12 +2765,9 @@ enum ProductOrderByInput {
 type ProductPreviousValues {
   id: ID!
   deletedAt: DateTime
-  name: String!
-  description: String
   SKU: String
   displayPrice: Float!
   available: Boolean!
-  imageUrl: String
 }
 
 type ProductSubscriptionPayload {
@@ -2915,22 +2809,41 @@ input ProductSubscriptionWhereInput {
   node: ProductWhereInput
 }
 
-input ProductUpdateInput {
+input ProductUpdateDataInput {
   deletedAt: DateTime
-  name: String
-  description: String
   SKU: String
   displayPrice: Float
   available: Boolean
-  imageUrl: String
-  shop: ShopUpdateOneWithoutProductsInput
-  brand: BrandUpdateOneInput
+  User: UserAdminUpdateOneInput
   category: CategoryUpdateOneInput
   options: OptionUpdateManyInput
   unavailableOptionsValues: OptionValueUpdateManyInput
   variants: VariantUpdateManyWithoutProductInput
   attributes: AttributeUpdateManyWithoutProductsInput
   orderables: OrderableProductUpdateManyWithoutProductInput
+}
+
+input ProductUpdateInput {
+  deletedAt: DateTime
+  SKU: String
+  displayPrice: Float
+  available: Boolean
+  User: UserAdminUpdateOneInput
+  category: CategoryUpdateOneInput
+  options: OptionUpdateManyInput
+  unavailableOptionsValues: OptionValueUpdateManyInput
+  variants: VariantUpdateManyWithoutProductInput
+  attributes: AttributeUpdateManyWithoutProductsInput
+  orderables: OrderableProductUpdateManyWithoutProductInput
+}
+
+input ProductUpdateManyInput {
+  create: [ProductCreateInput!]
+  connect: [ProductWhereUniqueInput!]
+  disconnect: [ProductWhereUniqueInput!]
+  delete: [ProductWhereUniqueInput!]
+  update: [ProductUpdateWithWhereUniqueNestedInput!]
+  upsert: [ProductUpsertWithWhereUniqueNestedInput!]
 }
 
 input ProductUpdateManyWithoutAttributesInput {
@@ -2940,15 +2853,6 @@ input ProductUpdateManyWithoutAttributesInput {
   delete: [ProductWhereUniqueInput!]
   update: [ProductUpdateWithWhereUniqueWithoutAttributesInput!]
   upsert: [ProductUpsertWithWhereUniqueWithoutAttributesInput!]
-}
-
-input ProductUpdateManyWithoutShopInput {
-  create: [ProductCreateWithoutShopInput!]
-  connect: [ProductWhereUniqueInput!]
-  disconnect: [ProductWhereUniqueInput!]
-  delete: [ProductWhereUniqueInput!]
-  update: [ProductUpdateWithWhereUniqueWithoutShopInput!]
-  upsert: [ProductUpsertWithWhereUniqueWithoutShopInput!]
 }
 
 input ProductUpdateOneWithoutOrderablesInput {
@@ -2970,14 +2874,10 @@ input ProductUpdateOneWithoutVariantsInput {
 
 input ProductUpdateWithoutAttributesDataInput {
   deletedAt: DateTime
-  name: String
-  description: String
   SKU: String
   displayPrice: Float
   available: Boolean
-  imageUrl: String
-  shop: ShopUpdateOneWithoutProductsInput
-  brand: BrandUpdateOneInput
+  User: UserAdminUpdateOneInput
   category: CategoryUpdateOneInput
   options: OptionUpdateManyInput
   unavailableOptionsValues: OptionValueUpdateManyInput
@@ -2987,63 +2887,38 @@ input ProductUpdateWithoutAttributesDataInput {
 
 input ProductUpdateWithoutOrderablesDataInput {
   deletedAt: DateTime
-  name: String
-  description: String
   SKU: String
   displayPrice: Float
   available: Boolean
-  imageUrl: String
-  shop: ShopUpdateOneWithoutProductsInput
-  brand: BrandUpdateOneInput
+  User: UserAdminUpdateOneInput
   category: CategoryUpdateOneInput
   options: OptionUpdateManyInput
   unavailableOptionsValues: OptionValueUpdateManyInput
   variants: VariantUpdateManyWithoutProductInput
   attributes: AttributeUpdateManyWithoutProductsInput
-}
-
-input ProductUpdateWithoutShopDataInput {
-  deletedAt: DateTime
-  name: String
-  description: String
-  SKU: String
-  displayPrice: Float
-  available: Boolean
-  imageUrl: String
-  brand: BrandUpdateOneInput
-  category: CategoryUpdateOneInput
-  options: OptionUpdateManyInput
-  unavailableOptionsValues: OptionValueUpdateManyInput
-  variants: VariantUpdateManyWithoutProductInput
-  attributes: AttributeUpdateManyWithoutProductsInput
-  orderables: OrderableProductUpdateManyWithoutProductInput
 }
 
 input ProductUpdateWithoutVariantsDataInput {
   deletedAt: DateTime
-  name: String
-  description: String
   SKU: String
   displayPrice: Float
   available: Boolean
-  imageUrl: String
-  shop: ShopUpdateOneWithoutProductsInput
-  brand: BrandUpdateOneInput
+  User: UserAdminUpdateOneInput
   category: CategoryUpdateOneInput
   options: OptionUpdateManyInput
   unavailableOptionsValues: OptionValueUpdateManyInput
   attributes: AttributeUpdateManyWithoutProductsInput
   orderables: OrderableProductUpdateManyWithoutProductInput
+}
+
+input ProductUpdateWithWhereUniqueNestedInput {
+  where: ProductWhereUniqueInput!
+  data: ProductUpdateDataInput!
 }
 
 input ProductUpdateWithWhereUniqueWithoutAttributesInput {
   where: ProductWhereUniqueInput!
   data: ProductUpdateWithoutAttributesDataInput!
-}
-
-input ProductUpdateWithWhereUniqueWithoutShopInput {
-  where: ProductWhereUniqueInput!
-  data: ProductUpdateWithoutShopDataInput!
 }
 
 input ProductUpsertWithoutOrderablesInput {
@@ -3056,16 +2931,16 @@ input ProductUpsertWithoutVariantsInput {
   create: ProductCreateWithoutVariantsInput!
 }
 
+input ProductUpsertWithWhereUniqueNestedInput {
+  where: ProductWhereUniqueInput!
+  update: ProductUpdateDataInput!
+  create: ProductCreateInput!
+}
+
 input ProductUpsertWithWhereUniqueWithoutAttributesInput {
   where: ProductWhereUniqueInput!
   update: ProductUpdateWithoutAttributesDataInput!
   create: ProductCreateWithoutAttributesInput!
-}
-
-input ProductUpsertWithWhereUniqueWithoutShopInput {
-  where: ProductWhereUniqueInput!
-  update: ProductUpdateWithoutShopDataInput!
-  create: ProductCreateWithoutShopInput!
 }
 
 input ProductWhereInput {
@@ -3139,86 +3014,6 @@ input ProductWhereInput {
 
   """All values greater than or equal the given value."""
   deletedAt_gte: DateTime
-  name: String
-
-  """All values that are not equal to given value."""
-  name_not: String
-
-  """All values that are contained in given list."""
-  name_in: [String!]
-
-  """All values that are not contained in given list."""
-  name_not_in: [String!]
-
-  """All values less than the given value."""
-  name_lt: String
-
-  """All values less than or equal the given value."""
-  name_lte: String
-
-  """All values greater than the given value."""
-  name_gt: String
-
-  """All values greater than or equal the given value."""
-  name_gte: String
-
-  """All values containing the given string."""
-  name_contains: String
-
-  """All values not containing the given string."""
-  name_not_contains: String
-
-  """All values starting with the given string."""
-  name_starts_with: String
-
-  """All values not starting with the given string."""
-  name_not_starts_with: String
-
-  """All values ending with the given string."""
-  name_ends_with: String
-
-  """All values not ending with the given string."""
-  name_not_ends_with: String
-  description: String
-
-  """All values that are not equal to given value."""
-  description_not: String
-
-  """All values that are contained in given list."""
-  description_in: [String!]
-
-  """All values that are not contained in given list."""
-  description_not_in: [String!]
-
-  """All values less than the given value."""
-  description_lt: String
-
-  """All values less than or equal the given value."""
-  description_lte: String
-
-  """All values greater than the given value."""
-  description_gt: String
-
-  """All values greater than or equal the given value."""
-  description_gte: String
-
-  """All values containing the given string."""
-  description_contains: String
-
-  """All values not containing the given string."""
-  description_not_contains: String
-
-  """All values starting with the given string."""
-  description_starts_with: String
-
-  """All values not starting with the given string."""
-  description_not_starts_with: String
-
-  """All values ending with the given string."""
-  description_ends_with: String
-
-  """All values not ending with the given string."""
-  description_not_ends_with: String
   SKU: String
 
   """All values that are not equal to given value."""
@@ -3285,48 +3080,7 @@ input ProductWhereInput {
 
   """All values that are not equal to given value."""
   available_not: Boolean
-  imageUrl: String
-
-  """All values that are not equal to given value."""
-  imageUrl_not: String
-
-  """All values that are contained in given list."""
-  imageUrl_in: [String!]
-
-  """All values that are not contained in given list."""
-  imageUrl_not_in: [String!]
-
-  """All values less than the given value."""
-  imageUrl_lt: String
-
-  """All values less than or equal the given value."""
-  imageUrl_lte: String
-
-  """All values greater than the given value."""
-  imageUrl_gt: String
-
-  """All values greater than or equal the given value."""
-  imageUrl_gte: String
-
-  """All values containing the given string."""
-  imageUrl_contains: String
-
-  """All values not containing the given string."""
-  imageUrl_not_contains: String
-
-  """All values starting with the given string."""
-  imageUrl_starts_with: String
-
-  """All values not starting with the given string."""
-  imageUrl_not_starts_with: String
-
-  """All values ending with the given string."""
-  imageUrl_ends_with: String
-
-  """All values not ending with the given string."""
-  imageUrl_not_ends_with: String
-  shop: ShopWhereInput
-  brand: BrandWhereInput
+  User: UserAdminWhereInput
   category: CategoryWhereInput
   options_every: OptionWhereInput
   options_some: OptionWhereInput
@@ -3350,51 +3104,51 @@ input ProductWhereUniqueInput {
 }
 
 type Query {
+  brands(where: BrandWhereInput, orderBy: BrandOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Brand]!
   attributes(where: AttributeWhereInput, orderBy: AttributeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Attribute]!
   selectedOptions(where: SelectedOptionWhereInput, orderBy: SelectedOptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SelectedOption]!
-  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  userAdmins(where: UserAdminWhereInput, orderBy: UserAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserAdmin]!
   files(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File]!
   orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order]!
   orderableProducts(where: OrderableProductWhereInput, orderBy: OrderableProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OrderableProduct]!
   optionValues(where: OptionValueWhereInput, orderBy: OptionValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OptionValue]!
+  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   orderLineItems(where: OrderLineItemWhereInput, orderBy: OrderLineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OrderLineItem]!
   variants(where: VariantWhereInput, orderBy: VariantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Variant]!
   shops(where: ShopWhereInput, orderBy: ShopOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Shop]!
-  brands(where: BrandWhereInput, orderBy: BrandOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Brand]!
+  userAdmins(where: UserAdminWhereInput, orderBy: UserAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserAdmin]!
   resorts(where: ResortWhereInput, orderBy: ResortOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Resort]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   options(where: OptionWhereInput, orderBy: OptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Option]!
+  brand(where: BrandWhereUniqueInput!): Brand
   attribute(where: AttributeWhereUniqueInput!): Attribute
   selectedOption(where: SelectedOptionWhereUniqueInput!): SelectedOption
-  product(where: ProductWhereUniqueInput!): Product
   user(where: UserWhereUniqueInput!): User
-  userAdmin(where: UserAdminWhereUniqueInput!): UserAdmin
   file(where: FileWhereUniqueInput!): File
   order(where: OrderWhereUniqueInput!): Order
   orderableProduct(where: OrderableProductWhereUniqueInput!): OrderableProduct
   optionValue(where: OptionValueWhereUniqueInput!): OptionValue
+  product(where: ProductWhereUniqueInput!): Product
   orderLineItem(where: OrderLineItemWhereUniqueInput!): OrderLineItem
   variant(where: VariantWhereUniqueInput!): Variant
   shop(where: ShopWhereUniqueInput!): Shop
-  brand(where: BrandWhereUniqueInput!): Brand
+  userAdmin(where: UserAdminWhereUniqueInput!): UserAdmin
   resort(where: ResortWhereUniqueInput!): Resort
   category(where: CategoryWhereUniqueInput!): Category
   option(where: OptionWhereUniqueInput!): Option
+  brandsConnection(where: BrandWhereInput, orderBy: BrandOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BrandConnection!
   attributesConnection(where: AttributeWhereInput, orderBy: AttributeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AttributeConnection!
   selectedOptionsConnection(where: SelectedOptionWhereInput, orderBy: SelectedOptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SelectedOptionConnection!
-  productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  userAdminsConnection(where: UserAdminWhereInput, orderBy: UserAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserAdminConnection!
   filesConnection(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
   ordersConnection(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderConnection!
   orderableProductsConnection(where: OrderableProductWhereInput, orderBy: OrderableProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderableProductConnection!
   optionValuesConnection(where: OptionValueWhereInput, orderBy: OptionValueOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OptionValueConnection!
+  productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
   orderLineItemsConnection(where: OrderLineItemWhereInput, orderBy: OrderLineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderLineItemConnection!
   variantsConnection(where: VariantWhereInput, orderBy: VariantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VariantConnection!
   shopsConnection(where: ShopWhereInput, orderBy: ShopOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ShopConnection!
-  brandsConnection(where: BrandWhereInput, orderBy: BrandOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BrandConnection!
+  userAdminsConnection(where: UserAdminWhereInput, orderBy: UserAdminOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserAdminConnection!
   resortsConnection(where: ResortWhereInput, orderBy: ResortOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResortConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   optionsConnection(where: OptionWhereInput, orderBy: OptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OptionConnection!
@@ -3846,9 +3600,6 @@ input ResortWhereInput {
 
   """All values not ending with the given string."""
   phoneNumber_not_ends_with: String
-  _MagicalBackRelation_ResortToShop_every: ShopWhereInput
-  _MagicalBackRelation_ResortToShop_some: ShopWhereInput
-  _MagicalBackRelation_ResortToShop_none: ShopWhereInput
 }
 
 input ResortWhereUniqueInput {
@@ -4106,7 +3857,7 @@ input ShopCreateInput {
   openingHours: String!
   MOTD: String
   resort: ResortCreateManyInput
-  products: ProductCreateManyWithoutShopInput
+  products: ProductCreateManyInput
   newProducts: OrderableProductCreateManyWithoutShopNewProductInput
   bestSellerProducts: OrderableProductCreateManyWithoutShopBestSellerInput
 }
@@ -4126,11 +3877,6 @@ input ShopCreateOneWithoutNewProductsInput {
   connect: ShopWhereUniqueInput
 }
 
-input ShopCreateOneWithoutProductsInput {
-  create: ShopCreateWithoutProductsInput
-  connect: ShopWhereUniqueInput
-}
-
 input ShopCreateWithoutBestSellerProductsInput {
   name: String!
   address: String!
@@ -4139,7 +3885,7 @@ input ShopCreateWithoutBestSellerProductsInput {
   openingHours: String!
   MOTD: String
   resort: ResortCreateManyInput
-  products: ProductCreateManyWithoutShopInput
+  products: ProductCreateManyInput
   newProducts: OrderableProductCreateManyWithoutShopNewProductInput
 }
 
@@ -4151,19 +3897,7 @@ input ShopCreateWithoutNewProductsInput {
   openingHours: String!
   MOTD: String
   resort: ResortCreateManyInput
-  products: ProductCreateManyWithoutShopInput
-  bestSellerProducts: OrderableProductCreateManyWithoutShopBestSellerInput
-}
-
-input ShopCreateWithoutProductsInput {
-  name: String!
-  address: String!
-  zipCode: String!
-  phoneNumber: String!
-  openingHours: String!
-  MOTD: String
-  resort: ResortCreateManyInput
-  newProducts: OrderableProductCreateManyWithoutShopNewProductInput
+  products: ProductCreateManyInput
   bestSellerProducts: OrderableProductCreateManyWithoutShopBestSellerInput
 }
 
@@ -4254,7 +3988,7 @@ input ShopUpdateDataInput {
   openingHours: String
   MOTD: String
   resort: ResortUpdateManyInput
-  products: ProductUpdateManyWithoutShopInput
+  products: ProductUpdateManyInput
   newProducts: OrderableProductUpdateManyWithoutShopNewProductInput
   bestSellerProducts: OrderableProductUpdateManyWithoutShopBestSellerInput
 }
@@ -4267,7 +4001,7 @@ input ShopUpdateInput {
   openingHours: String
   MOTD: String
   resort: ResortUpdateManyInput
-  products: ProductUpdateManyWithoutShopInput
+  products: ProductUpdateManyInput
   newProducts: OrderableProductUpdateManyWithoutShopNewProductInput
   bestSellerProducts: OrderableProductUpdateManyWithoutShopBestSellerInput
 }
@@ -4298,14 +4032,6 @@ input ShopUpdateOneWithoutNewProductsInput {
   upsert: ShopUpsertWithoutNewProductsInput
 }
 
-input ShopUpdateOneWithoutProductsInput {
-  create: ShopCreateWithoutProductsInput
-  connect: ShopWhereUniqueInput
-  delete: Boolean
-  update: ShopUpdateWithoutProductsDataInput
-  upsert: ShopUpsertWithoutProductsInput
-}
-
 input ShopUpdateWithoutBestSellerProductsDataInput {
   name: String
   address: String
@@ -4314,7 +4040,7 @@ input ShopUpdateWithoutBestSellerProductsDataInput {
   openingHours: String
   MOTD: String
   resort: ResortUpdateManyInput
-  products: ProductUpdateManyWithoutShopInput
+  products: ProductUpdateManyInput
   newProducts: OrderableProductUpdateManyWithoutShopNewProductInput
 }
 
@@ -4326,19 +4052,7 @@ input ShopUpdateWithoutNewProductsDataInput {
   openingHours: String
   MOTD: String
   resort: ResortUpdateManyInput
-  products: ProductUpdateManyWithoutShopInput
-  bestSellerProducts: OrderableProductUpdateManyWithoutShopBestSellerInput
-}
-
-input ShopUpdateWithoutProductsDataInput {
-  name: String
-  address: String
-  zipCode: String
-  phoneNumber: String
-  openingHours: String
-  MOTD: String
-  resort: ResortUpdateManyInput
-  newProducts: OrderableProductUpdateManyWithoutShopNewProductInput
+  products: ProductUpdateManyInput
   bestSellerProducts: OrderableProductUpdateManyWithoutShopBestSellerInput
 }
 
@@ -4355,11 +4069,6 @@ input ShopUpsertWithoutBestSellerProductsInput {
 input ShopUpsertWithoutNewProductsInput {
   update: ShopUpdateWithoutNewProductsDataInput!
   create: ShopCreateWithoutNewProductsInput!
-}
-
-input ShopUpsertWithoutProductsInput {
-  update: ShopUpdateWithoutProductsDataInput!
-  create: ShopCreateWithoutProductsInput!
 }
 
 input ShopWhereInput {
@@ -4663,27 +4372,6 @@ input ShopWhereInput {
   bestSellerProducts_every: OrderableProductWhereInput
   bestSellerProducts_some: OrderableProductWhereInput
   bestSellerProducts_none: OrderableProductWhereInput
-  _MagicalBackRelation_AttributeToShop_every: AttributeWhereInput
-  _MagicalBackRelation_AttributeToShop_some: AttributeWhereInput
-  _MagicalBackRelation_AttributeToShop_none: AttributeWhereInput
-  _MagicalBackRelation_OrderToShop_every: OrderWhereInput
-  _MagicalBackRelation_OrderToShop_some: OrderWhereInput
-  _MagicalBackRelation_OrderToShop_none: OrderWhereInput
-  _MagicalBackRelation_CategoryToShop_every: CategoryWhereInput
-  _MagicalBackRelation_CategoryToShop_some: CategoryWhereInput
-  _MagicalBackRelation_CategoryToShop_none: CategoryWhereInput
-  _MagicalBackRelation_ShopToUserAdmin_every: UserAdminWhereInput
-  _MagicalBackRelation_ShopToUserAdmin_some: UserAdminWhereInput
-  _MagicalBackRelation_ShopToUserAdmin_none: UserAdminWhereInput
-  _MagicalBackRelation_OrderLineItemToShop_every: OrderLineItemWhereInput
-  _MagicalBackRelation_OrderLineItemToShop_some: OrderLineItemWhereInput
-  _MagicalBackRelation_OrderLineItemToShop_none: OrderLineItemWhereInput
-  _MagicalBackRelation_BrandToShop_every: BrandWhereInput
-  _MagicalBackRelation_BrandToShop_some: BrandWhereInput
-  _MagicalBackRelation_BrandToShop_none: BrandWhereInput
-  _MagicalBackRelation_OptionToShop_every: OptionWhereInput
-  _MagicalBackRelation_OptionToShop_some: OptionWhereInput
-  _MagicalBackRelation_OptionToShop_none: OptionWhereInput
 }
 
 input ShopWhereUniqueInput {
@@ -4692,19 +4380,19 @@ input ShopWhereUniqueInput {
 }
 
 type Subscription {
+  brand(where: BrandSubscriptionWhereInput): BrandSubscriptionPayload
   attribute(where: AttributeSubscriptionWhereInput): AttributeSubscriptionPayload
   selectedOption(where: SelectedOptionSubscriptionWhereInput): SelectedOptionSubscriptionPayload
-  product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-  userAdmin(where: UserAdminSubscriptionWhereInput): UserAdminSubscriptionPayload
   file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
   order(where: OrderSubscriptionWhereInput): OrderSubscriptionPayload
   orderableProduct(where: OrderableProductSubscriptionWhereInput): OrderableProductSubscriptionPayload
   optionValue(where: OptionValueSubscriptionWhereInput): OptionValueSubscriptionPayload
+  product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   orderLineItem(where: OrderLineItemSubscriptionWhereInput): OrderLineItemSubscriptionPayload
   variant(where: VariantSubscriptionWhereInput): VariantSubscriptionPayload
   shop(where: ShopSubscriptionWhereInput): ShopSubscriptionPayload
-  brand(where: BrandSubscriptionWhereInput): BrandSubscriptionPayload
+  userAdmin(where: UserAdminSubscriptionWhereInput): UserAdminSubscriptionPayload
   resort(where: ResortSubscriptionWhereInput): ResortSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   option(where: OptionSubscriptionWhereInput): OptionSubscriptionPayload
@@ -4729,6 +4417,10 @@ type UserAdmin implements Node {
   firstName: String
   lastName: String
   selectedShop(where: ShopWhereInput): Shop!
+  name: String!
+  description: String
+  category(where: CategoryWhereInput): Category!
+  imageUrl: String
   role: Role!
   stripeCustomerId: String
   oneSignalUserId: String
@@ -4749,10 +4441,19 @@ input UserAdminCreateInput {
   password: String!
   firstName: String
   lastName: String
+  name: String!
+  description: String
+  imageUrl: String
   role: Role
   stripeCustomerId: String
   oneSignalUserId: String
   selectedShop: ShopCreateOneInput!
+  category: CategoryCreateOneInput!
+}
+
+input UserAdminCreateOneInput {
+  create: UserAdminCreateInput
+  connect: UserAdminWhereUniqueInput
 }
 
 """An edge in a connection."""
@@ -4775,6 +4476,12 @@ enum UserAdminOrderByInput {
   firstName_DESC
   lastName_ASC
   lastName_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+  imageUrl_ASC
+  imageUrl_DESC
   role_ASC
   role_DESC
   stripeCustomerId_ASC
@@ -4793,6 +4500,9 @@ type UserAdminPreviousValues {
   password: String!
   firstName: String
   lastName: String
+  name: String!
+  description: String
+  imageUrl: String
   role: Role!
   stripeCustomerId: String
   oneSignalUserId: String
@@ -4837,15 +4547,47 @@ input UserAdminSubscriptionWhereInput {
   node: UserAdminWhereInput
 }
 
+input UserAdminUpdateDataInput {
+  email: String
+  password: String
+  firstName: String
+  lastName: String
+  name: String
+  description: String
+  imageUrl: String
+  role: Role
+  stripeCustomerId: String
+  oneSignalUserId: String
+  selectedShop: ShopUpdateOneInput
+  category: CategoryUpdateOneInput
+}
+
 input UserAdminUpdateInput {
   email: String
   password: String
   firstName: String
   lastName: String
+  name: String
+  description: String
+  imageUrl: String
   role: Role
   stripeCustomerId: String
   oneSignalUserId: String
   selectedShop: ShopUpdateOneInput
+  category: CategoryUpdateOneInput
+}
+
+input UserAdminUpdateOneInput {
+  create: UserAdminCreateInput
+  connect: UserAdminWhereUniqueInput
+  delete: Boolean
+  update: UserAdminUpdateDataInput
+  upsert: UserAdminUpsertNestedInput
+}
+
+input UserAdminUpsertNestedInput {
+  update: UserAdminUpdateDataInput!
+  create: UserAdminCreateInput!
 }
 
 input UserAdminWhereInput {
@@ -5057,6 +4799,126 @@ input UserAdminWhereInput {
 
   """All values not ending with the given string."""
   lastName_not_ends_with: String
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  imageUrl: String
+
+  """All values that are not equal to given value."""
+  imageUrl_not: String
+
+  """All values that are contained in given list."""
+  imageUrl_in: [String!]
+
+  """All values that are not contained in given list."""
+  imageUrl_not_in: [String!]
+
+  """All values less than the given value."""
+  imageUrl_lt: String
+
+  """All values less than or equal the given value."""
+  imageUrl_lte: String
+
+  """All values greater than the given value."""
+  imageUrl_gt: String
+
+  """All values greater than or equal the given value."""
+  imageUrl_gte: String
+
+  """All values containing the given string."""
+  imageUrl_contains: String
+
+  """All values not containing the given string."""
+  imageUrl_not_contains: String
+
+  """All values starting with the given string."""
+  imageUrl_starts_with: String
+
+  """All values not starting with the given string."""
+  imageUrl_not_starts_with: String
+
+  """All values ending with the given string."""
+  imageUrl_ends_with: String
+
+  """All values not ending with the given string."""
+  imageUrl_not_ends_with: String
   role: Role
 
   """All values that are not equal to given value."""
@@ -5148,6 +5010,7 @@ input UserAdminWhereInput {
   """All values not ending with the given string."""
   oneSignalUserId_not_ends_with: String
   selectedShop: ShopWhereInput
+  category: CategoryWhereInput
 }
 
 input UserAdminWhereUniqueInput {
@@ -5919,9 +5782,6 @@ input VariantWhereInput {
   selectedOptions_some: SelectedOptionWhereInput
   selectedOptions_none: SelectedOptionWhereInput
   product: ProductWhereInput
-  _MagicalBackRelation_OrderLineItemToVariant_every: OrderLineItemWhereInput
-  _MagicalBackRelation_OrderLineItemToVariant_some: OrderLineItemWhereInput
-  _MagicalBackRelation_OrderLineItemToVariant_none: OrderLineItemWhereInput
 }
 
 input VariantWhereUniqueInput {

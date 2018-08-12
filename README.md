@@ -223,6 +223,95 @@ The ui have to be changed , the interest is to have a utility working for all ty
 ![https://github.com/simonjoom/react-native-project/blob/master/copyscreen.png](https://github.com/simonjoom/react-native-project/blob/master/copyscreen.png)
 
 
+### Database:
+Just to explain what i try to do:
+it's a e-commerce website to find ski instructor
+user can be a:
+
+"type User" somebody who want to find ski instructor and who want to pay when he find it.
+-> type User {..}
+
+"type UserAdmin" somebody who register as a ski instructor or superUser (me)
+Each instructor is connected to one Shop (type shop)
+-> type UserAdmin {..}
+
+One Shop is inserted by the superUser for the moment (by hand with backend)
+
+One Shop is connected to one or more resort -> so the Instructor is connected to the resorts he works, because he is a child of a Shop.
+
+One Resort is a resort.. (easy)
+
+For me
+products==instructors
+shops==ski_schools
+
+I need to think about the architecture of my application;
+
+I cannot understand really how 
+
+type Category {
+id: ID! @unique
+name: String!
+options: [Option!]! @relation(name: "CategoryOptions", onDelete: CASCADE)
+shop: Shop!
+}
+
+type Attribute {
+id: ID! @unique
+value: String!
+category: Category!
+shop: Shop!
+products: [Product!]!
+}
+
+type Option {
+id: ID! @unique
+name: String!
+values: [OptionValue!]! @relation(name: "OptionOptionValues", onDelete: CASCADE)
+category: Category! @relation(name: "CategoryOptions", onDelete: CASCADE)
+shop: Shop!
+}
+
+type OptionValue {
+id: ID! @unique
+name: String!
+}
+
+type SelectedOption {
+id: ID! @unique
+deletedAt: DateTime # For soft-deletion
+option: Option!
+variant: Variant! @relation(name: "VariantOnSelectedOptions")
+value: OptionValue!
+}
+
+type Variant {
+id: ID! @unique
+deletedAt: DateTime # For soft-deletion
+selectedOptions: [SelectedOption!]! @relation(name: "VariantOnSelectedOptions", onDelete: CASCADE)
+price: Float!
+available: Boolean!
+product: Product @relation(name: "ProductVariants") # Variants can be disconnected from product when soft-deleted
+}
+
+i think category could be a service of one user .. so UserAdmin can be instructor or photograph.. whatever
+
+So if i have got OptionValue who can take value AM,PM,FullDay i think the schema is correct.
+
+#OptionValue = [AM,PM,FullDay] Morning time , afternoon, fullDay
+
+#Ex Category:
+name:instructor,
+options:[{name:ski,values:[AM,PM,FullDay],{name:snowboard,values:[AM,PM,FullDay]}],
+shop:shop
+#Ex Category2:
+name:photograph,
+options:[{name:photo_portrait,values:[AM,PM,FullDay],{name:photo_action,values:[AM,PM,FullDay]}],
+shop:shop
+
+The Variant allow us to define different price for different options selected..
+
+Any thought?
 
 
 ### frontend

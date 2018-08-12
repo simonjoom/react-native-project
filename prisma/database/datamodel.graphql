@@ -5,6 +5,11 @@ type Brand {
   shop: Shop!
 }
 
+#OptionValue = [AM,PM,FullDay] Morning time , afternoon, fullDay
+#Category_name:instructor:{[{name:ski,values:[AM,PM,FullDay],{name:snowboard,values:[AM,PM,FullDay]}],shop}
+#Category_name:photograph:{[{name:portrait,values:[AM,PM,FullDay],,{name:action,values:[AM,PM,FullDay]}],shop}
+
+
 type Category {
   id: ID! @unique
   name: String!
@@ -53,19 +58,15 @@ type Variant {
 type Product {
   id: ID! @unique
   deletedAt: DateTime # For soft-deletion
-  shop: Shop!
-  name: String!
-  description: String
-  brand: Brand!
-  SKU: String
+  User: UserAdmin!
   category: Category!
+  SKU: String
   options: [Option!]!
   unavailableOptionsValues: [OptionValue!]!
   variants: [Variant!]! @relation(name: "ProductVariants" onDelete: CASCADE)
   attributes: [Attribute!]!
   displayPrice: Float!
   available: Boolean!
-  imageUrl: String
   orderables: [OrderableProduct!]! @relation(name: "OrderableProducts", onDelete: CASCADE)
 }
 
@@ -88,6 +89,10 @@ type UserAdmin {
   firstName: String
   lastName: String
   selectedShop: Shop!
+  name: String!
+  description: String
+  category: Category!
+  imageUrl: String
   role: Role! @default(value: "ADMIN")
 #  cart: [OrderLineItem!]! @relation(name: "UserCart" onDelete: CASCADE)
 #  orders: [Order!]! @relation(name: "UserOrders")
@@ -109,7 +114,7 @@ type Order {
   createdAt: DateTime!
   updatedAt: DateTime!
   owner: User! @relation(name: "UserOrders")
-  receiver: Shop!
+ # receiver: Shop!
   lineItems: [OrderLineItem!]! @relation(name: "OrderLineItems" onDelete: CASCADE)
   totalPrice: Float!
   totalRefunded: Float!
