@@ -16,23 +16,23 @@ class Backend extends Component {
     super(props);
 
     this.state = {
-      modalVisible: false,
+      modalVisibleResort: false,
       modalVisibleShop: false
     };
     this.setModalVisible = this.setModalVisible.bind(this);
   }
 
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
+  setModalVisible(type,visible) {
+    this.setState({ ["modalVisible"+type]: visible });
   }
 
-  renderModal(Comp,key) {
+  renderModal(Comp,type) {
     return (
       <Modal
-      key={key}
-        visible={this.state.modalVisible}
+      key={type}
+        visible={this.state["modalVisible"+type]}
         animationType="slide"
-        onRequestClose={() => this.setModalVisible(false)}
+        onRequestClose={() => this.setModalVisible(type,false)}
       >
         <Gradient>
           <Comp setModalVisible={this.setModalVisible} />
@@ -55,8 +55,8 @@ class Backend extends Component {
           <Title size={14} color={Colors.text}>
             Create Resort
           </Title>
-          {this.renderModal(ResortPicker,"0")}
-          {this.renderModal(ShopPicker,"1")}
+          {this.renderModal(ResortPicker,"Resort")}
+          {this.renderModal(ShopPicker,"Shop")}
           {error &&
             error.graphQLErrors && (
               <Text>
@@ -70,13 +70,13 @@ class Backend extends Component {
             <View>
             <Button
               style={{ marginBottom: 20 }}
-              onPress={() => this.setModalVisible(true)}
+              onPress={() => this.setModalVisible("Resort",true)}
               label={translate("Create_resort")}
               fontSize={14}
             />
             <Button
               style={{ marginBottom: 20 }}
-              onPress={() => this.setModalVisible(true)}
+              onPress={() => this.setModalVisible("Shop",true)}
               label={translate("Shop")}
               fontSize={14}
             />

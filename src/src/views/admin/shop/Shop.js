@@ -87,7 +87,7 @@ class Shop extends Component {
 
         <TouchableHighlight
           onPress={() => {
-            this.props.setModalVisible(false);
+            this.props.setModalVisible("Shop",false);
           }}
         >
           <Title size={14} color={Colors.text}>

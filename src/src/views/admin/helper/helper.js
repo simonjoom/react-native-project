@@ -39,16 +39,16 @@ class Helper extends Component {
     this.state = {
       selected: 0,
       labelid: null,
-      fields:{}
+      fields:[]
     };
     this.fetchState = this.fetchState.bind(this);
     this.renderPicker = this.renderPicker.bind(this);
     this.validateFields = this.validateFields.bind(this);
     this.focusNextField = this.focusNextField.bind(this);
     this.renderFields = this.renderFields.bind(this);
-
+    
     // this.navigate = this.props.navigation.navigate;
-    this.state.fields = removeEmpty(this.props.tofetch[0]);
+    this.state.fields[props.etat] = removeEmpty(this.props.tofetch[0]);
     console.log("this.state.fields"+props.etat,this.state.fields )
   }
 
@@ -198,7 +198,7 @@ class Helper extends Component {
     return (
       <KeyboardAwareCenteredView>
         {this.state.fields &&
-          this.renderFields(this.state.fields,placeholder, styleb, select_result_select, "big")}
+          this.renderFields(this.state.fields[this.props.etat],placeholder, styleb, select_result_select, "big")}
         {this.renderPicker(
           tofetch,
           selected,
