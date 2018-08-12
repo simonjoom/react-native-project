@@ -6,6 +6,7 @@ import { translate } from "src/i18n";
 
 import ResortPicker from "./resort/ResortContainer";
 import ShopPicker from "./shop/ShopContainer";
+import OptionValuePicker from "./optionvalue/OptionContainer";
 import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
 
 import Gradient from "src/components/gradient/Gradient";
@@ -17,30 +18,31 @@ class Backend extends Component {
 
     this.state = {
       modalVisibleResort: false,
-      modalVisibleShop: false
+      modalVisibleShop: false,
+      modalVisibleOptionValue: false
     };
     this.setModalVisible = this.setModalVisible.bind(this);
   }
 
-  setModalVisible(type,visible) {
-    this.setState({ ["modalVisible"+type]: visible });
+  setModalVisible(type, visible) {
+    this.setState({ ["modalVisible" + type]: visible });
   }
 
-  renderModal(Comp,type) {
-    return (
-      <Modal
-      key={type}
-        visible={this.state["modalVisible"+type]}
-        animationType="slide"
-        onRequestClose={() => this.setModalVisible(type,false)}
-      >
-        <Gradient>
-          <Comp setModalVisible={this.setModalVisible} />
-        </Gradient>
-      </Modal>
-    );
+  renderModal(Comp, type) {
+    if (this.state["modalVisible" + type])
+      return (
+        <Modal
+          key={type}
+          visible={this.state["modalVisible" + type]}
+          animationType="slide"
+          onRequestClose={() => this.setModalVisible(type, false)}
+        >
+          <Gradient>
+            <Comp setModalVisible={this.setModalVisible} />
+          </Gradient>
+        </Modal>
+      );
   }
-  
 
   render() {
     const { data, loading } = this.props;
@@ -52,36 +54,42 @@ class Backend extends Component {
 
     return (
       <KeyboardAwareCenteredView>
-          <Title size={14} color={Colors.text}>
-            Create Resort
-          </Title>
-          {this.renderModal(ResortPicker,"Resort")}
-          {this.renderModal(ShopPicker,"Shop")}
-          {error &&
-            error.graphQLErrors && (
-              <Text>
-                Bad:{" "}
-                {error.graphQLErrors.map(({ message }, i) => (
-                  <Text key={i}>{message}</Text>
-                ))}
-              </Text>
-            )}
-          {!this.state.modalVisible && (
-            <View>
-            <Button
-              style={{ marginBottom: 20 }}
-              onPress={() => this.setModalVisible("Resort",true)}
-              label={translate("Create_resort")}
-              fontSize={14}
-            />
-            <Button
-              style={{ marginBottom: 20 }}
-              onPress={() => this.setModalVisible("Shop",true)}
-              label={translate("Shop")}
-              fontSize={14}
-            />
-           </View> 
+        <Title size={14} color={Colors.text}>
+          Create Resort
+        </Title>
+        {this.renderModal(ResortPicker, "Resort")}
+        {this.renderModal(ShopPicker, "Shop")}
+        {this.renderModal(OptionValuePicker, "OptionValue")}
+        {error &&
+          error.graphQLErrors && (
+            <Text>
+              Bad:{" "}
+              {error.graphQLErrors.map(({ message }, i) => (
+                <Text key={i}>{message}</Text>
+              ))}
+            </Text>
           )}
+
+        <View>
+          <Button
+            style={{ marginBottom: 20 }}
+            onPress={() => this.setModalVisible("Resort", true)}
+            label={translate("Create_resort")}
+            fontSize={14}
+          />
+          <Button
+            style={{ marginBottom: 20 }}
+            onPress={() => this.setModalVisible("Shop", true)}
+            label={translate("Shop")}
+            fontSize={14}
+          />
+          <Button
+            style={{ marginBottom: 20 }}
+            onPress={() => this.setModalVisible("OptionValue", true)}
+            label={translate("OptionValue")}
+            fontSize={14}
+          />
+        </View>
       </KeyboardAwareCenteredView>
     );
   }

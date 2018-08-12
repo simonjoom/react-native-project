@@ -1,0 +1,35 @@
+mutation upsertOptionValue(
+  $id: ID
+  $name: String!
+  ) {
+    upsertOptionValue(
+    where: { id: $id }
+    create: {
+      name: $name
+    }
+    update: {
+      name: $name
+    }
+    ) {
+      id
+      name
+      }
+    }
+
+mutation deleteOptionValue($id: ID!) {
+  deleteOptionValue(where: { id: $id }) {
+    name
+  }
+}
+query optionValue($id: ID!) {
+  optionValue(where: { id: $id }) {
+      id
+      name
+  }
+}
+query optionValues {
+  optionValues {
+    id
+    name
+  }
+}

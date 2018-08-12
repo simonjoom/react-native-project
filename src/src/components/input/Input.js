@@ -99,6 +99,7 @@ class Input extends PureComponent {
             { borderBottomColor: this.state.color },
             this.props.style
           ]}
+          editable={this.props.editable}
           placeholder={this.props.placeholder}
           placeholderTextColor={this.props.placeholderTextColor}
           onChangeText={this.props.onChangeText}

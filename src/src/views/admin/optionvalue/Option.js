@@ -6,34 +6,18 @@ import Title from "src/components/title/Title";
 import Helper from "../helper/helper";
 import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
 
-class Shop extends Component {
+class Option extends Component {
   constructor(props) {
     super(props);
     this.initfetch = [
       {
-        name: "",
-        address: "",
-        zipCode: "",
-        resort: "",
-        phoneNumber: "",
-        openingHours: "",
-        MOTD: "",
-        products: "",
-        newProducts: "",
-        bestSellerProducts: ""
+        id: "",
+        name: ""
       }
     ];
     this.initplaceholder = {
-      name: "String!", //use the first as unique key
-      address: "String!",
-      zipCode: "String!",
-      resort: "[Resort!]!",
-      phoneNumber: "String!",
-      openingHours: "String!",
-      MOTD: "String",
-      products: "[Product!]!",
-      newProducts: "[OrderableProduct!]!",
-      bestSellerProducts: "[OrderableProduct!]!"
+      id: "ID!",
+      name: "String" //use the first as unique key
     };
   }
 
@@ -42,22 +26,21 @@ class Shop extends Component {
       data,
       data: { error },
       loading,
-      deleteShop,
-      shop,
-      upsertShop,
+      deleteOptionValue,
+      optionValue,
+      upsertOptionValue,
       navigation
     } = this.props;
     if (data && loading) {
       return null;
     }
-    //const selected = this.state.selected;
-    console.log("updateShop", data.shops, this.props);
-    //  const shops = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allShops;
 
-    let datas = data.shops;
+    //  const options = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allOptions;
+    let datas = data.optionValues;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
     const selector = Object.keys(this.initplaceholder)[0];
-    //{shops && shops.map((shop, i) => (<Title key={"tt" + i}>{shop.name}</Title>))}
+
+    //{options && options.map((option, i) => (<Title key={"tt" + i}>{option.name}</Title>))}
     return (
       <KeyboardAwareCenteredView>
         {error &&
@@ -76,17 +59,17 @@ class Shop extends Component {
             placeholder={this.initplaceholder}
             selector={selector}
             navigation={navigation}
-            deleteQuery={deleteShop}
-            selectQuery={shop}
-            upsertQuery={upsertShop}
-            select_result_select="shop"
-            mutate_result_select="shops"
+            deleteQuery={deleteOptionValue}
+            selectQuery={optionValue}
+            upsertQuery={upsertOptionValue}
+            select_result_select="optionValue"
+            mutate_result_select="optionValues"
           />
         )}
 
         <TouchableHighlight
           onPress={() => {
-            this.props.setModalVisible("Shop",false);
+            this.props.setModalVisible("OptionValue", false);
           }}
         >
           <Title size={14} color={Colors.text}>
@@ -98,11 +81,11 @@ class Shop extends Component {
   }
 }
 //
-Shop.propTypes = {};
-Shop.defaultProps = {
+Option.propTypes = {};
+Option.defaultProps = {
   setModalVisible: () => {}
 };
 
-export default Shop;
+export default Option;
 
-//{!error && shops && shops.length > 0 ?this.renderPicker(shops, selected, "name", deleteShop, shop, 'shop', 'allShops', this.fetchState) : null}
+//{!error && options && options.length > 0 ?this.renderPicker(options, selected, "name", deleteOption, option, 'option', 'allOptions', this.fetchState) : null}
