@@ -247,8 +247,9 @@ shops==ski_schools
 
 I need to think about the architecture of my application;
 
-I cannot understand really how 
+I try to understand
 
+```
 type Category {
 id: ID! @unique
 name: String!
@@ -293,22 +294,24 @@ price: Float!
 available: Boolean!
 product: Product @relation(name: "ProductVariants") # Variants can be disconnected from product when soft-deleted
 }
+```
 
-i think category could be a service of one user .. so UserAdmin can be instructor or photograph.. whatever
+I think category could be a service of one user .. so UserAdmin can be instructor or photograph.. whatever
 
 So if i have got OptionValue who can take value AM,PM,FullDay i think the schema is correct.
 
 #OptionValue = [AM,PM,FullDay] Morning time , afternoon, fullDay
-
+```
 #Ex Category:
 name:instructor,
 options:[{name:ski,values:[AM,PM,FullDay],{name:snowboard,values:[AM,PM,FullDay]}],
 shop:shop
+
 #Ex Category2:
 name:photograph,
 options:[{name:photo_portrait,values:[AM,PM,FullDay],{name:photo_action,values:[AM,PM,FullDay]}],
 shop:shop
-
+```
 The Variant allow us to define different price for different options selected..
 
 Any thought?
