@@ -23,7 +23,7 @@ function removeEmpty(obj) {
       // Recurse.
       else if (o[key] === undefined || o[key] === null) delete o[key];
       // Delete undefined and null.
-      else o[key] = o[key]; // Copy value.
+      //else o[key] = o[key]; // Copy value.
     } else {
       delete o[key];
     }
@@ -38,7 +38,8 @@ class Helper extends Component {
 
     this.state = {
       selected: 0,
-      labelid: null
+      labelid: null,
+      fields:{}
     };
     this.fetchState = this.fetchState.bind(this);
     this.renderPicker = this.renderPicker.bind(this);
@@ -48,6 +49,7 @@ class Helper extends Component {
 
     // this.navigate = this.props.navigation.navigate;
     this.state.fields = removeEmpty(this.props.tofetch[0]);
+    console.log("this.state.fields"+props.etat,this.state.fields )
   }
 
   validateFields() {
@@ -130,19 +132,19 @@ class Helper extends Component {
   /*{fields[key].map(item =>
                 this.renderFields(item, stylesmall, key, "small")
               )}*/
-  renderFields(fields, placeholder, style, skey, type) {
+  renderFields(fields, placeholder, style, select_result_select, type) {
     if (fields)
       return Object.keys(fields).map((key, index) => {
         if (typeof fields[key] === "object" || isEntitie(placeholder[key])) {
           console.log("array:", fields[key]);
           if (fields[key])
             return (
-              <View style={[{ marginLeft: 10 }, stylesmall]} key={key + "_field_" + skey + index}>
+              <View style={[{ marginLeft: 10 }, stylesmall]} key={key + "_field_" + select_result_select + index}>
                 <Text style={style}>{key.toUpperCase()}</Text>
                 <Plus navigation={this.props.navigation} route={key} />
               </View>
             );
-          else return <Text key={key + "_field_" + skey + index} style={style}>{key.toUpperCase()}</Text>;
+          else return <Text key={key + "_field_" + select_result_select + index} style={style}>{key.toUpperCase()}</Text>;
         } else {
           console.log(fields,placeholder[key]);
 
@@ -153,14 +155,14 @@ class Helper extends Component {
               placeholder={placeholder[key]}
               placeholderTextColor="gray"
               style={style}
-              key={key + "_field_" + skey + index}
-              ref={skey + index}
+              key={key + "_field_" + select_result_select + index}
+              ref={select_result_select + index}
               label={translate(
-                skey +
-                  (skey !== "" ? "_" : "") +
+             //   skey +
+             //     (skey !== "" ? "_" : "") +
                   key +
                   "_" +
-                  this.props.select_result_select
+                  select_result_select
               )}
               onChangeText={value =>
                 this.setState(prevState => ({
@@ -168,7 +170,7 @@ class Helper extends Component {
                 }))
               }
               value={fields[key]}
-              onSubmit={() => this.focusNextField(skey + (index + 1))}
+              onSubmit={() => this.focusNextField(select_result_select + (index + 1))}
             />
           );
         }
@@ -187,14 +189,16 @@ class Helper extends Component {
       mutate_result_select
     } = this.props;
     const selected = this.state.selected;
-    console.log("selector", tofetch);
+    
+    console.log("this.state.fields"+this.props.etat,select_result_select )
+    console.log("selector", tofetch,this.state.fields,placeholder);
     //  const resorts = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allResorts;
 
     //{resorts && resorts.map((resort, i) => (<Title key={"tt" + i}>{resort.name}</Title>))}
     return (
       <KeyboardAwareCenteredView>
         {this.state.fields &&
-          this.renderFields(this.state.fields,placeholder, styleb, "", "big")}
+          this.renderFields(this.state.fields,placeholder, styleb, select_result_select, "big")}
         {this.renderPicker(
           tofetch,
           selected,

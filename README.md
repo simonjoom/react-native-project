@@ -184,6 +184,9 @@ The helper interesting is ./src/src/views/admin/helper/helper.js
 Every folder in ./src/src/views/admin/ is the same structure as ./src/src/views/admin/shop
 
 
+**to be hired and work on this project
+you have to understand what the folder shop implies:**
+
 Please first refer to ./src/src/views/admin/shop 
 
 ./src/src/views/admin/shop will be (i think) the main root of my database. 
@@ -194,6 +197,31 @@ ShopContainer.web.js is a container working as maptostate props of redux to pass
 of course Shop.js is the component.
 
 Nota extension web.js take priority for browser. So we will use only .web.js before to test after in native mode with IOS/Android
+
+- 3 files are working together
+   - query.gpl / shopContainer.web / Shop.js
+
+Helper is a component who take in params:
+
+-   tofetch is the data taken of the database shops (so all the shops)
+-   placeholder define the format input of each ...typicaly it's following the schema specification
+- selector is used by the picker (slider) it will be always the first property for now (name for one Shop) 
+- deleteQuery={deleteShop} ... easy to understand is the function call to delete one shop
+- selectQuery={shop} ... easy to understand is the function call to select
+-  upsertQuery={upsertShop} allow to update or create a element
+-  select_result_select="shop" used by the app to properly take the select result
+-  mutate_result_select="shops"  used by the app to properly take the mutation results 
+
+Yeah it's seems complicate, but it's nice, this is compatible for every database you can create in prisma
+
+react-native-picker is defined in src/myPicker.js
+see https://github.com/jarvisluong/react-native-picker-js
+
+TODO 
+
+**I have an issue on Label resort, 
+i don't know why the label of input of resort is crushed by labels of Shop**
+
 
 
 The ui have to be changed , the interest is to have a utility working for all types of node running with prisma. So it could be work not only with my database. By example i could add very fast one shop, in 2 click. change this shop-data and connect or change the nodes of this shop (like user_owners by example)

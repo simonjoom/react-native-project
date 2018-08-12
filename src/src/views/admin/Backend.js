@@ -26,15 +26,16 @@ class Backend extends Component {
     this.setState({ modalVisible: visible });
   }
 
-  renderModal(Comp) {
+  renderModal(Comp,key) {
     return (
       <Modal
+      key={key}
         visible={this.state.modalVisible}
         animationType="slide"
         onRequestClose={() => this.setModalVisible(false)}
       >
         <Gradient>
-          <Comp setModalVisible={this.setModalVisible} navigation={this.props.navigation}/>
+          <Comp setModalVisible={this.setModalVisible} />
         </Gradient>
       </Modal>
     );
@@ -54,8 +55,8 @@ class Backend extends Component {
           <Title size={14} color={Colors.text}>
             Create Resort
           </Title>
-          {this.renderModal(ResortPicker)}
-          {this.renderModal(ShopPicker)}
+          {this.renderModal(ResortPicker,"0")}
+          {this.renderModal(ShopPicker,"1")}
           {error &&
             error.graphQLErrors && (
               <Text>

@@ -75,7 +75,7 @@ const Card = ({
         </View>
       </View>
       <View style={{ marginRight: 15 }}>
-        <Ionicons name="ios-arrow-forward-outline" />
+        <Ionicons name="ios-arrow-forward" />
       </View>
     </View>
     {!available && <ProductNotAvailable />}

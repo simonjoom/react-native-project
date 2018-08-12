@@ -1,7 +1,7 @@
 import { graphql, compose, withApollo } from "react-apollo";
 import { upsertShop, shop, deleteShop, shops } from "./query.gql";
 import ShopComp from "./Shop";
-import ResortComp from "../resort/ResortContainer";
+//import ResortComp from "../resort/ResortContainer";
 
 import {
   createStackNavigator

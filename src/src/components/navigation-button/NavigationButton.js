@@ -51,7 +51,7 @@ const NavigationButton = ({ dark, back, enabled, onPress }) => {
           onPress={onPress}
         >
           <Icon
-            name="ios-arrow-forward-outline"
+            name="ios-arrow-forward"
             size={22}
             color={dark ? color.text : color.red}
             style={styles.icon}
