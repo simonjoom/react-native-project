@@ -85,8 +85,6 @@ if no error:
 So continue in root folder install dependencies
 
 > npm install
-> 
-> sh installpreset.sh   # install new preset metro-react-native-babel-preset
 
 
 -----
