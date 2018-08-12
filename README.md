@@ -90,19 +90,25 @@ So continue in root folder install dependencies
 > npm install
 
 to resolve problem with react-native-vector-icons
-rm -Rf root/node_modules/expo-web/node_modules/ (the dependencies expo-web are outdated)
+
+> rm -Rf root/node_modules/expo-web/node_modules/ (the dependencies expo-web are outdated)
 
 
 After this
 be sure to have a symbolic link working in node_modules:
+
 from root/node_modules/react-native-vector-icons to root/react-native-vector-icons
 and
+
 from root/node_modules/react-native-web-modal to root/react-native-web-modal
+
 from root/node_modules/react-scripts to root/react-scripts
 
 sometimes npm do not create them so create them manually like: (by example)
 
+
 > cd node_modules/
+> 
 > ln -s ../react-scripts ./node_modules/react-scripts
 
 These 3 folder was a bit hacked to resolve bug with react-native-web
