@@ -13,6 +13,7 @@
     "bcryptjs": "2.4.3",
     "bluebird": "^3.5.1",
     "generate-password": "latest",
+    "graphql-cli": "^2.16.5",
     "graphql-yoga": "^1.16.0",
     "jsonwebtoken": "latest",
     "lodash": "^4.17.10",

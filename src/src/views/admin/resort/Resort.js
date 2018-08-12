@@ -15,7 +15,8 @@ class Resort extends Component {
         address: "",
         zipCode: "",
         city: "",
-        description: ""
+        description: "",
+        phoneNumber: ""
       }
     ];
     this.initplaceholder = {
@@ -23,6 +24,7 @@ class Resort extends Component {
       address: "String!",
       zipCode: "String!",
       city: "String!",
+      phoneNumber: "String!",
       description: "String"
     };
   }
