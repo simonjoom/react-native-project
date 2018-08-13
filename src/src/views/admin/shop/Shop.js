@@ -15,13 +15,13 @@ class Shop extends Component {
         name: "",
         address: "",
         zipCode: "",
-        resort: true,
+        resort: [],
         phoneNumber: "",
         openingHours: "",
         MOTD: "",
-        products: true,
-        newProducts: true,
-        bestSellerProducts: true
+        products: [],
+        newProducts: [],
+        bestSellerProducts: []
       }
     ];
     this.initplaceholder = {
