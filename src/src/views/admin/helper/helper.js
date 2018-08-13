@@ -54,6 +54,7 @@ class Helper extends Component {
   validateFields() {
     //one field not fulled not validated
     const array = Object.values(this.state.fields).slice(1); //delete id for validation (id is verytime the first element)
+   console.log("test",array)
     return array.every(el => !!el);
   }
   focusNextField(nextField) {
@@ -88,7 +89,6 @@ class Helper extends Component {
     mutate_result_select,
     runfetch
   ) {
-    console.log("returndata", datas, selected);
     const datapic = datas.map((data, i) => data[selector]);
     console.log(datapic);
     return (

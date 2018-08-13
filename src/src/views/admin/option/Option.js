@@ -11,14 +11,16 @@ class Option extends Component {
     super(props);
     this.initfetch = [
       {    
+        id:"",
         name: "",
-        values: "",
+        values: true,
         category: "",
         shop: ""
       }
     ];
     this.initplaceholder = {
-      name: "String!", //use the first as unique key
+      id: "ID",
+      name: "String!", 
       values: "[OptionValue!]!",
       category: "Category!",
       shop: "Shop!"
@@ -42,7 +44,6 @@ class Option extends Component {
     //  const options = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allOptions;
     let datas = data.options;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
-    const selector = Object.keys(this.initplaceholder)[0];
 
     //{options && options.map((option, i) => (<Title key={"tt" + i}>{option.name}</Title>))}
     return (
@@ -61,7 +62,7 @@ class Option extends Component {
           <Helper
             tofetch={datas}
             placeholder={this.initplaceholder}
-            selector={selector}
+            selector="name"
             navigation={navigation}
             deleteQuery={deleteOption}
             selectQuery={option}

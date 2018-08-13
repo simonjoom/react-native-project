@@ -11,20 +11,22 @@ class Shop extends Component {
     super(props);
     this.initfetch = [
       {
+        id: "",
         name: "",
         address: "",
         zipCode: "",
-        resort: "",
+        resort: true,
         phoneNumber: "",
         openingHours: "",
         MOTD: "",
-        products: "",
-        newProducts: "",
-        bestSellerProducts: ""
+        products: true,
+        newProducts: true,
+        bestSellerProducts: true
       }
     ];
     this.initplaceholder = {
-      name: "String!", //use the first as unique key
+      id: "ID",
+      name: "String!",
       address: "String!",
       zipCode: "String!",
       resort: "[Resort!]!",
@@ -56,7 +58,6 @@ class Shop extends Component {
 
     let datas = data.shops;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
-    const selector = Object.keys(this.initplaceholder)[0];
     //{shops && shops.map((shop, i) => (<Title key={"tt" + i}>{shop.name}</Title>))}
     return (
       <KeyboardAwareCenteredView>
@@ -74,7 +75,7 @@ class Shop extends Component {
           <Helper
             tofetch={datas}
             placeholder={this.initplaceholder}
-            selector={selector}
+            selector="name"
             navigation={navigation}
             deleteQuery={deleteShop}
             selectQuery={shop}

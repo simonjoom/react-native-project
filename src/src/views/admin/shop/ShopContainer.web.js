@@ -1,5 +1,5 @@
 import { graphql, compose, withApollo } from "react-apollo";
-import { upsertShop, shop, deleteShop, shops } from "./query.gql";
+import { upsertShop,upsertShopTest, shop, deleteShop, shops } from "./query.gql";
 import ShopComp from "./Shop";
 //import ResortComp from "../resort/ResortContainer";
 
@@ -27,7 +27,7 @@ const ShopOut = compose(
         )
     })
   }),
-  graphql(upsertShop, {
+  graphql(upsertShopTest, {
     props: ({ mutate, ownProps }) => ({
       shop: ({ name }) =>
         ownProps.client.query({
@@ -39,6 +39,7 @@ const ShopOut = compose(
         name,
         description,
         address,
+        openingHours,
         zipCode,
         phoneNumber
       }) =>
@@ -47,6 +48,7 @@ const ShopOut = compose(
             name,
             description,
             address,
+            openingHours,
             zipCode,
             phoneNumber
           }

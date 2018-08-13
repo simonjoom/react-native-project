@@ -11,6 +11,7 @@ class Resort extends Component {
     super(props);
     this.initfetch = [
       {
+        id: "",
         name: "",
         address: "",
         zipCode: "",
@@ -20,7 +21,8 @@ class Resort extends Component {
       }
     ];
     this.initplaceholder = {
-      name: "String!", //use the first as unique key
+      id: "ID",
+      name: "String!", 
       address: "String!",
       zipCode: "String!",
       city: "String!",
@@ -48,7 +50,6 @@ class Resort extends Component {
 
     let datas = data.resorts;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
-    const selector = Object.keys(this.initplaceholder)[0];
     //{resorts && resorts.map((resort, i) => (<Title key={"tt" + i}>{resort.name}</Title>))}
     return (
       <KeyboardAwareCenteredView>
@@ -66,7 +67,7 @@ class Resort extends Component {
           <Helper
             tofetch={datas}
             placeholder={this.initplaceholder}
-            selector={selector}
+            selector="name"
             navigation={navigation}
             deleteQuery={deleteResort}
             selectQuery={resort}

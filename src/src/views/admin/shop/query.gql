@@ -1,3 +1,47 @@
+mutation upsertShopTest(
+  $name: String!
+  $address: String!
+  $zipCode: String!
+  $phoneNumber: String!
+  $openingHours: String!
+) {
+  upsertShop(
+    where: { name: $name }
+    create: {
+      name: $name
+      address: $address
+      zipCode: $zipCode
+      phoneNumber: $phoneNumber
+      openingHours: $openingHours
+    }
+    update: {
+      address: $address
+      zipCode: $zipCode
+      phoneNumber: $phoneNumber
+      openingHours: $openingHours
+    }
+  ) {
+    id
+    name
+    address
+    zipCode
+    resort{
+      name
+    }
+    phoneNumber
+    openingHours
+    products {
+      id
+    }
+    newProducts {
+      position
+    }
+    bestSellerProducts {
+      position
+    }
+  }
+}
+
 mutation upsertShop(
   $name: String!
   $address: String

@@ -205,7 +205,7 @@ Helper is a component who take in params:
 
 -   tofetch is the data taken of the database shops (so all the shops)
 -   placeholder define the format input of each ...typicaly it's following the schema specification
-- selector is used by the picker (slider) it will be always the first property for now (name for one Shop) 
+- selector is used by the picker (slider) it should be defined the one to be shown in picker list (name or id ) , the property have to be unique in Schema  
 - deleteQuery={deleteShop} ... easy to understand is the function call to delete one shop
 - selectQuery={shop} ... easy to understand is the function call to select
 -  upsertQuery={upsertShop} allow to update or create a element

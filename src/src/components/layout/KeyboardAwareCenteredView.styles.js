@@ -5,6 +5,6 @@ export default StyleSheet.create({
     flex: 1,
     margin:"auto",
     alignItems: "center",
-    marginTop: 40,
+    marginTop: 0,
   },
 });
