@@ -1,14 +1,24 @@
 mutation upsertOption(
+    $id: ID
     $name: String!
     $values: [OptionValue!]!
     $category: Category!
     shop: Shop!
   ) {
     upsertOption(
+    where: { id: $id }
+    create: {
       name: $name
       values: $values
       category: $category
       shop: $shop
+    }
+    update: {
+      name: $name
+      values: $values
+      category: $category
+      shop: $shop
+    }
     ) {
       id
       name
@@ -25,14 +35,16 @@ mutation upsertOption(
         name
       }
       }
-    }
-mutation deleteOption($name: String) {
-  deleteOption(where: { name: $name }) {
+      }
+
+mutation deleteOption($id: ID!) {
+  deleteOption(where: { id: $id }) {
+    id
     name
   }
 }
-query option($name: String) {
-  option(where: { name: $name }) {
+query option($id: ID!) {
+  option(where: { id: $id }) {
       id
       name
       shop {

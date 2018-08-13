@@ -62,7 +62,7 @@ to install dependencies
 
 > npm install
 > 
-> sh script.sh    # update pug package
+> sh script.sh    # update pug package and fix dependencies
 
 go to the root folder to test this install
 

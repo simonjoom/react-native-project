@@ -16,8 +16,8 @@ class Option extends Component {
       }
     ];
     this.initplaceholder = {
-      id: "ID!",
-      name: "String" //use the first as unique key
+      id: "ID!",//use the first as unique key
+      name: "String" 
     };
   }
 
