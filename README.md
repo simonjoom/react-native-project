@@ -171,6 +171,18 @@ It's the database set up you should to know it.
 
 The entry point of the code is in ./src/src/App.js
 
+** To work on this project there is 2 only CASE: **
+
+- You are already familiar with Prisma CRUD API and you expect good money
+https://www.prisma.io/docs/1.0/reference/prisma-api/concepts-utee3eiquo
+
+O R
+
+- you re motivated to learn about The Prisma CRUD API and are ok to spend time free throught this project
+https://www.prisma.io/docs/1.0/reference/prisma-api/concepts-utee3eiquo
+
+
+
 So we have to pass our time in the folder  ./src/src/views/admin/
 
 Well, You have no need really to know how i want to implement my database to work on it; 
