@@ -1,13 +1,13 @@
-import * as bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
-import * as validator from 'validator';
-import { generate } from 'generate-password';
-import { Context, getUserId } from '../../utils';
-import { User } from '../../generated/prisma';
+import * as bcrypt from "bcryptjs";
+import * as jwt from "jsonwebtoken";
+import * as validator from "validator";
+import { generate } from "generate-password";
+import { Context, getUserId } from "../../utils";
+import { User } from "../../generated/prisma";
 import {
   InvalidEmailException,
-  InvalidOldPasswordException,
-} from '../../exceptions';
+  InvalidOldPasswordException
+} from "../../exceptions";
 
 function hashPassword(password) {
   return bcrypt.hash(password, 10);
@@ -22,13 +22,16 @@ export const auth = {
         password,
         firstName: args.firstName,
         lastName: args.lastName,
-        role: 'USER',
-      },
+        role: "USER"
+      }
     });
 
     return {
-      token: jwt.sign({ userId: user.id, role: 'USER' }, process.env.APP_SECRET),
-      user,
+      token: jwt.sign(
+        { userId: user.id, role: "USER" },
+        process.env.APP_SECRET
+      ),
+      user
     };
   },
   async signupAdmin(parent, args, ctx: Context, info) {
@@ -40,35 +43,48 @@ export const auth = {
         firstName: args.firstName,
         lastName: args.lastName,
         selectedShop: { connect: { id: args.shopId } },
-        role: 'ADMIN',
-      },
+        category: { connect: { id: args.categoryId } },
+        role: "ADMIN",
+        name: args.name,
+        description: args.description,
+        imageUrl: args.imageUrl,
+        stripeCustomerId: args.stripeCustomerId,
+        oneSignalUserId: args.oneSignalUserId,
+      }
     });
 
     return {
-      token: jwt.sign({ userId: user.id, role: 'ADMIN' }, process.env.APP_SECRET),
-      user,
+      token: jwt.sign(
+        { userId: user.id, role: "ADMIN" },
+        process.env.APP_SECRET
+      ),
+      user
     };
   },
 
   async login(parent, { email, password }, ctx: Context, info) {
-    const user = await ctx.db.query.user({ where: { email: email.toLowerCase() } });
-    console.log("login",user)
+    const user = await ctx.db.query.user({
+      where: { email: email.toLowerCase() }
+    });
+    console.log("login", user);
     if (!user) {
       throw new Error(`No such user found for email: ${email}`);
     }
 
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      throw new Error('Invalid password');
+      throw new Error("Invalid password");
     }
 
     return {
       token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-      user,
+      user
     };
   },
   async loginAdmin(parent, { email, password }, ctx: Context, info) {
-    const user = await ctx.db.query.userAdmin({ where: { email: email.toLowerCase() } });
+    const user = await ctx.db.query.userAdmin({
+      where: { email: email.toLowerCase() }
+    });
 
     if (!user) {
       throw new Error(`No such user found for email: ${email}`);
@@ -76,12 +92,12 @@ export const auth = {
 
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      throw new Error('Invalid password');
+      throw new Error("Invalid password");
     }
 
     return {
       token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-      user,
+      user
     };
   },
 
@@ -99,7 +115,7 @@ export const auth = {
     const clearPassword = generate({
       length: 10,
       numbers: true,
-      uppercase: true,
+      uppercase: true
     });
 
     const hashedPassword = await hashPassword(clearPassword);
@@ -107,26 +123,29 @@ export const auth = {
     await ctx.db.mutation.updateUser({
       where: { id: user.id },
       data: {
-        password: hashedPassword,
-      },
+        password: hashedPassword
+      }
     });
 
     ctx.mailer.send({
-      template: 'passwordReset',
+      template: "passwordReset",
       message: {
-        to: user.email,
+        to: user.email
       },
-      locals: { newPassword: clearPassword },
+      locals: { newPassword: clearPassword }
     });
 
     return {
-      mailMaybeSent: true,
+      mailMaybeSent: true
     };
   },
 
   async changePassword(parent: any, args, ctx: Context) {
     const userId = await getUserId(ctx);
-    const user = await ctx.db.query.user({ where: { id: userId } }, '{ password }');
+    const user = await ctx.db.query.user(
+      { where: { id: userId } },
+      "{ password }"
+    );
 
     const valid = await bcrypt.compare(user.password, args.oldPassword);
 
@@ -138,11 +157,11 @@ export const auth = {
 
     const newUser = await ctx.db.mutation.updateUser({
       where: { id: user.id },
-      data: { password },
+      data: { password }
     });
 
     return {
-      id: newUser!.id,
+      id: newUser!.id
     };
-  },
+  }
 };

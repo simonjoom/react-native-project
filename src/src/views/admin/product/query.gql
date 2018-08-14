@@ -1,24 +1,20 @@
 mutation upsertProduct(
-    $name: String!
-    $description: String
-    $brandId: ID!
+    $userAdminId: ID!
     $categoryId: ID!
     $available: Boolean!
     $optionIds: [ID!]!
     $variants: [ProductVariantInput!]!
     $productId: ID,
-   # $attributesIds: [ID!]!
+    $attributesIds: [ID!]!
   #  $unavailableOptionsValuesIds: [ID!]!
     $displayPrice: Float!
     $imageUrl: String,
     $nullValue: DateTime
   ) {
     upsertProduct(
-      name: $name
-      description: $description
-      imageUrl: $imageUrl
-      brandId: $brandId
+      userAdminId: $userId
       categoryId: $categoryId
+      brandId: $brandId
       available: $available
       optionIds: $optionIds
       variants: $variants
@@ -28,8 +24,6 @@ mutation upsertProduct(
       displayPrice: $displayPrice
     ) {
       id
-      name
-      description
       available
       displayPrice
       imageUrl

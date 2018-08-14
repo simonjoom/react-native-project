@@ -4,6 +4,7 @@ import { Image, TouchableOpacity, View } from "react-native";
 import styles from "./Login.styles";
 import color from "src/statics/colors";
 import { translate } from "src/i18n";
+import Logo from 'src/svgcomp';
 
 import NavigationButton from "src/components/navigation-button/NavigationButton";
 import Title from "src/components/title/Title";
@@ -28,7 +29,8 @@ const resetAction = NavigationActions.navigate({
 //props.navigation.navigate("SignUp")
 const Login = props => (
   <View style={styles.container}>
-    <Image source={require("src/assets/logo.png")} style={styles.logo} />
+  
+    <Logo id="feature-svg-component" />
     <Title style={{ marginBottom: 120 }} color={color.white} size={32}>
       SkiScool
     </Title>

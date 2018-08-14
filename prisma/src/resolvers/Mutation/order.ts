@@ -48,7 +48,6 @@ export async function createOrderFromCart(args: CreateOrderInput, db: Prisma): P
   const newOrder = await db.mutation.createOrder({
     data: {
       owner: { connect: { id: args.userId } },
-      receiver: { connect: { id: shopId } },
       lineItems: { connect: lineItemsIds },
       totalPrice,
       totalTax: 0,

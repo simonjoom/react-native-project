@@ -128,13 +128,7 @@ const SwitchStack = createSwitchNavigator({
 },{ 
     useNativeAnimations: false
   });
-/*
-SwitchStack.navigationOptions = {
-  drawerLabel: "Home",
-  drawerIcon: ({ tintColor }) => (
-    <MaterialIcons name="home" size={24} style={{ color: tintColor }} />
-  )
-};*/
+  
 
 const Drawer = createDrawerNavigator(
   {
@@ -169,9 +163,3 @@ export default class App extends Component {
   }
 }
 
-/*
-          ref={navigatorRef => {
-            NavigationService.setTopLevelNavigator(navigatorRef);
-          }}
-        <SwitchStack
-        />*/

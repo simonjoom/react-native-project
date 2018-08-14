@@ -4,6 +4,7 @@ import { Image, StatusBar, TouchableOpacity, View } from 'react-native';
 import styles from './Login.styles';
 import color from 'src/statics/colors';
 import { translate } from 'src/i18n';
+import Logo from 'src/svgcomp';
 
 import Gradient from 'src/components/gradient/Gradient';
 import Title from 'src/components/title/Title';
@@ -14,7 +15,8 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 const Login = props => (
   <Gradient>
     <View style={styles.container}>
-      <Image source={require('../../assets/logo.png')} style={styles.logo} />
+    
+    <Logo id="feature-svg-component" />
       <Title style={{ marginBottom: 120 }} color={color.white} size={32}>
         Aromaclop
       </Title>

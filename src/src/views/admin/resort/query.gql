@@ -33,6 +33,7 @@ mutation upsertResort(
     phoneNumber
   }
 }
+
 mutation deleteResort($name: String) {
   deleteResort(where: { name: $name }) {
     id

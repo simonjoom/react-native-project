@@ -49,10 +49,7 @@ mutation upsertShop(
   $resort: [Resort!]!
   $phoneNumber: String!
   $openingHours: String!
-  $motd: String
   $productsIds: [ID!]!
-  $newProductsIds: [ID!]!
-  $bestSellerProductsIds: [ID!]!
 ) {
   upsertShop(
     where: { name: $name }

@@ -151,8 +151,8 @@ type Shop {
   openingHours: String!
   MOTD: String
   products: [Product!]!
-  newProducts: [OrderableProduct!]! @relation(name: "NewProducts")
-  bestSellerProducts: [OrderableProduct!]! @relation(name: "BestSellerProducts")
+ # newProducts: [OrderableProduct!]! @relation(name: "NewProducts")
+ # bestSellerProducts: [OrderableProduct!]! @relation(name: "BestSellerProducts")
 }
 
 type OrderableProduct {

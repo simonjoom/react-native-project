@@ -1,19 +1,23 @@
-import { Context, getShopId } from '../../utils';
-import * as _ from 'lodash';
+import { Context, getShopId } from "../../utils";
+import * as _ from "lodash";
 
 export const product = {
   async myupsertProduct(parent, args, ctx: Context, info) {
     const optionsToConnect = args.optionIds.map(optionId => ({ id: optionId }));
-    const attributesToConnect = args.attributesIds.map(attributeId => ({ id: attributeId }));
-    const selectedOptionsForVariantInput = (variant) => variant.selectedOptions.map(selectedOption => ({
-      option: { connect: { id: selectedOption.optionId } },
-      value: { connect: { id: selectedOption.valueId } }
+    const attributesToConnect = args.attributesIds.map(attributeId => ({
+      id: attributeId
     }));
-    const createVariantsInput = (variants) => variants.map((variant) => ({
-      price: variant.price,
-      available: variant.available,
-      selectedOptions: { create: selectedOptionsForVariantInput(variant) }
-    }));
+    const selectedOptionsForVariantInput = variant =>
+      variant.selectedOptions.map(selectedOption => ({
+        option: { connect: { id: selectedOption.optionId } },
+        value: { connect: { id: selectedOption.valueId } }
+      }));
+    const createVariantsInput = variants =>
+      variants.map(variant => ({
+        price: variant.price,
+        available: variant.available,
+        selectedOptions: { create: selectedOptionsForVariantInput(variant) }
+      }));
     const shopId = await getShopId(ctx);
 
     if (args.productId) {
@@ -33,17 +37,22 @@ export const product = {
       // Remark: Ideally, we should only soft-delete the variants that are in orders, and hard-delete the others, but we make it easier this way
       // Remark: We don't disconnect the variants from the product so that users can still see the items that were deleted from their cart.
       // Remark: Because of that, we need to filter the soft_deleted variants everywhere else. :(
-      const variantsToDelete = _.differenceBy(currentProduct.variants, args.variants, 'id');
+      const variantsToDelete = _.differenceBy(
+        currentProduct.variants,
+        args.variants,
+        "id"
+      );
 
       if (variantsToDelete.length > 0) {
         const variantsIdsToDelete = variantsToDelete.map(variant => variant.id);
         const deletedAt = new Date().toISOString();
-      
+
         await ctx.db.mutation.updateManySelectedOptions({
           where: {
             variant: {
               id_in: variantsIdsToDelete,
-              product: { id: args.productId } }
+              product: { id: args.productId }
+            }
           },
           data: { deletedAt }
         });
@@ -64,118 +73,134 @@ export const product = {
         });
       }
 
-      const attributesToDisconnect = _(currentProduct.attributes.map(({ id }) => id ))
+      const attributesToDisconnect = _(
+        currentProduct.attributes.map(({ id }) => id)
+      )
         .difference(args.attributesIds)
         .map(attributeId => ({ id: attributeId }))
         .value();
 
-      const optionsToDisconnect = _(currentProduct.options.map(({ id }) => id ))
+      const optionsToDisconnect = _(currentProduct.options.map(({ id }) => id))
         .difference(args.optionIds)
         .map(optionId => ({ id: optionId }))
         .value();
 
-      const currentUnavailableOptionsValuesIds = currentProduct.unavailableOptionsValues.map(optionValue => optionValue.id);
-      const unavailableOptionsValuesToConnect = _(args.unavailableOptionsValuesIds)
+      const currentUnavailableOptionsValuesIds = currentProduct.unavailableOptionsValues.map(
+        optionValue => optionValue.id
+      );
+      const unavailableOptionsValuesToConnect = _(
+        args.unavailableOptionsValuesIds
+      )
         .differenceBy(currentUnavailableOptionsValuesIds)
         .map(optionValueId => ({ id: optionValueId }))
         .value();
-      const unavailableOptionsValuesToDisconnect = _(currentUnavailableOptionsValuesIds)
+      const unavailableOptionsValuesToDisconnect = _(
+        currentUnavailableOptionsValuesIds
+      )
         .differenceBy(args.unavailableOptionsValuesIds)
         .map(optionValueId => ({ id: optionValueId }))
         .value();
-      
-      const variantsToCreate = _.differenceBy(args.variants, currentProduct.variants, 'id');
-      const variantsToUpdate = args.variants
-      .filter((variant /* ProductVariantInput */) =>
-        !!currentProduct.variants.find((currentVariant) => currentVariant.id === variant.id)
-      )
-      .map(variant => ({
-        where: { id: variant.id },
-        data: {
-          available: variant.available,
-          price: variant.price
-        }
-      }));
 
-      return ctx.db.mutation.updateProduct({
-        where: { id: args.productId },
+      const variantsToCreate = _.differenceBy(
+        args.variants,
+        currentProduct.variants,
+        "id"
+      );
+      const variantsToUpdate = args.variants
+        .filter(
+          (variant /* ProductVariantInput */) =>
+            !!currentProduct.variants.find(
+              currentVariant => currentVariant.id === variant.id
+            )
+        )
+        .map(variant => ({
+          where: { id: variant.id },
+          data: {
+            available: variant.available,
+            price: variant.price
+          }
+        }));
+
+      return ctx.db.mutation.updateProduct(
+        {
+          where: { id: args.productId },
+          data: {
+            available: args.available,
+            category: { connect: { id: args.categoryId } },
+            attributes: {
+              connect: attributesToConnect,
+              disconnect: attributesToDisconnect
+            },
+            options: {
+              connect: optionsToConnect,
+              disconnect: optionsToDisconnect
+            },
+            unavailableOptionsValues: {
+              disconnect: unavailableOptionsValuesToDisconnect,
+              connect: unavailableOptionsValuesToConnect
+            },
+            displayPrice: args.displayPrice,
+            SKU: "",
+            variants: {
+              update: variantsToUpdate,
+              create: createVariantsInput(variantsToCreate)
+            }
+          }
+        },
+        info
+      );
+    }
+
+    return ctx.db.mutation.createProduct(
+      {
         data: {
-          name: args.name,
-          description: args.description,
           available: args.available,
+          User: { connect: { id: args.userId } },
           category: { connect: { id: args.categoryId } },
-          brand: { connect: { id: args.brandId } },
-          attributes: {
-            connect: attributesToConnect,
-            disconnect: attributesToDisconnect
-          },
-          options: {
-            connect: optionsToConnect,
-            disconnect: optionsToDisconnect
-          },
-          unavailableOptionsValues: {
-            disconnect: unavailableOptionsValuesToDisconnect,
-            connect: unavailableOptionsValuesToConnect,
-          },
+          options: { connect: optionsToConnect },
           displayPrice: args.displayPrice,
           SKU: "",
-          variants: {
-            update: variantsToUpdate,
-            create: createVariantsInput(variantsToCreate),
-          },
-          imageUrl: args.imageUrl
+          attributes: { connect: attributesToConnect },
+          variants: { create: createVariantsInput(args.variants) }
         }
-      }, info);
-    }
-    
-    return ctx.db.mutation.createProduct({
-      data: {
-        name: args.name,
-        description: args.description,
-        available: args.available,
-        shop: { connect: { id: shopId } },
-        category: { connect: { id: args.categoryId } },
-        brand: { connect: { id: args.brandId } },
-        options: { connect: optionsToConnect },
-        displayPrice: args.displayPrice,
-        SKU: "",
-        attributes: { connect: attributesToConnect },
-        variants: { create: createVariantsInput(args.variants) },
-        imageUrl: args.imageUrl
-      }
-    }, info);
+      },
+      info
+    );
   },
 
   async mydeleteProduct(parent, args, ctx: Context, info) {
     //const shopId = await getShopId(ctx);
-    const shopId=0;
+    const shopId = 0;
     // If product is in some user's cart
     // Disconnect it from the carts
-    const usersWithProductInCart = await ctx.db.query.users({
-      where: {
-      //  selectedShop: { id: shopId },
-        cart_some: {
-          variant: {
-            product: { id: args.productId }
+    const usersWithProductInCart = await ctx.db.query.users(
+      {
+        where: {
+          //  selectedShop: { id: shopId },
+          cart_some: {
+            variant: {
+              product: { id: args.productId }
+            }
           }
         }
-      }
-    }, `{ id }`);
+      },
+      `{ id }`
+    );
 
     if (usersWithProductInCart.length > 0) {
-      const usersToDisconnectIds = usersWithProductInCart.map((user) => user.id);
+      const usersToDisconnectIds = usersWithProductInCart.map(user => user.id);
 
       await ctx.db.mutation.updateManyOrderLineItems({
         where: {
           owner: {
-            id_in: usersToDisconnectIds,
-           // selectedShop: { id: shopId },
+            id_in: usersToDisconnectIds
+            // selectedShop: { id: shopId },
           },
           variant: {
             product: { id: args.productId }
           }
         },
-        data: { deletedAt: new Date().toISOString() },
+        data: { deletedAt: new Date().toISOString() }
       });
     }
 
@@ -188,7 +213,9 @@ export const product = {
     // If product is in some orders or user's cart, then soft-delete the product
     if (productIsInOrderOrCart) {
       //Still delete the new/best-sellers products.
-      await ctx.db.mutation.deleteManyOrderableProducts({ where: { product: { id: args.productId } } });
+      await ctx.db.mutation.deleteManyOrderableProducts({
+        where: { product: { id: args.productId } }
+      });
 
       return ctx.db.mutation.updateProduct({
         where: { id: args.productId },
@@ -197,5 +224,5 @@ export const product = {
     }
 
     return ctx.db.mutation.deleteProduct({ where: { id: args.productId } });
-  },
-}
+  }
+};
