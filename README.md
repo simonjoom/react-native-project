@@ -89,9 +89,11 @@ So continue in root folder install dependencies
 
 > npm install
 
-to resolve problem with react-native-vector-icons
+Please to resolve problem with react-native-vector-icons
 
 > rm -Rf root/node_modules/expo-web/node_modules/ (the dependencies expo-web are outdated)
+> rm -Rf root/prisma/node_modules/@types/graphql/ 
+> rm -Rf root/node_modules/@types/graphql/ 
 
 
 After this
