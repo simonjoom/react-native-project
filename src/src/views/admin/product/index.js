@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Text } from "react-native";
 import Helper from "../helper/helper";
+import Deal from "../Deal/Container";
 import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
 
 class Product extends Component {
@@ -22,7 +23,7 @@ class Product extends Component {
       unit: "String*",
       code: "String",
       owner: "User",
-      deals: "[Deal]*"
+      deals: "[Deal]"
     };
   }
 
@@ -44,7 +45,7 @@ class Product extends Component {
     } = this.props;
     if (data && loading) {
       return null;
-    } 
+    }
     //  const products = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allProducts;
 
     let datas = data.products;
@@ -66,7 +67,7 @@ class Product extends Component {
           <Helper
             tofetch={datas}
             placeholder={this.initplaceholder}
-            selector="title"
+            selector="name"
             navigation={navigation}
             deleteQuery={deleteProduct}
             selectQuery={product}
@@ -80,7 +81,7 @@ class Product extends Component {
             saveId={saveId}
             parentId={parentId}
             selectedId={selectedId}
-            childrenTree={{}}
+            childrenTree={{ Deal }}
           />
         )}
       </KeyboardAwareCenteredView>

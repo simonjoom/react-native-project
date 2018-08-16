@@ -1,5 +1,10 @@
 import { graphql, compose, withApollo } from "react-apollo";
-import { upsertPipeline, pipeline, deletePipeline, pipelines } from "./query.gql";
+import {
+  upsertPipeline,
+  pipeline,
+  deletePipeline,
+  pipelines
+} from "./query.gql";
 import Comp from "./index";
 //import ResortComp from "../resort/ResortContainer";
 
@@ -30,7 +35,13 @@ const PipelineOut = compose(
           fetchPolicy: "network-only",
           variables: { name }
         }),
-      upsertPipeline: ({ name,namewhere, deals, order_nr, deal_probability }) =>
+      upsertPipeline: ({
+        name,
+        namewhere,
+        deals,
+        order_nr,
+        deal_probability
+      }) =>
         mutate({
           variables: {
             name,

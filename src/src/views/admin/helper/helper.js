@@ -113,6 +113,27 @@ class Helper extends Component {
     // this.navigate = this.props.navigation.navigate;
     this.selectorName = this.state.fields[props.selector];
   }
+
+  updateDatabaseQ = (toupd, error) => {
+    const {
+      selector,
+      selectQuery,
+      upsertQuery,
+      mutateResultSelect
+    } = this.props;
+    var ErrorP = reason => Promise.reject(new Error("fail " + reason));
+    toupd.namewhere = this.selectorName;
+    return selectQuery({ [selector]: toupd.name }).then(
+      ({ data }) => {
+        if (!data.organization) return upsertQuery(toupd);
+        else return ErrorP(error);
+      },
+      reason => {
+        return ErrorP(reason);
+      }
+    );
+  };
+
   saveId(entitie, id) {
     const obj = Object.keys(this.state.fields);
     let many = false;
@@ -138,11 +159,16 @@ class Helper extends Component {
         id: val
       }));
     else out = { id };
-    this.setState(prevState => ({
-      ids: clids,
-      fields: { ...prevState.fields, [getkey]: out }
-    }));
+    const toupd = { ...this.state.fields, [getkey]: out };
+    this.updateDatabaseQ(toupd, "Something happend not good").then(() =>
+      this.setState(prevState => ({
+        ids: clids,
+        fields: { ...prevState.fields, [getkey]: out }
+      }))
+    );
   }
+
+  
   setModalVisible(type, visible) {
     console.log("setModalVisiblehelper", type);
     this.state.modal[type] = visible;
@@ -393,6 +419,55 @@ class Helper extends Component {
       });
   }
 
+  updateButton = ({ text, selector, mutateResultSelect, validator, error }) => (
+    <NavigationButton
+      enabled={validator}
+      text={text}
+      onPress={() => {
+        if (validator)
+          try {
+            const toupd = { ...this.state.fields };
+            this.updateDatabaseQ(toupd, error).then(({ data }) => {
+              const out = data[mutateResultSelect];
+              const item = out[this.index_current];
+              this.selectorName = item[selector];
+              this.fetchState(item, item.id, this.index_current);
+            });
+          } catch (err) {
+            console.log(err);
+          }
+      }}
+    />
+  );
+  createButton = ({
+    text,
+    upsertQuery,
+    selector,
+    mutateResultSelect,
+    validator,
+    error
+  }) => (
+    <NavigationButton
+      enabled={validator}
+      text={text}
+      onPress={() => {
+        if (validator)
+          try {
+            const toupd = { ...this.state.fields };
+            toupd.namewhere = toupd[selector];
+            upsertQuery(toupd).then(({ data }) => {
+              const out = data[mutateResultSelect];
+              const item = out[out.length - 1];
+              this.selectorName = item[selector];
+              this.fetchState(item, item.id, out.length - 1);
+            });
+          } catch (err) {
+            console.log(err);
+          }
+      }}
+    />
+  );
+
   render() {
     const {
       tofetch,
@@ -408,7 +483,7 @@ class Helper extends Component {
       setModalVisible
     } = this.props;
     const selected = this.state.selected;
-    console.log("modalstate", this.state.modal);
+    console.log("DEBUGState", this.state);
     console.log("debugstate.fields", this.state.fields, placeholder);
     //  const resorts = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allResorts;
 
@@ -418,13 +493,17 @@ class Helper extends Component {
     //{resorts && resorts.map((resort, i) => (<Title key={"tt" + i}>{resort.name}</Title>))}
     return (
       <KeyboardAwareCenteredView>
-      <TouchableOpacity
-        onPress={() => {
-          setModalVisible(this.props.root, false);
-        }}
-      >
-        <Icon name="window-close" size={30} style={{ padding: 10,alignSelf: "flex-end" }} />
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setModalVisible(this.props.root, false);
+          }}
+        >
+          <Icon
+            name="window-close"
+            size={30}
+            style={{ padding: 10, alignSelf: "flex-end" }}
+          />
+        </TouchableOpacity>
         {Arr}
         {this.state.fields &&
           this.renderFields(
@@ -444,64 +523,36 @@ class Helper extends Component {
           selectResultSelect,
           mutateResultSelect
         )}
-        <NavigationButton
-          enabled={this.validateFields()}
+        <this.updateButton
           text="Update"
-          onPress={() => {
-            if (this.validateFields())
-              try {
-                const toupd = { ...this.state.fields };
-                toupd.namewhere = this.selectorName;
-                selectQuery({ [selector]: toupd.name }).then(({ data }) => {
-                  if (!data.organization)
-                    upsertQuery(toupd).then(({ data }) => {
-                      const out = data[mutateResultSelect];
-                      const item = out[this.index_current];
-                      this.selectorName = item[selector];
-                      this.fetchState(item, item.id, this.index_current);
-                    });
-                  else alert("this name.exist");
-                });
-              } catch (err) {
-                console.log(err);
-              }
-          }}
+          validator={this.validateFields()}
+          selector={selector}
+          mutateResultSelect={mutateResultSelect}
+          error="Error Exist"
         />
-        <NavigationButton
-          enabled={this.validateFields()}
+        <this.createButton
           text="Create"
-          onPress={() => {
-            if (this.validateFields())
-              try {
-                const toupd = { ...this.state.fields };
-                toupd.namewhere = toupd[selector];
-                upsertQuery(toupd).then(({ data }) => {
-                  const out = data[mutateResultSelect];
-                  const item = out[out.length - 1];
-                  this.selectorName = item[selector];
-                  this.fetchState(item, item.id, out.length - 1);
-                  //  this.fetchState(null,out[out.length - 1],out[out.length - 1].id,out.length - 1 )
-                  //  this.setState({ fetched_list: out, labelid: out[out.length - 1].id, selected: out.length - 1 })
-                });
-              } catch (err) {
-                console.log(err);
-              }
-          }}
+          validator={this.validateFields()}
+          upsertQuery={upsertQuery}
+          selector={selector}
+          mutateResultSelect={mutateResultSelect}
         />
-        {this.props.connected && (
-          <Button
-            style={{ marginBottom: 20 }}
-            onPress={() => {
-              this.props.saveId(
-                this.props.root,
-                this.state.labelid || this.props.selectedId
-              );
-              setModalVisible(this.props.root, false);
-            }}
-            label={translate("Connect")}
-            fontSize={14}
-          />
-        )}
+
+        {this.props.connected &&
+          (this.state.labelid || this.props.selectedId) && (
+            <Button
+              style={{ marginBottom: 20 }}
+              onPress={() => {
+                this.props.saveId(
+                  this.props.root,
+                  this.state.labelid || this.props.selectedId
+                );
+                setModalVisible(this.props.root, false);
+              }}
+              label={translate("Connect")}
+              fontSize={14}
+            />
+          )}
       </KeyboardAwareCenteredView>
     );
   }
