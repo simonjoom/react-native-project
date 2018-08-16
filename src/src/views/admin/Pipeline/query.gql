@@ -1,59 +1,61 @@
-mutation upsertStage(
+mutation upsertPipeline(
   $name: String!
   $namewhere: String
   $order_nr: String
   $deal_probability: Probability
-  $pipeline: PipelineWhereUniqueInput
+  $deals: [DealWhereUniqueInput!]
 ) {
-  upsertStage(
+  upsertPipeline(
     where: { name: $namewhere }
     create: {
       name: $name
-      pipeline: { connect: $pipeline }
       order_nr: $order_nr
       deal_probability: $deal_probability
+      deals: { connect: $deals }
     }
     update: {
       name: $name
-      pipeline: { connect: $pipeline }
       order_nr: $order_nr
       deal_probability: $deal_probability
+      deals: { connect: $deals }
     }
   ) {
     id
     name
-    pipeline {
+    deals {
       id
     }
     order_nr
     deal_probability
   }
 }
-mutation deleteStage($name: String) {
-  deleteStage(where: { name: $name }) {
+mutation deletePipeline($name: String) {
+  deletePipeline(where: { name: $name }) {
     id
     name
-    pipeline {
+    deals {
       id
     }
     order_nr
     deal_probability
   }
 }
-query stage($name: String) {
-  stage(where: { name: $name }) {
+query pipeline($name: String) {
+  pipeline(where: { name: $name }) {
     id
     name
-    pipeline
+    deals {
+      id
+    }
     order_nr
     deal_probability
   }
 }
-query stages {
-  stages {
+query pipelines {
+  pipelines {
     id
     name
-    pipeline {
+    deals {
       id
     }
     order_nr

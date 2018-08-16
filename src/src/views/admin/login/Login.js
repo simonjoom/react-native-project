@@ -18,7 +18,7 @@ const Login = props => (
   
     <Logo id="feature-svg-component" />
     <Title style={{ marginBottom: 120 }} color={color.white} size={32}>
-      SkiScool
+      PipeDrive
     </Title>
     <Button
       onPress={() => props.navigation.navigate('Backend')}

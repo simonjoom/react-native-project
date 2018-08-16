@@ -9,7 +9,6 @@ import { createStackNavigator } from "react-navigation";
 const UserOut = compose(
   withApollo,
   graphql(users),
-  //}),
   graphql(deleteUser, {
     props: ({ mutate, ownProps }) => ({
       deleteUser: ({ name }) =>
@@ -32,6 +31,7 @@ const UserOut = compose(
           variables: { name }
         }),
       upsertUser: ({
+        namewhere,
         name,
         email,
         password,
@@ -43,6 +43,7 @@ const UserOut = compose(
       }) =>
         mutate({
           variables: {
+            namewhere,
             name,
             email,
             password,

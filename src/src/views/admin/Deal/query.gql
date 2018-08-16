@@ -1,26 +1,27 @@
 mutation upsertDeal(
   $title: String!
+  $namewhere: String!
   $value: String!
   $currency: String!
-  $owner_id: ID!
-  $org_id: ID!
-  $stage_id: ID!
-  $participants_ids: [ID!]!
-  $products_ids: [ID!]!
+  $owner: UserWhereUniqueInput
+  $org: OrganizationWhereUniqueInput
+  $stage: StageWhereUniqueInput
+  $participants: [PersonWhereUniqueInput!]
+  $products: [ProductWhereUniqueInput!]
   $status: OrderStatus
   $probability: String
 ) {
   upsertDeal(
-    where: { title: $title }
+    where: { title: $namewhere }
     create: {
       title: $title
       value: $value
       currency: $currency
-      ownerId: $owner_id
-      orgId: $org_id
-      stageId: $stage_id
-      productsIds: $products_ids
-      participantsIds: $participants_ids
+      owner: { connect: $owner }
+      org: { connect: $org }
+      stage: { connect: $stage }
+      products: { connect: $products }
+      participants: { connect: $participants }
       status: $status
       probability: $probability
     }
@@ -28,11 +29,11 @@ mutation upsertDeal(
       title: $title
       value: $value
       currency: $currency
-      ownerId: $owner_id
-      orgId: $org_id
-      stageId: $stage_id
-      productsIds: $products_ids
-      participantsIds: $participants_ids
+      owner: { connect: $owner }
+      org: { connect: $org }
+      stage: { connect: $stage }
+      products: { connect: $products }
+      participants: { connect: $participants }
       status: $status
       probability: $probability
     }
@@ -40,18 +41,20 @@ mutation upsertDeal(
     id
     title
     currency
-    user {
-      name
+    owner {
+      id
+    }
+    org {
+      id
     }
     stage {
-      name
+      id
     }
     products {
       id
     }
     participants {
       id
-      name
     }
     status
     probability
@@ -62,46 +65,45 @@ mutation deleteDeal($name: String) {
     id
     name
     currency
-    user {
-      name
+    owner {
+      id
     }
-    organization {
-      name
+    org {
+      id
     }
     stage {
-      name
+      id
     }
     products {
       id
     }
     participants {
       id
-      name
     }
     status
     probability
   }
 }
+
 query deal($name: String) {
   deal(where: { name: $name }) {
     id
     name
     currency
-    user {
-      name
+    owner {
+      id
     }
-    organization {
-      name
+    org {
+      id
     }
     stage {
-      name
+      id
     }
     products {
       id
     }
     participants {
       id
-      name
     }
     status
     probability
@@ -112,18 +114,20 @@ query deals {
     id
     name
     currency
-    user {
-      name
+    owner {
+      id
     }
-    organization {
-      name
+    org {
+      id
     }
     stage {
-      name
+      id
+    }
+    products {
+      id
     }
     participants {
       id
-      name
     }
     status
     probability

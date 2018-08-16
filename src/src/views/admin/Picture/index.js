@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableHighlight, Text } from "react-native";
+import { Text } from "react-native";
 
 import Colors from "src/statics/colors";
 import Title from "src/components/title/Title";
@@ -32,6 +32,9 @@ class Picture extends Component {
       navigation,
       connected,
       parent,
+      saveId,
+      parentId,
+      selectedId,
       setModalVisible
     } = this.props;
     if (data && loading) {
@@ -64,24 +67,18 @@ class Picture extends Component {
             deleteQuery={deletePicture}
             selectQuery={picture}
             upsertQuery={upsertPicture}
-            select_result_select="picture"
-            mutate_result_select="pictures"
+            selectResultSelect="picture"
+            mutateResultSelect="pictures"
+            setModalVisible={setModalVisible}
             root="Picture"
             connected={connected}
             parent={parent}
-            childrenTree={{ }}
+            saveId={saveId}
+            parentId={parentId}
+            selectedId={selectedId}
+            childrenTree={{}}
           />
         )}
-
-        <TouchableHighlight
-          onPress={() => {
-            setModalVisible("Picture", false);
-          }}
-        >
-          <Title size={14} color={Colors.text}>
-            X
-          </Title>
-        </TouchableHighlight>
       </KeyboardAwareCenteredView>
     );
   }
@@ -91,7 +88,9 @@ Picture.propTypes = {};
 Picture.defaultProps = {
   setModalVisible: () => {},
   connected: false,
-  parent: false
+  parent: "",
+  parentId: 0,
+  selectedId: false
 };
 
 export default Picture;

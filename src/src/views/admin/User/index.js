@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableHighlight, Text } from "react-native";
+import { Text } from "react-native";
 
 import Colors from "src/statics/colors";
 import Title from "src/components/title/Title";
@@ -47,6 +47,9 @@ class User extends Component {
       navigation,
       connected,
       parent,
+      parentId,
+      selectedId,
+      saveId,
       setModalVisible
     } = this.props;
     if (data && loading) {
@@ -80,26 +83,18 @@ class User extends Component {
             deleteQuery={deleteUser}
             selectQuery={user}
             upsertQuery={upsertUser}
-            select_result_select="user"
-            mutate_result_select="users"
+            selectResultSelect="user"
+            mutateResultSelect="users"
             setModalVisible={setModalVisible}
             root="User"
-            saveId={this.props.saveId}
             parent={parent}
+            saveId={saveId}
+            selectedId={selectedId}
+            parentId={parentId}
             connected={connected}
-            childrenTree={{Organization}}
+            childrenTree={{ Organization }}
           />
         )}
-
-        <TouchableHighlight
-          onPress={() => {
-           setModalVisible("User", false);
-          }}
-        >
-          <Title size={14} color={Colors.text}>
-            X
-          </Title>
-        </TouchableHighlight>
       </KeyboardAwareCenteredView>
     );
   }
@@ -108,8 +103,10 @@ class User extends Component {
 User.propTypes = {};
 User.defaultProps = {
   setModalVisible: () => {},
-  connected:false,
-  saveId: []
+  connected: false,
+  parent: "",
+  parentId: 0,
+  selectedId: false
 };
 
 export default User;

@@ -3,15 +3,12 @@ import { upsertStage, stage, deleteStage, stages } from "./query.gql";
 import Comp from "./index";
 //import ResortComp from "../resort/ResortContainer";
 
-import {
-  createStackNavigator
-} from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 //TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
 const StageOut = compose(
   withApollo,
   graphql(stages),
-  //}),
   graphql(deleteStage, {
     props: ({ mutate, ownProps }) => ({
       deleteStage: ({ name }) =>
@@ -33,15 +30,11 @@ const StageOut = compose(
           fetchPolicy: "network-only",
           variables: { name }
         }),
-      upsertStage: ({
-        name,
-        pipeline,
-        order_nr,
-        deal_probability
-      }) =>
+      upsertStage: ({ name,namewhere, pipeline, order_nr, deal_probability }) =>
         mutate({
           variables: {
             name,
+            namewhere,
             pipeline,
             order_nr,
             deal_probability

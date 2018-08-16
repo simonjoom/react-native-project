@@ -5,9 +5,6 @@ Guys i try here to describe my project to transform react-native to a cross-brow
 I passed one night to test and compile many times for you to avoid trap in npm dependencies.
 
 
-First you have to know , i started the project for a very nice one:
-https://github.com/Weakky/prisma-ecommerce
-
 It's as well a french guy, his code is fully complete e-commerce working.
 
 The database is nearly the same, but i want something more simple. i kept lot of code but
@@ -28,7 +25,6 @@ install the one prisma.vscode-graphql Version 0.0.10
 the others are not from prisma and won't work the same (do not install the one from kumar Harsh)
 
 Add extension as well Prettier code formatter 1.5.0
-
 
 
 Inside this project already well set up:
@@ -93,25 +89,17 @@ Please to resolve problem with react-native-vector-icons
 
 > rm -Rf root/node_modules/expo-web/node_modules/ (the dependencies expo-web are outdated)
 > rm -Rf root/prisma/node_modules/@types/graphql/ 
-> rm -Rf root/node_modules/@types/graphql/ 
-
+> rm -Rf root/node_modules/@types/graphql/
+> cp -Rf babel-eslint root/node_modules/babel-eslint
 
 After this
 be sure to have a symbolic link working in node_modules:
+if not: 
 
-from root/node_modules/react-native-vector-icons to root/react-native-vector-icons
-and
-
-from root/node_modules/react-native-web-modal to root/react-native-web-modal
-
-from root/node_modules/react-scripts to root/react-scripts
-
-sometimes npm do not create them so create them manually like: (by example)
-
-
-> cd node_modules/
+> npm link ./react-native-vector-icons
+> npm link ./react-native-web-modal
+> npm link ./react-scripts
 > 
-> ln -s ../react-scripts ./node_modules/react-scripts
 
 These 3 folder was a bit hacked to resolve bug with react-native-web
 
@@ -222,8 +210,8 @@ Helper is a component who take in params:
 - deleteQuery={deleteShop} ... easy to understand is the function call to delete one shop
 - selectQuery={shop} ... easy to understand is the function call to select
 -  upsertQuery={upsertShop} allow to update or create a element
--  select_result_select="shop" used by the app to properly take the select result
--  mutate_result_select="shops"  used by the app to properly take the mutation results 
+-  selectResultSelect="shop" used by the app to properly take the select result
+-  mutateResultSelect="shops"  used by the app to properly take the mutation results 
 
 Yeah it's seems complicate, but it's nice, this is compatible for every database you can create in prisma
 

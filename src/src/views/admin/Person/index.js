@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableHighlight, Text } from "react-native";
+import { Text } from "react-native";
 
 import Colors from "src/statics/colors";
 import Title from "src/components/title/Title";
@@ -8,6 +8,7 @@ import Helper from "../helper/helper";
 import Picture from "../Picture/Container";
 import Product from "../Product/Container";
 import Deal from "../Deal/Container";
+import User from "../User/Container";
 
 import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
 
@@ -18,6 +19,7 @@ class Person extends Component {
       {
         id: "",
         name: "",
+        owner: null,
         email: "",
         phone: "",
         pictures: [],
@@ -28,11 +30,12 @@ class Person extends Component {
     this.initplaceholder = {
       id: "ID",
       name: "String*",
+      owner: "User",
       email: "String",
       phone: "String",
-      pictures: "[Picture]*",
-      products: "[Product]*",
-      deals: "[Deal]*"
+      pictures: "[Picture]",
+      products: "[Product]",
+      deals: "[Deal]"
     };
   }
 
@@ -47,6 +50,9 @@ class Person extends Component {
       navigation,
       connected,
       parent,
+      saveId,
+      parentId,
+      selectedId,
       setModalVisible
     } = this.props;
     if (data && loading) {
@@ -79,25 +85,18 @@ class Person extends Component {
             deleteQuery={deletePerson}
             selectQuery={person}
             upsertQuery={upsertPerson}
-            select_result_select="person"
-            mutate_result_select="persons"
+            selectResultSelect="person"
+            mutateResultSelect="persons"
             setModalVisible={setModalVisible}
             root="Person"
             connected={connected}
             parent={parent}
-            childrenTree={{ Picture: Picture, Product: Product, Deal: Deal }}
+            saveId={saveId}
+            parentId={parentId}
+            selectedId={selectedId}
+            childrenTree={{ Picture, Product, Deal, User }}
           />
         )}
-
-        <TouchableHighlight
-          onPress={() => {
-            setModalVisible("Person", false);
-          }}
-        >
-          <Title size={14} color={Colors.text}>
-            X
-          </Title>
-        </TouchableHighlight>
       </KeyboardAwareCenteredView>
     );
   }
@@ -107,7 +106,9 @@ Person.propTypes = {};
 Person.defaultProps = {
   setModalVisible: () => {},
   connected: false,
-  parent: false
+  parent: "",
+  parentId: 0,
+  selectedId: null
 };
 
 export default Person;

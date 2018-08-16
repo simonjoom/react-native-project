@@ -1,34 +1,38 @@
 mutation upsertProduct(
   $name: String!
+  $namewhere: String
   $unit: String
   $code: String
-  $owner_id: User
-  $deals_ids: [ID!]!
+  $owner: UserWhereUniqueInput
+  $deals: [DealWhereUniqueInput!]
 ) {
   upsertProduct(
-    where: { name: $name }
+    where: { name: $namewhere }
     create: {
       name: $name
       unit: $unit
       code: $code
-      ownerId: $owner_id
-      dealsIds: $deals_ids
+      owner: { connect: $owner }
+      deals: { connect: $deals }
     }
     update: {
+      name: $name
       unit: $unit
       code: $code
-      ownerId: $owner_id
-      dealsIds: $deals_ids
+      owner: { connect: $owner }
+      deals: { connect: $deals }
     }
   ) {
     id
     name
     unit
     code
-    user {
+    owner {
+      id
       name
     }
     deals {
+      id
       title
     }
   }
@@ -39,10 +43,12 @@ mutation deleteProduct($name: String) {
     name
     unit
     code
-    user {
+    owner {
+      id
       name
     }
     deals {
+      id
       title
     }
   }
@@ -53,10 +59,12 @@ query product($name: String) {
     name
     unit
     code
-    user {
+    owner {
+      id
       name
     }
     deals {
+      id
       title
     }
   }
@@ -67,10 +75,12 @@ query products {
     name
     unit
     code
-    user {
+    owner {
+      id
       name
     }
     deals {
+      id
       title
     }
   }

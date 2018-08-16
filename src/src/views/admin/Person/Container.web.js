@@ -12,7 +12,6 @@ import {
 const PersonOut = compose(
   withApollo,
   graphql(persons),
-  //}),
   graphql(deletePerson, {
     props: ({ mutate, ownProps }) => ({
       deletePerson: ({ name }) =>
@@ -35,6 +34,7 @@ const PersonOut = compose(
           variables: { name }
         }),
       upsertPerson: ({
+        namewhere,
         name,
         ownerId,
         email,
@@ -45,6 +45,7 @@ const PersonOut = compose(
       }) =>
         mutate({
           variables: {
+            namewhere,
             name,
             ownerId,
             email,

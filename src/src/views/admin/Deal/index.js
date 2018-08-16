@@ -26,7 +26,7 @@ class Deal extends Component {
         participants: [],
         products: [],
         stage: null,
-        status: ["OPEN", "WON", "LOST", "DELETED"],
+        status: "OPEN",
         probability: ""
       }
     ];
@@ -37,10 +37,10 @@ class Deal extends Component {
       currency: "String*",
       owner: "User",
       org: "Organization",
-      participants: "[Person]*",
-      products: "[Product]*",
+      participants: "[Person]",
+      products: "[Product]",
       stage: "Stage",
-      status: "Enum",
+      status: "Enum:OPEN,WON,LOST,DELETED",
       probability: "String*"
     };
   }
@@ -56,6 +56,9 @@ class Deal extends Component {
       navigation,
       connected,
       parent,
+      saveId,
+      parentId,
+      selectedId,
       setModalVisible
     } = this.props;
     if (data && loading) {
@@ -88,25 +91,18 @@ class Deal extends Component {
             deleteQuery={deleteDeal}
             selectQuery={deal}
             upsertQuery={upsertDeal}
-            select_result_select="deal"
-            mutate_result_select="deals"
+            selectResultSelect="deal"
+            mutateResultSelect="deals"
             setModalVisible={setModalVisible}
-            root="Deals"
+            root="Deal"
             connected={connected}
             parent={parent}
+            saveId={saveId}
+            selectedId={selectedId}
+            parentId={parentId}
             childrenTree={{ User, Person, Product, Stage, Organization }}
           />
         )}
-
-        <TouchableHighlight
-          onPress={() => {
-            setModalVisible("Deal", false);
-          }}
-        >
-          <Title size={14} color={Colors.text}>
-            X
-          </Title>
-        </TouchableHighlight>
       </KeyboardAwareCenteredView>
     );
   }
@@ -116,7 +112,9 @@ Deal.propTypes = {};
 Deal.defaultProps = {
   setModalVisible: () => {},
   connected: false,
-  parent: false
+  parent: "",
+  parentId: 0,
+  selectedId: null
 };
 
 export default Deal;

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableHighlight, Text } from "react-native";
+import { Text } from "react-native";
 
 import Colors from "src/statics/colors";
 import Title from "src/components/title/Title";
@@ -24,7 +24,7 @@ class Organization extends Component {
       id: "ID",
       name: "String*",
       owner: "User",
-      persons: "[Person]",
+      persons: "[Person]"
     };
   }
 
@@ -39,6 +39,9 @@ class Organization extends Component {
       navigation,
       connected,
       parent,
+      saveId,
+      parentId,
+      selectedId,
       setModalVisible
     } = this.props;
     if (data && loading) {
@@ -72,24 +75,18 @@ class Organization extends Component {
             deleteQuery={deleteOrganization}
             selectQuery={organization}
             upsertQuery={upsertOrganization}
-            select_result_select="organization"
-            mutate_result_select="organizations"
+            selectResultSelect="organization"
+            mutateResultSelect="organizations"
             setModalVisible={setModalVisible}
             root="Organization"
             connected={connected}
             parent={parent}
-            childrenTree={{ Person, User}}
+            saveId={saveId}
+            selectedId={selectedId}
+            parentId={parentId}
+            childrenTree={{ Person, User }}
           />
         )}
-        <TouchableHighlight
-          onPress={() => {
-            setModalVisible("Organization",false);
-          }}
-        >
-          <Title size={14} color={Colors.text}>
-            X
-          </Title>
-        </TouchableHighlight>
       </KeyboardAwareCenteredView>
     );
   }
@@ -98,8 +95,10 @@ class Organization extends Component {
 Organization.propTypes = {};
 Organization.defaultProps = {
   setModalVisible: () => {},
-  connected:false,
-  parent:false
+  connected: false,
+  parent: "",
+  parentId: 0,
+  selectedId: null
 };
 
 export default Organization;

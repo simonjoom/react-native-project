@@ -11,7 +11,6 @@ import {
 const DealOut = compose(
   withApollo,
   graphql(deals),
-  //}),
   graphql(deleteDeal, {
     props: ({ mutate, ownProps }) => ({
       deleteDeal: ({ name }) =>
@@ -34,29 +33,31 @@ const DealOut = compose(
           variables: { name }
         }),
       upsertDeal: ({
+        namewhere,
         title,
         value,
         currency,
-        owner_id,
-        person_id,
-        org_id,
-        participants_ids,
-        products_ids,
-        stage_id,
+        owner,
+        org,
+        person,
+        stage,
+        participants,
+        products,
         status,
         probability
       }) =>
         mutate({
           variables: {
+            namewhere,
             title,
             value,
             currency,
-            owner_id,
-            org_id,
-            person_id,
-            stage_id,
-            participants_ids,
-            products_ids,
+            owner,
+            org,
+            person,
+            stage,
+            participants,
+            products,
             status,
             probability
           }

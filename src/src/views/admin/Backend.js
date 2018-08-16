@@ -5,9 +5,10 @@ import Title from "src/components/title/Title";
 import { translate } from "src/i18n";
 
 import OrganizationPicker from "./Organization/Container";
-/*import ProductPicker from "./Product/Container";
+import ProductPicker from "./Product/Container";
+import StagePicker from "./Stage/Container";
 import PipelinePicker from "./Pipeline/Container";
-import StagePicker from "./Stage/Container";*/
+import PicturePicker from "./Picture/Container";
 import DealPicker from "./Deal/Container";
 import PersonPicker from "./Person/Container";
 import UserPicker from "./User/Container";
@@ -28,15 +29,16 @@ class Backend extends Component {
       modalVisibleStage: false,
       modalVisibleDeal: false,
       modalVisibleProduct: false,
+      modalVisiblePicture: false,
       modalVisiblePerson: false
     };
-    this.renderModal=this.renderModal.bind(this);
+    this.renderModal = this.renderModal.bind(this);
     this.setModalVisible = this.setModalVisible.bind(this);
   }
 
   setModalVisible(type, visible, connected = false) {
     this.setState({ ["modalVisible" + type]: visible, connected });
-  } 
+  }
 
   renderModal(Comp, type) {
     if (this.state["modalVisible" + type])
@@ -57,34 +59,45 @@ class Backend extends Component {
       );
   }
 
+  renderButton = type => (
+    <Button
+      style={{ marginBottom: 20 }}
+      key={type}
+      onPress={() => this.setModalVisible(type, true)}
+      label={translate(type)}
+      fontSize={14}
+    />
+  );
+
   render() {
     const { data, loading } = this.props;
     if (data && loading) {
       return null;
     }
     const error = data ? data.error : null;
-
+    const Arr = [
+      "Organization",
+      "User",
+      "Person",
+      "Stage",
+      "Product",
+      "Pipeline",
+      "Picture",
+      "Deal"
+    ].map(type => this.renderButton(type));
     return (
       <KeyboardAwareCenteredView>
         <Title size={14} color={Colors.text}>
           Back End
         </Title>
-        {this.renderModal(
-          OrganizationPicker,
-          "Organization"
-        )}
-        {this.renderModal(
-          UserPicker,
-          "User"
-        )}
-        {this.renderModal(
-          PersonPicker,
-          "Person"
-        )}
-        {this.renderModal(
-          DealPicker,
-          "Deal"
-        )}
+        {this.renderModal(OrganizationPicker, "Organization")}
+        {this.renderModal(UserPicker, "User")}
+        {this.renderModal(PersonPicker, "Person")}
+        {this.renderModal(StagePicker, "Stage")}
+        {this.renderModal(ProductPicker, "Product")}
+        {this.renderModal(PipelinePicker, "Pipeline")}
+        {this.renderModal(PicturePicker, "Picture")}
+        {this.renderModal(DealPicker, "Deal")}
         {error &&
           error.graphQLErrors && (
             <Text>
@@ -95,32 +108,7 @@ class Backend extends Component {
             </Text>
           )}
 
-        <View>
-          <Button
-            style={{ marginBottom: 20 }}
-            onPress={() => this.setModalVisible("Organization", true)}
-            label={translate("Create_Organization")}
-            fontSize={14}
-          />
-          <Button
-            style={{ marginBottom: 20 }}
-            onPress={() => this.setModalVisible("User", true)}
-            label={translate("User")}
-            fontSize={14}
-          />
-          <Button
-            style={{ marginBottom: 20 }}
-            onPress={() => this.setModalVisible("Person", true)}
-            label={translate("Person")}
-            fontSize={14}
-          />
-          <Button
-            style={{ marginBottom: 20 }}
-            onPress={() => this.setModalVisible("Deal", true)}
-            label={translate("Deal")}
-            fontSize={14}
-          />
-        </View>
+        <View>{Arr}</View>
       </KeyboardAwareCenteredView>
     );
   }

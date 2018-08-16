@@ -1,51 +1,52 @@
 import { graphql, compose, withApollo } from "react-apollo";
-import { upsertProduct, product, deleteProduct, products } from "./query.gql";
+import { upsertPipeline, pipeline, deletePipeline, pipelines } from "./query.gql";
 import Comp from "./index";
+//import ResortComp from "../resort/ResortContainer";
 
 import { createStackNavigator } from "react-navigation";
 //TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
-const ProductOut = compose(
+const PipelineOut = compose(
   withApollo,
-  graphql(products),
-  graphql(deleteProduct, {
+  graphql(pipelines),
+  graphql(deletePipeline, {
     props: ({ mutate, ownProps }) => ({
-      deleteProduct: ({ name }) =>
+      deletePipeline: ({ name }) =>
         mutate({
           variables: { name }
         }).then(() =>
           ownProps.client.query({
-            query: products,
+            query: pipelines,
             fetchPolicy: "network-only"
           })
         )
     })
   }),
-  graphql(upsertProduct, {
+  graphql(upsertPipeline, {
     props: ({ mutate, ownProps }) => ({
-      Product: ({ name }) =>
+      pipeline: ({ name }) =>
         ownProps.client.query({
-          query: product,
+          query: pipeline,
           fetchPolicy: "network-only",
           variables: { name }
         }),
-      upsertProduct: ({ name, namewhere, unit, code, owner, deals }) =>
+      upsertPipeline: ({ name,namewhere, deals, order_nr, deal_probability }) =>
         mutate({
           variables: {
-            namewhere,
             name,
-            unit,
-            code,
-            owner,
-            deals
+            namewhere,
+            deals,
+            order_nr,
+            deal_probability
           }
         }).then(() =>
           ownProps.client.query({
-            query: products,
+            query: pipelines,
             fetchPolicy: "network-only"
           })
         )
     })
   })
 )(Comp);
-export default ProductOut;
+
+export default PipelineOut;

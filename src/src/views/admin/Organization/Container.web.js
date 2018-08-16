@@ -37,14 +37,14 @@ const OrganizationOut = compose(
         namewhere,
         name,
         owner,
-        person_ids
+        persons
       }) =>
         mutate({
           variables: {
             namewhere,
             name,
             owner,
-            person_ids
+            persons
           }
         }).then(() =>
           ownProps.client.query({

@@ -1,15 +1,15 @@
-mutation upsertOrganization($namewhere: String,$name: String!,  $owner: UserWhereUniqueInput, $person_ids: [PersonWhereUniqueInput!]) {
+mutation upsertOrganization($namewhere: String,$name: String!,  $owner: UserWhereUniqueInput, $persons: [PersonWhereUniqueInput!]) {
   upsertOrganization(
     where: { name: $namewhere }
     create: {
       name: $name
       owner: { connect: $owner }
-      persons: { connect: $person_ids }
+      persons: { connect: $persons }
     }
     update: {
       name: $name
       owner: { connect: $owner }
-      persons: { connect: $person_ids } 
+      persons: { connect: $persons } 
     }
   ) {
     id

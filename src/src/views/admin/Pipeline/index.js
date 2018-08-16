@@ -1,28 +1,28 @@
 import React, { Component } from "react";
 import { Text } from "react-native";
+
 import Helper from "../helper/helper";
+import Deal from "../Deal/Container";
 import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
 
-class Product extends Component {
+class Pipeline extends Component {
   constructor(props) {
     super(props);
     this.initfetch = [
       {
         id: "",
         name: "",
-        unit: "",
-        code: "",
-        owner: null,
-        deals: []
+        order_nr: "",
+        deals: [],
+        deal_probability: "ENABLE"
       }
     ];
     this.initplaceholder = {
       id: "ID",
-      name: "String*",
-      unit: "String*",
-      code: "String",
-      owner: "User",
-      deals: "[Deal]*"
+      name: "String",
+      order_nr: "String",
+      deals: "[Deal]",
+      deal_probability: "Enum:ENABLE,DISABLE"
     };
   }
 
@@ -31,9 +31,9 @@ class Product extends Component {
       data,
       data: { error },
       loading,
-      deleteProduct,
-      product,
-      upsertProduct,
+      deletePipeline,
+      pipeline,
+      upsertPipeline,
       navigation,
       connected,
       parent,
@@ -44,12 +44,13 @@ class Product extends Component {
     } = this.props;
     if (data && loading) {
       return null;
-    } 
-    //  const products = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allProducts;
+    }
+    //const selected = this.state.selected;
+    console.log("updatePipeline", data.pipelines, this.props);
+    //  const pipelines = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allPipelines;
 
-    let datas = data.products;
+    let datas = data.pipelines;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
-    //{products && products.map((product, i) => (<Title key={"tt" + i}>{product.name}</Title>))}
     return (
       <KeyboardAwareCenteredView>
         {error &&
@@ -66,21 +67,21 @@ class Product extends Component {
           <Helper
             tofetch={datas}
             placeholder={this.initplaceholder}
-            selector="title"
+            selector="name"
             navigation={navigation}
-            deleteQuery={deleteProduct}
-            selectQuery={product}
-            upsertQuery={upsertProduct}
-            selectResultSelect="product"
-            mutateResultSelect="products"
+            deleteQuery={deletePipeline}
+            selectQuery={pipeline}
+            upsertQuery={upsertPipeline}
+            selectResultSelect="pipeline"
+            mutateResultSelect="pipelines"
             setModalVisible={setModalVisible}
-            root="Product"
+            root="Pipeline"
             connected={connected}
             parent={parent}
             saveId={saveId}
             parentId={parentId}
             selectedId={selectedId}
-            childrenTree={{}}
+            childrenTree={{ Deal }}
           />
         )}
       </KeyboardAwareCenteredView>
@@ -88,13 +89,12 @@ class Product extends Component {
   }
 }
 //
-Product.propTypes = {};
-Product.defaultProps = {
+Pipeline.propTypes = {};
+Pipeline.defaultProps = {
   setModalVisible: () => {},
-  connected: false,
   parent: "",
   parentId: 0,
   selectedId: false
 };
 
-export default Product;
+export default Pipeline;

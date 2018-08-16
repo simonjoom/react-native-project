@@ -4,6 +4,7 @@ import { TouchableHighlight, Text } from "react-native";
 import Colors from "src/statics/colors";
 import Title from "src/components/title/Title";
 import Helper from "../helper/helper";
+import Pipeline from "../Pipeline/Container";
 import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
 
 class Stage extends Component {
@@ -15,14 +16,15 @@ class Stage extends Component {
         name: "",
         pipeline: null,
         order_nr: "",
-        deal_probability: ["ENABLE", "DISABLE"]
+        deal_probability: "ENABLE"
       }
     ];
     this.initplaceholder = {
       id: "ID",
+      name: "String",
       pipeline: "Pipeline",
       order_nr: "String",
-      deal_probability: "Enum"
+      deal_probability: "Enum:ENABLE,DISABLE"
     };
   }
 
@@ -34,7 +36,13 @@ class Stage extends Component {
       deleteStage,
       stage,
       upsertStage,
-      navigation
+      navigation,
+      connected,
+      parent,
+      saveId,
+      parentId,
+      selectedId,
+      setModalVisible
     } = this.props;
     if (data && loading) {
       return null;
@@ -66,20 +74,18 @@ class Stage extends Component {
             deleteQuery={deleteStage}
             selectQuery={stage}
             upsertQuery={upsertStage}
-            select_result_select="stage"
-            mutate_result_select="stages"
+            selectResultSelect="stage"
+            mutateResultSelect="stages"
+            setModalVisible={setModalVisible}
+            root="Stage"
+            connected={connected}
+            parent={parent}
+            saveId={saveId}
+            parentId={parentId}
+            selectedId={selectedId}
+            childrenTree={{}}
           />
         )}
-
-        <TouchableHighlight
-          onPress={() => {
-            this.props.setModalVisible("Stage", false);
-          }}
-        >
-          <Title size={14} color={Colors.text}>
-            X
-          </Title>
-        </TouchableHighlight>
       </KeyboardAwareCenteredView>
     );
   }
@@ -87,7 +93,10 @@ class Stage extends Component {
 //
 Stage.propTypes = {};
 Stage.defaultProps = {
-  setModalVisible: () => {}
+  setModalVisible: () => {},
+  parent: "",
+  parentId: 0,
+  selectedId: false
 };
 
 export default Stage;
