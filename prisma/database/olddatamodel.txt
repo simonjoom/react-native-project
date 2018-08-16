@@ -1,0 +1,178 @@
+type Brand {
+  id: ID! @unique
+  name: String!
+  category: Category!
+  shop: Shop!
+}
+
+#OptionValue = [AM,PM,FullDay] Morning time , afternoon, fullDay
+#Category_name:instructor:{[{name:ski,values:[AM,PM,FullDay],{name:snowboard,values:[AM,PM,FullDay]}],shop}
+#Category_name:photograph:{[{name:portrait,values:[AM,PM,FullDay],,{name:action,values:[AM,PM,FullDay]}],shop}
+
+
+type Category {
+  id: ID! @unique
+  name: String!
+  options: [Option!]! @relation(name: "CategoryOptions", onDelete: CASCADE)
+  shop: Shop!
+}
+
+type Attribute {
+  id: ID! @unique
+  value: String!
+  category: Category!
+  shop: Shop!
+  products: [Product!]!
+}
+
+type Option {
+  id: ID! @unique 
+  name: String! 
+  values: [OptionValue!]! @relation(name: "OptionOptionValues", onDelete: CASCADE)
+  category: Category! @relation(name: "CategoryOptions", onDelete: CASCADE)
+  shop: Shop!
+}
+
+type OptionValue {
+  id: ID! @unique
+  name: String!
+}
+
+type SelectedOption {
+  id: ID! @unique
+  deletedAt: DateTime # For soft-deletion
+  option: Option!
+  variant: Variant! @relation(name: "VariantOnSelectedOptions")
+  value: OptionValue!
+} 
+
+type Variant {
+  id: ID! @unique
+  deletedAt: DateTime # For soft-deletion
+  selectedOptions: [SelectedOption!]! @relation(name: "VariantOnSelectedOptions", onDelete: CASCADE)
+  price: Float!
+  available: Boolean!
+  product: Product @relation(name: "ProductVariants") # Variants can be disconnected from product when soft-deleted
+}
+
+type Product {
+  id: ID! @unique
+  deletedAt: DateTime # For soft-deletion
+  User: UserAdmin!
+  category: Category!
+  SKU: String
+  options: [Option!]!
+  unavailableOptionsValues: [OptionValue!]!
+  variants: [Variant!]! @relation(name: "ProductVariants" onDelete: CASCADE)
+  attributes: [Attribute!]!
+  displayPrice: Float!
+  available: Boolean!
+  orderables: [OrderableProduct!]! @relation(name: "OrderableProducts", onDelete: CASCADE)
+}
+
+type User {
+  id: ID! @unique
+  email: String! @unique
+  password: String!
+  firstName: String
+  lastName: String
+  role: Role! @default(value: "USER")
+  cart: [OrderLineItem!]! @relation(name: "UserCart" onDelete: CASCADE)
+  orders: [Order!]! @relation(name: "UserOrders")
+  oneSignalUserId: String
+}
+
+type UserAdmin {
+  id: ID! @unique
+  email: String! @unique
+  password: String!
+  firstName: String
+  lastName: String
+  selectedShop: Shop!
+  name: String!
+  description: String
+  category: Category!
+  imageUrl: String
+  role: Role! @default(value: "ADMIN")
+#  cart: [OrderLineItem!]! @relation(name: "UserCart" onDelete: CASCADE)
+#  orders: [Order!]! @relation(name: "UserOrders")
+  stripeCustomerId: String
+  oneSignalUserId: String
+}
+
+type File {
+  id: ID! @unique
+  name: String!
+  url: String! @unique
+  contentType: String!
+  secret: String! @unique
+  size: Int!
+}
+
+type Order {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  owner: User! @relation(name: "UserOrders")
+ # receiver: Shop!
+  lineItems: [OrderLineItem!]! @relation(name: "OrderLineItems" onDelete: CASCADE)
+  totalPrice: Float!
+  totalRefunded: Float!
+  totalTax: Float!
+  orderStatus: OrderStatus!
+}
+
+type OrderLineItem {
+  id: ID! @unique
+  deletedAt: DateTime
+  quantity: Int!
+  variant: Variant
+  owner: User @relation(name: "UserCart", onDelete: SET_NULL)
+  shop: Shop!
+}
+
+type Resort {
+  id: ID! @unique
+  name: String! @unique
+  description:String
+  address: String
+  zipCode: String
+  city: String!
+  phoneNumber: String!
+}
+
+type Shop {
+  id: ID! @unique
+  name: String! @unique
+  address: String!
+  zipCode: String!
+  resort: [Resort!]!
+  phoneNumber: String!
+  openingHours: String!
+  MOTD: String
+  products: [Product!]!
+ # newProducts: [OrderableProduct!]! @relation(name: "NewProducts")
+ # bestSellerProducts: [OrderableProduct!]! @relation(name: "BestSellerProducts")
+}
+
+type OrderableProduct {
+  id: ID! @unique
+  product: Product! @relation(name: "OrderableProducts")
+  position: Int!
+  shopBestSeller: Shop @relation(name: "BestSellerProducts")
+  shopNewProduct: Shop @relation(name: "NewProducts")
+}
+
+
+enum OrderStatus {
+  SUBMITTED
+  PAID
+  PREPARED
+  FAILED
+}
+
+
+enum Role {
+  USER
+  ADMIN
+}

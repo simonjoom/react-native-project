@@ -22,13 +22,22 @@ const propTypes = {
   disabled: PropTypes.bool,
 };
 
+let { width, height } = {
+  width: (Dimensions.get("window").width * 2) / 3,
+  height: (Dimensions.get("window").height * 2) / 3
+};
+
+const Mywidth = width > height ? width : height;
+const Myheight = width > height ? height : width;
+
 const defaultProps = {
   style: {},
   labelColor: color.white,
   iconColor: color.white,
   backgroundColor: 'transparent',
   height: 50,
-  width: Dimensions.get('window').width - 40,
+  //width: "auto",
+  alignSelf: 'center',
   borderColor: color.white,
   fontSize: 14,
   disabled: false,
@@ -43,7 +52,8 @@ const Button = props => {
     iconColor,
     backgroundColor,
     height,
-    width,
+    //width,
+    alignSelf,
     borderColor,
     fontSize,
     loading,
@@ -56,7 +66,8 @@ const Button = props => {
         styles.touchable,
         {
           height: height,
-          width: width,
+         // width: width,
+          alignSelf:alignSelf,
           backgroundColor: backgroundColor,
           borderColor: borderColor,
         },

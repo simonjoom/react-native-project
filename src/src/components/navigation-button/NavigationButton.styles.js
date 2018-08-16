@@ -11,7 +11,6 @@ export default StyleSheet.create({
     zIndex: -1,
   },
   container: {
-    width: 40, 
     backgroundColor: 'transparent',
   },
   icon: {

@@ -1,0 +1,54 @@
+mutation upsertStage(
+  $name: String!
+  $pipeline: Pipeline
+  $order_nr: String
+  $deal_probability: Probability
+) {
+  upsertStage(
+    where: { name: $name }
+    create: {
+      name: $name
+      pipeline: $pipeline
+      order_nr: $order_nr
+      deal_probability: $deal_probability
+    }
+    update: {
+      pipeline: $pipeline
+      order_nr: $order_nr
+      deal_probability: $deal_probability
+    }
+  ) {
+    id
+    name
+    pipeline
+    order_nr
+    deal_probability
+  }
+}
+mutation deleteStage($name: String) {
+  deleteStage(where: { name: $name }) {
+    id
+    name
+    pipeline
+    order_nr
+    deal_probability
+  }
+}
+query stage($name: String) {
+  stage(where: { name: $name }) {
+    id
+    name
+    pipeline
+    order_nr
+    deal_probability
+  }
+}
+query stages {
+  stages {
+    id
+    name
+    pipeline
+    order_nr
+    deal_probability
+  }
+}

@@ -11,29 +11,31 @@ class Product extends Component {
     super(props);
     this.initfetch = [
       {
-        name: "",
-        address: "",
-        zipCode: "",
-        city: "",
-        phoneNumber: "",
-        openingHours: "",
-        MOTD: "",
-        products: "",
-        newProducts: "",
-        bestSellerProducts: ""
+        id: "",
+        title: "",
+        value: "",
+        currency: "",
+        owner: null,
+        org: null,
+        participants: [],
+        products: [],
+        stage: null,
+        status: "",
+        probability: ""
       }
     ];
     this.initplaceholder = {
-      name: "String!", //use the first as unique key
-      address: "String!",
-      zipCode: "String!",
-      city: "String!",
-      phoneNumber: "String!",
-      openingHours: "String!",
-      MOTD: "String",
-      products: "[Product!]!",
-      newProducts: "[OrderableProduct!]!",
-      bestSellerProducts: "[OrderableProduct!]!"
+      id: "ID",
+      title: "String*",
+      value: "String*",
+      currency: "String",
+      owner: "User",
+      org: "Organization",
+      participants: "[Participant]*",
+      products: "[Product]*",
+      stage: "Stage",
+      status: "OrderStatus",
+      probability: "String*"
     };
   }
 
@@ -54,9 +56,8 @@ class Product extends Component {
     console.log("updateProduct", data.products, this.props);
     //  const products = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allProducts;
 
-    let datas = data.shops;
+    let datas = data.products;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
-    const selector = Object.keys(this.initplaceholder)[0];
     //{products && products.map((product, i) => (<Title key={"tt" + i}>{product.name}</Title>))}
     return (
       <KeyboardAwareCenteredView>
@@ -74,7 +75,7 @@ class Product extends Component {
           <Helper
             tofetch={datas}
             placeholder={this.initplaceholder}
-            selector={selector}
+            selector="title"
             navigation={navigation}
             deleteQuery={deleteProduct}
             selectQuery={product}
@@ -86,7 +87,7 @@ class Product extends Component {
 
         <TouchableHighlight
           onPress={() => {
-            this.props.setModalVisible(false);
+            this.props.setModalVisible("Product", false);
           }}
         >
           <Title size={14} color={Colors.text}>
@@ -104,5 +105,3 @@ Product.defaultProps = {
 };
 
 export default Product;
-
-//{!error && products && products.length > 0 ?this.renderPicker(products, selected, "name", deleteProduct, product, 'product', 'allProducts', this.fetchState) : null}

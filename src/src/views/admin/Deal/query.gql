@@ -1,0 +1,131 @@
+mutation upsertDeal(
+  $title: String!
+  $value: String!
+  $currency: String!
+  $owner_id: ID!
+  $org_id: ID!
+  $stage_id: ID!
+  $participants_ids: [ID!]!
+  $products_ids: [ID!]!
+  $status: OrderStatus
+  $probability: String
+) {
+  upsertDeal(
+    where: { title: $title }
+    create: {
+      title: $title
+      value: $value
+      currency: $currency
+      ownerId: $owner_id
+      orgId: $org_id
+      stageId: $stage_id
+      productsIds: $products_ids
+      participantsIds: $participants_ids
+      status: $status
+      probability: $probability
+    }
+    update: {
+      title: $title
+      value: $value
+      currency: $currency
+      ownerId: $owner_id
+      orgId: $org_id
+      stageId: $stage_id
+      productsIds: $products_ids
+      participantsIds: $participants_ids
+      status: $status
+      probability: $probability
+    }
+  ) {
+    id
+    title
+    currency
+    user {
+      name
+    }
+    stage {
+      name
+    }
+    products {
+      id
+    }
+    participants {
+      id
+      name
+    }
+    status
+    probability
+  }
+}
+mutation deleteDeal($name: String) {
+  deleteDeal(where: { name: $name }) {
+    id
+    name
+    currency
+    user {
+      name
+    }
+    organization {
+      name
+    }
+    stage {
+      name
+    }
+    products {
+      id
+    }
+    participants {
+      id
+      name
+    }
+    status
+    probability
+  }
+}
+query deal($name: String) {
+  deal(where: { name: $name }) {
+    id
+    name
+    currency
+    user {
+      name
+    }
+    organization {
+      name
+    }
+    stage {
+      name
+    }
+    products {
+      id
+    }
+    participants {
+      id
+      name
+    }
+    status
+    probability
+  }
+}
+query deals {
+  deals {
+    id
+    name
+    currency
+    user {
+      name
+    }
+    organization {
+      name
+    }
+    stage {
+      name
+    }
+    participants {
+      id
+      name
+    }
+    status
+    probability
+  }
+}

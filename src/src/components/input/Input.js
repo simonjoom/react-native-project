@@ -6,6 +6,14 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import color from "src/statics/colors";
 import styles from "./Input.styles";
 
+let { width, height } = {
+  width: (Dimensions.get("window").width * 2) / 3,
+  height: (Dimensions.get("window").height * 2) / 3
+};
+
+const Mywidth = width > height ? width : height;
+const Myheight = width > height ? height : width;
+
 const propTypes = {
   style: TextInput.propTypes.style,
   width: PropTypes.number,
@@ -31,7 +39,7 @@ const propTypes = {
 
 const defaultProps = {
   style: {},
-  width: Dimensions.get("window").width*2/3,
+  width: Mywidth,
   placeHolder: "",
   placeHolderColor: color.grey,
   autoFocus: () => {},

@@ -1,0 +1,64 @@
+mutation upsertOrganization($namewhere: String,$name: String!,  $owner: UserWhereUniqueInput, $person_ids: [PersonWhereUniqueInput!]) {
+  upsertOrganization(
+    where: { name: $namewhere }
+    create: {
+      name: $name
+      owner: { connect: $owner }
+      persons: { connect: $person_ids }
+    }
+    update: {
+      name: $name
+      owner: { connect: $owner }
+      persons: { connect: $person_ids } 
+    }
+  ) {
+    id
+    name
+    owner {
+      id
+      name
+    }
+    persons {
+      id
+    }
+  }
+}
+mutation deleteOrganization($name: String) {
+  deleteOrganization(where: { name: $name }) {
+    id
+    name
+    owner {
+      id
+      name
+    }
+    persons {
+      id
+    }
+  }
+}
+query organization($name: String) {
+  organization(where: { name: $name }) {
+    id
+    name
+    owner {
+      id
+      name
+    }
+    persons {
+      id
+    }
+  }
+}
+query organizations {
+  organizations {
+    id
+    name
+    owner {
+      id
+      name
+    }
+    persons {
+      id
+    }
+  }
+}

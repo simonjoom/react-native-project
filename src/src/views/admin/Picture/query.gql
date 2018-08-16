@@ -1,0 +1,35 @@
+mutation upsertPicture(
+  $id: ID!
+  $file:String!
+) {
+  upsertPicture(
+    where: { id: $id }
+    create: {
+    file:$file
+    }
+    update: {
+    file:$file
+    }
+  ) {
+    id
+    file
+  }
+}
+mutation deletePicture($name: String) {
+  deletePicture(where: { name: $name }) {
+    id
+    file
+  }
+}
+query picture($id: ID) {
+  picture(where: { id: $id }) {
+    id
+    file
+  }
+}
+query pictures {
+  pictures {
+    id
+    file
+  }
+}

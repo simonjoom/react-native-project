@@ -4,9 +4,14 @@ import Colors from "src/statics/colors";
 import Title from "src/components/title/Title";
 import { translate } from "src/i18n";
 
-import ResortPicker from "./resort/ResortContainer";
-import ShopPicker from "./shop/ShopContainer";
-import OptionValuePicker from "./optionvalue/OptionContainer";
+import OrganizationPicker from "./Organization/Container";
+/*import ProductPicker from "./Product/Container";
+import PipelinePicker from "./Pipeline/Container";
+import StagePicker from "./Stage/Container";*/
+import DealPicker from "./Deal/Container";
+import PersonPicker from "./Person/Container";
+import UserPicker from "./User/Container";
+
 import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
 
 import Gradient from "src/components/gradient/Gradient";
@@ -17,16 +22,21 @@ class Backend extends Component {
     super(props);
 
     this.state = {
-      modalVisibleResort: false,
-      modalVisibleShop: false,
-      modalVisibleOptionValue: false
+      modalVisibleOrganization: false,
+      modalVisibleUser: false,
+      modalVisiblePipeline: false,
+      modalVisibleStage: false,
+      modalVisibleDeal: false,
+      modalVisibleProduct: false,
+      modalVisiblePerson: false
     };
+    this.renderModal=this.renderModal.bind(this);
     this.setModalVisible = this.setModalVisible.bind(this);
   }
 
-  setModalVisible(type, visible) {
-    this.setState({ ["modalVisible" + type]: visible });
-  }
+  setModalVisible(type, visible, connected = false) {
+    this.setState({ ["modalVisible" + type]: visible, connected });
+  } 
 
   renderModal(Comp, type) {
     if (this.state["modalVisible" + type])
@@ -38,7 +48,10 @@ class Backend extends Component {
           onRequestClose={() => this.setModalVisible(type, false)}
         >
           <Gradient>
-            <Comp setModalVisible={this.setModalVisible} />
+            <Comp
+              setModalVisible={this.setModalVisible}
+              navigation={this.props.navigation}
+            />
           </Gradient>
         </Modal>
       );
@@ -46,7 +59,6 @@ class Backend extends Component {
 
   render() {
     const { data, loading } = this.props;
-    console.log("signup", this.props);
     if (data && loading) {
       return null;
     }
@@ -55,11 +67,24 @@ class Backend extends Component {
     return (
       <KeyboardAwareCenteredView>
         <Title size={14} color={Colors.text}>
-          Create Resort
+          Back End
         </Title>
-        {this.renderModal(ResortPicker, "Resort")}
-        {this.renderModal(ShopPicker, "Shop")}
-        {this.renderModal(OptionValuePicker, "OptionValue")}
+        {this.renderModal(
+          OrganizationPicker,
+          "Organization"
+        )}
+        {this.renderModal(
+          UserPicker,
+          "User"
+        )}
+        {this.renderModal(
+          PersonPicker,
+          "Person"
+        )}
+        {this.renderModal(
+          DealPicker,
+          "Deal"
+        )}
         {error &&
           error.graphQLErrors && (
             <Text>
@@ -73,20 +98,26 @@ class Backend extends Component {
         <View>
           <Button
             style={{ marginBottom: 20 }}
-            onPress={() => this.setModalVisible("Resort", true)}
-            label={translate("Create_resort")}
+            onPress={() => this.setModalVisible("Organization", true)}
+            label={translate("Create_Organization")}
             fontSize={14}
           />
           <Button
             style={{ marginBottom: 20 }}
-            onPress={() => this.setModalVisible("Shop", true)}
-            label={translate("Shop")}
+            onPress={() => this.setModalVisible("User", true)}
+            label={translate("User")}
             fontSize={14}
           />
           <Button
             style={{ marginBottom: 20 }}
-            onPress={() => this.setModalVisible("OptionValue", true)}
-            label={translate("OptionValue")}
+            onPress={() => this.setModalVisible("Person", true)}
+            label={translate("Person")}
+            fontSize={14}
+          />
+          <Button
+            style={{ marginBottom: 20 }}
+            onPress={() => this.setModalVisible("Deal", true)}
+            label={translate("Deal")}
             fontSize={14}
           />
         </View>

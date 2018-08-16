@@ -12,21 +12,7 @@ import Button from "src/components/button/Button";
 //import { SimpleLineIcons as Icon } from '@expo/vector-icons';
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 
-import { NavigationActions } from "react-navigation";
-/*
-const resetAction = NavigationActions.navigate({
-  routeName: 'SignUp',
-
-  params: {},
-
-  //action: NavigationActions.navigate({ routeName: 'SignUp' }),
- 
-  index: 0,
-  actions: [
-      NavigationActions.navigate({ routeName: 'SignUp' })
-  ]
-});*/
-//props.navigation.navigate("SignUp")
+import { NavigationActions } from "react-navigation"; 
 const Login = props => (
   <View style={styles.container}>
   
@@ -35,33 +21,12 @@ const Login = props => (
       SkiScool
     </Title>
     <Button
-      style={{ marginBottom: 20 }}
-      onPress={() => props.navigation.navigate("SignIn")}
-      label={translate("login")}
-      fontSize={14}
-    />
-    <NavigationButton onPress={() => {}} label={"zdzddz"} fontSize={14} />
-    <Button
-      onPress={() => props.navigation.navigate("SignUp")}
-      label={translate("sign_up")}
-      backgroundColor={color.white}
-      labelColor={color.red}
-      fontSize={14}
-    />
-    <Button
       onPress={() => props.navigation.navigate('Backend')}
       label={translate('Backend')}
       backgroundColor={color.white}
       labelColor={color.red}
       fontSize={14}
     />
-    <TouchableOpacity
-      onPress={() => props.navigation.navigate("AskPasswordReset")}
-    >
-      <Title color={color.white} size={11} style={{ marginTop: 20 }}>
-        {translate("forgot_password")}
-      </Title>
-    </TouchableOpacity>
     <View
       style={{
         width: 250,

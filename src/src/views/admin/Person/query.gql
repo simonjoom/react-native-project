@@ -1,0 +1,95 @@
+mutation upsertPerson(
+  $name: String!
+  $owner_id: ID!
+  $email: String
+  $phone: String
+  $picture_ids: [ID!]!
+  $product_ids: [ID!]!
+  $deal_ids: [ID!]!
+) {
+  upsertPerson(
+    where: { name: $name }
+    create: {
+      name: $name
+      ownerId: $owner_id
+      email: $email
+      phone: $phone
+      pictureIds: $picture_ids
+      productIds: $product_ids
+      dealIds: $deal_ids
+    }
+    update: {
+      ownerId: $owner_id
+      email: $email
+      phone: $phone
+      pictureIds: $picture_ids
+      productIds: $product_ids
+      dealIds: $deal_ids
+    }
+  ) {
+    id
+    name
+    email
+    phone
+    owner {
+      name
+    }
+    pictures {
+      id
+    }
+    products {
+      id
+    }
+  }
+}
+mutation deletePerson($name: String) {
+  deletePerson(where: { name: $name }) {
+    id
+    name
+    email
+    phone
+    owner {
+      name
+    }
+    pictures {
+      id
+    }
+    products {
+      id
+    }
+  }
+}
+query person($name: String) {
+  person(where: { name: $name }) {
+    id
+    name
+    email
+    phone
+    owner {
+      name
+    }
+    pictures {
+      id
+    }
+    products {
+      id
+    }
+  }
+}
+query persons {
+  persons {
+    id
+    name
+    email
+    phone
+    owner {
+      name
+    }
+    pictures {
+      id
+    }
+    products {
+      id
+    }
+  }
+}

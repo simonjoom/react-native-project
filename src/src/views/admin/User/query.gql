@@ -1,0 +1,96 @@
+mutation upsertUser(
+  $name: String!
+  $namewhere: String,
+  $email: String!
+  $password: String!
+  $company: OrganizationWhereUniqueInput
+  $firstName: String
+  $lastName: String
+  $active_flag: Active
+  $role: Role
+) {
+  upsertUser(
+    where: { name: $namewhere }
+    create: {
+      name: $name
+      email: $email
+      company: {connect:$company } 
+      password: $password
+      firstName: $firstName
+      lastName: $lastName
+      active_flag: $active_flag
+      role: $role
+    }
+    update: {
+      name: $name
+      email: $email
+      company: {connect:$company } 
+      password: $password
+      firstName: $firstName
+      lastName: $lastName
+      active_flag: $active_flag
+      role: $role
+    }
+  ) {
+    id
+    name
+    email
+    company {
+      id
+      name
+    }
+    password
+    firstName
+    lastName
+    active_flag
+    role
+  }
+}
+mutation deleteUser($name: String) {
+  deleteUser(where: { name: $name }) {
+    id
+    name
+    email
+    company {
+      id
+      name
+    }
+    password
+    firstName
+    lastName
+    active_flag
+    role
+  }
+}
+query user($name: String) {
+  user(where: { name: $name }) {
+    id
+    name
+    email
+    company {
+      id
+      name
+    }
+    password
+    firstName
+    lastName
+    active_flag
+    role
+  }
+}
+query users {
+  users {
+    id
+    name
+    email
+    company {
+      id
+      name
+    }
+    password
+    firstName
+    lastName
+    active_flag
+    role
+  }
+}

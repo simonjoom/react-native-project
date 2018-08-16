@@ -19,7 +19,9 @@ export const auth = {
     const user = await ctx.db.mutation.createUser({
       data: {
         email: args.email,
+        name: args.name,
         password,
+        company: null,
         firstName: args.firstName,
         lastName: args.lastName,
         role: "USER"
@@ -34,39 +36,10 @@ export const auth = {
       user
     };
   },
-  async signupAdmin(parent, args, ctx: Context, info) {
-    const password = await hashPassword(args.password);
-    const user = await ctx.db.mutation.createUserAdmin({
-      data: {
-        email: args.email,
-        password,
-        firstName: args.firstName,
-        lastName: args.lastName,
-        selectedShop: { connect: { id: args.shopId } },
-        category: { connect: { id: args.categoryId } },
-        role: "ADMIN",
-        name: args.name,
-        description: args.description,
-        imageUrl: args.imageUrl,
-        stripeCustomerId: args.stripeCustomerId,
-        oneSignalUserId: args.oneSignalUserId,
-      }
-    });
-
-    return {
-      token: jwt.sign(
-        { userId: user.id, role: "ADMIN" },
-        process.env.APP_SECRET
-      ),
-      user
-    };
-  },
-
   async login(parent, { email, password }, ctx: Context, info) {
     const user = await ctx.db.query.user({
       where: { email: email.toLowerCase() }
-    });
-    console.log("login", user);
+    }); 
     if (!user) {
       throw new Error(`No such user found for email: ${email}`);
     }
@@ -81,26 +54,6 @@ export const auth = {
       user
     };
   },
-  async loginAdmin(parent, { email, password }, ctx: Context, info) {
-    const user = await ctx.db.query.userAdmin({
-      where: { email: email.toLowerCase() }
-    });
-
-    if (!user) {
-      throw new Error(`No such user found for email: ${email}`);
-    }
-
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) {
-      throw new Error("Invalid password");
-    }
-
-    return {
-      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-      user
-    };
-  },
-
   async resetPassword(parent: any, { email }: User, ctx: Context) {
     if (!validator.isEmail(email)) {
       throw new InvalidEmailException();

@@ -1,96 +1,77 @@
 mutation upsertProduct(
-    $userAdminId: ID!
-    $categoryId: ID!
-    $available: Boolean!
-    $optionIds: [ID!]!
-    $variants: [ProductVariantInput!]!
-    $productId: ID,
-    $attributesIds: [ID!]!
-  #  $unavailableOptionsValuesIds: [ID!]!
-    $displayPrice: Float!
-    $imageUrl: String,
-    $nullValue: DateTime
-  ) {
-    upsertProduct(
-      userAdminId: $userId
-      categoryId: $categoryId
-      brandId: $brandId
-      available: $available
-      optionIds: $optionIds
-      variants: $variants
-      productId: $productId
-   #   attributesIds: $attributesIds
-   #   unavailableOptionsValuesIds: $unavailableOptionsValuesIds
-      displayPrice: $displayPrice
-    ) {
-      id
-      available
-      displayPrice
-      imageUrl
-      brand {
-        id
-        name
-      }
-      category {
-        id
-        name
-      }
-      options {
-        id
-        name
-        values {
-          id
-          name
-        }
-      }
-      variants(where: { deletedAt: $nullValue }) {
-        id
-        price
-        available
-        selectedOptions {
-          id
-          option {
-            id
-            name
-          }
-          value {
-            id
-            name
-          }
-        }
-      }
-      displayPrice
+  $name: String!
+  $unit: String
+  $code: String
+  $owner_id: User
+  $deals_ids: [ID!]!
+) {
+  upsertProduct(
+    where: { name: $name }
+    create: {
+      name: $name
+      unit: $unit
+      code: $code
+      ownerId: $owner_id
+      dealsIds: $deals_ids
     }
+    update: {
+      unit: $unit
+      code: $code
+      ownerId: $owner_id
+      dealsIds: $deals_ids
+    }
+  ) {
+    id
+    name
+    unit
+    code
+    user {
+      name
+    }
+    deals {
+      title
+    }
+  }
 }
 mutation deleteProduct($name: String) {
   deleteProduct(where: { name: $name }) {
     id
     name
-    description
-    address
-    zipCode
-    city
-    phoneNumber
+    unit
+    code
+    user {
+      name
+    }
+    deals {
+      title
+    }
   }
 }
 query product($name: String) {
   product(where: { name: $name }) {
     id
     name
-    description
-    address
-    zipCode
-    city
-    phoneNumber
+    unit
+    code
+    user {
+      name
+    }
+    deals {
+      title
+    }
   }
 }
 query products {
   products {
     id
     name
-    address
-    zipCode
-    city
-    phoneNumber
+    unit
+    code
+    user {
+      name
+    }
+    deals {
+      title
+    }
   }
 }
