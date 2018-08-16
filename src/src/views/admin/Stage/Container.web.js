@@ -30,7 +30,13 @@ const StageOut = compose(
           fetchPolicy: "network-only",
           variables: { name }
         }),
-      upsertStage: ({ name,namewhere, pipeline, order_nr, deal_probability }) =>
+      upsertStage: ({
+        name,
+        namewhere,
+        pipeline,
+        order_nr,
+        deal_probability
+      }) =>
         mutate({
           variables: {
             name,

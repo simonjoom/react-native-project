@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { TouchableHighlight, Text } from "react-native";
 
-import Colors from "src/statics/colors";
-import Title from "src/components/title/Title";
 import Helper from "../helper/helper";
 import Pipeline from "../Pipeline/Container";
 import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
@@ -83,7 +81,7 @@ class Stage extends Component {
             saveId={saveId}
             parentId={parentId}
             selectedId={selectedId}
-            childrenTree={{}}
+            childrenTree={{ Pipeline }}
           />
         )}
       </KeyboardAwareCenteredView>
