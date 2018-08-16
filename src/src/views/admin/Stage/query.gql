@@ -44,7 +44,9 @@ query stage($name: String) {
   stage(where: { name: $name }) {
     id
     name
-    pipeline
+    pipeline {
+      id
+    }
     order_nr
     deal_probability
   }
