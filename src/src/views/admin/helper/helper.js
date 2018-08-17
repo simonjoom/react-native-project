@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  TouchableOpacity,
-  Modal,
-  View,
-  Text,
-  TouchableHighlight,
-  StyleSheet
-} from "react-native";
-import Colors from "src/statics/colors";
-import Title from "src/components/title/Title";
+import { TouchableOpacity, Modal, View, Text } from "react-native";
 import Input from "src/components/input/Input";
 import { translate } from "src/i18n";
 import NavigationButton from "src/components/navigation-button/NavigationButton";
@@ -32,7 +23,7 @@ function isObject(value) {
   return value && typeof value === "object" && value.constructor === Object;
 }
 
-function isEntitie(key, obj) {
+function isEntitie(obj) {
   return !(
     obj.indexOf("String") !== -1 ||
     obj.indexOf("ID") !== -1 ||
@@ -63,7 +54,7 @@ function removeEmpty(obj, showid) {
 
   Object.keys(o).forEach(key => {
     if (key !== "__typename") {
-      if (o[key] && isObject(o[key])) o[key] = removeEmpty(o[key]);
+      if (o[key] && typeof o[key] === "object") o[key] = removeEmpty(o[key]);
       // Recurse.
       else if (o[key] === undefined) delete o[key];
       // Delete undefined and null.
@@ -74,8 +65,10 @@ function removeEmpty(obj, showid) {
   });
   return o; // Return new object.
 }
-const styleb = { marginBottom: 20 };
-const stylesmall = { marginBottom: 8 };
+const styleb = { flexGrow: 1 };
+const styleInput = { flexGrow: 5 };
+const stylerow = { marginLeft: 10, flexDirection: "row" };
+const rowMargin = { marginBottom: 10 };
 
 class Helper extends Component {
   constructor(props) {
@@ -86,10 +79,8 @@ class Helper extends Component {
       datas.forEach((data, i) => {
         if (data.id === props.selectedId) this.index = i;
       });
-
     this.state = {
       selected: this.index,
-      ids: [],
       labelid: null,
       fields: removeEmpty(datas[this.index]),
       modal: [],
@@ -115,15 +106,10 @@ class Helper extends Component {
   }
 
   updateDatabaseQ = (toupd, error) => {
-    const {
-      selector,
-      selectQuery,
-      upsertQuery,
-      mutateResultSelect
-    } = this.props;
+    const { selector, selectQuery, upsertQuery } = this.props;
     var ErrorP = reason => Promise.reject(new Error("fail " + reason));
     toupd.namewhere = this.selectorName;
-    return selectQuery({ [selector]: toupd.name }).then(
+    return selectQuery({ [selector]: toupd[selector] }).then(
       ({ data }) => {
         if (!data.organization) return upsertQuery(toupd);
         else return ErrorP(error);
@@ -138,37 +124,39 @@ class Helper extends Component {
     const obj = Object.keys(this.state.fields);
     let many = false;
     const getkey = obj.find(key => {
-      if (this.props.placeholder[key] === entitie) {
+      console.log(getType(this.props.placeholder[key]), entitie);
+      if (getType(this.props.placeholder[key]) === entitie) {
         many = isMany(this.props.placeholder[key]);
         return true;
       }
     });
-
-    const clids = this.state.ids.slice(0);
-    const idIn = clids[entitie];
-    clids[entitie] =
-      idIn && typeof idIn === "string" && many
-        ? [idIn, id]
-        : Array.isArray(idIn)
-          ? idIn.push(id)
-          : id;
-    console.log("clids", clids);
+    if (!getkey) {
+      console.log("traceerrorfin", getkey);
+      return;
+    }
+    var cp;
+    var field = this.state.fields[getkey];
+    if (Array.isArray(field)) {
+      cp = field.slice();
+      cp = cp.map(o => o.id);
+    }
+    let outids = Array.isArray(cp)
+      ? (!cp.includes(id) && cp.push(id) && cp) || cp
+      : id;
     let out;
     if (many)
-      out = clids[entitie].map(val => ({
+      out = outids.map(val => ({
         id: val
       }));
-    else out = { id };
+    else out = { id }; 
     const toupd = { ...this.state.fields, [getkey]: out };
     this.updateDatabaseQ(toupd, "Something happend not good").then(() =>
       this.setState(prevState => ({
-        ids: clids,
         fields: { ...prevState.fields, [getkey]: out }
       }))
     );
   }
 
-  
   setModalVisible(type, visible) {
     console.log("setModalVisiblehelper", type);
     this.state.modal[type] = visible;
@@ -200,11 +188,14 @@ class Helper extends Component {
   }
 
   validateFields() {
-    console.log("validea", this.state.fields);
     //one field not filled || required  === not validated
-    const array = Object.values(this.state.fields).slice(1); //delete id for validation (id is verytime the first element)
-    const placeholder = Object.values(this.props.placeholder).slice(1); //delete id for validation (id is verytime the first element)
-    return array.every((el, index) => !!el || !isRequired(placeholder[index]));
+    const array = Object.keys(this.state.fields).slice(1); //delete id for validation (id is verytime the first element)
+    const bool = array.every(key => {
+      return (
+        !!this.state.fields[key] || !isRequired(this.props.placeholder[key])
+      );
+    });
+    return bool;
   }
 
   focusNextField(nextField) {
@@ -218,6 +209,7 @@ class Helper extends Component {
       labelid: labelid,
       selected: selected
     };
+    console.log("rebuildHelper", removeEmpty(tomod));
     this.setState(removeEmpty(tomod));
   }
 
@@ -322,30 +314,34 @@ class Helper extends Component {
       return Object.keys(fields).map((key, index) => {
         const val = fields[key];
         console.log("debug", val, placeholder, key);
-        if (key !== "id" && isEntitie(key, placeholder[key])) {
+        if (key !== "id" && isEntitie(placeholder[key])) {
           console.log("entitie:", placeholder[key]);
           const type = getType(placeholder[key]);
           const many = isMany(placeholder[key]);
+          let vals;
+          if (many) vals = val.map(o => o.id);
           const isSameEntitieParent = this.props.parent === type;
 
           this.selectedId[type] = val && val.id ? val.id : false;
           console.log("isSameEntitieParent", isSameEntitieParent, type);
-          console.log("isSameEntitieParent", this.props.parentId);
+          console.log("renderFields.ids", this.state.fields);
           //  if (fields[key])
           return (
             <View
-              style={[{ marginLeft: 10 }, stylesmall]}
+              style={[stylerow, rowMargin]}
               key={key + "_" + selectResultSelect + index}
             >
               <Text style={style}>{type.toUpperCase()}</Text>
               {isSameEntitieParent && (
                 <Input
                   type={"small"}
+                  widthAuto
+                  noborder
                   editable={false}
                   placeholder={type}
                   placeholderTextColor="gray"
                   key={key + "_field_" + selectResultSelect + index}
-                  style={style}
+                  style={styleInput}
                   label={translate(key + "_" + selectResultSelect)}
                   value={this.props.parentId}
                 />
@@ -354,19 +350,27 @@ class Helper extends Component {
                 <>
                   <Input
                     type={"small"}
+                    widthAuto
+                    noborder
                     editable={false}
                     placeholder={type}
                     placeholderTextColor="gray"
-                    style={style}
+                    style={styleInput}
                     key={key + "_field_" + selectResultSelect + index}
                     ref={selectResultSelect + index}
                     label={translate(key + "_" + selectResultSelect)}
-                    value={val && val.id ? val.id : this.state.ids[type]}
+                    value={
+                      val && val.id
+                        ? val.id
+                        : !many
+                          ? this.state.fields[type]
+                          : vals
+                    }
                     onSubmit={() =>
                       this.focusNextField(selectResultSelect + (index + 1))
                     }
                   />
-                  {(!this.state.ids[type] || (val && val.id) || many) && (
+                  {(!this.state.fields[type] || (val && val.id) || many) && (
                     <TouchableOpacity
                       onPress={() => {
                         this.setModalVisible(type, true);
@@ -396,11 +400,13 @@ class Helper extends Component {
           return (
             <Input
               autoFocus
+              widthAuto
+              style={rowMargin}
               type={key !== "id" ? type : "small"}
               editable={key !== "id"}
+              noborder={key === "id"}
               placeholder={placeholder[key]}
               placeholderTextColor="gray"
-              style={style}
               key={key + "_field_" + selectResultSelect + index}
               ref={selectResultSelect + index}
               label={translate(key + "_" + selectResultSelect)}
@@ -453,8 +459,9 @@ class Helper extends Component {
       onPress={() => {
         if (validator)
           try {
-            const toupd = { ...this.state.fields };
+            const toupd = { ...this.state.fields, id: 0 };
             toupd.namewhere = toupd[selector];
+            console.log("create", toupd);
             upsertQuery(toupd).then(({ data }) => {
               const out = data[mutateResultSelect];
               const item = out[out.length - 1];
@@ -483,7 +490,7 @@ class Helper extends Component {
       setModalVisible
     } = this.props;
     const selected = this.state.selected;
-    console.log("DEBUGState", this.state);
+    console.log("DEBUGS", this.state.labelid, this.props.selectedId);
     console.log("debugstate.fields", this.state.fields, placeholder);
     //  const resorts = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allResorts;
 

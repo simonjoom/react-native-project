@@ -3,9 +3,7 @@ import { upsertPicture, picture, deletePicture, pictures } from "./query.gql";
 import Comp from "./index";
 //import ResortComp from "../resort/ResortContainer";
 
-import {
-  createStackNavigator
-} from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 //TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
 const PictureOut = compose(
@@ -33,10 +31,7 @@ const PictureOut = compose(
           fetchPolicy: "network-only",
           variables: { id }
         }),
-      upsertPicture: ({
-        id,
-        file
-      }) =>
+      upsertPicture: ({ id, file }) =>
         mutate({
           variables: {
             id,

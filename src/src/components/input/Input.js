@@ -12,12 +12,13 @@ let { width, height } = {
 };
 
 const Mywidth = width > height ? width : height;
-const Myheight = width > height ? height : width;
+//const Myheight = width > height ? height : width;
 
 const propTypes = {
-  style: TextInput.propTypes.style,
+  style: View.propTypes.style,
   width: PropTypes.number,
   label: PropTypes.string,
+  type: PropTypes.string,
   placeHolder: PropTypes.string,
   placeHolderColor: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
@@ -34,12 +35,15 @@ const propTypes = {
   helper: PropTypes.string,
   value: PropTypes.string,
   withValidation: PropTypes.bool,
+  widthAuto: PropTypes.bool,
+  noborder: PropTypes.bool,
   validationFunction: PropTypes.func
 };
 
 const defaultProps = {
   style: {},
   width: Mywidth,
+  widthAuto: false,
   placeHolder: "",
   placeHolderColor: color.grey,
   autoFocus: () => {},
@@ -91,22 +95,23 @@ class Input extends PureComponent {
   }
 
   render() {
-    const stylesc =
-      this.props.type == "small" ? styles.inputsmall : styles.input;
-      const stylesl =
-        this.props.type == "small" ? styles.labelsmall : styles.label;
+    const { type, widthAuto, style, noborder } = this.props;
+    const stylesc = type === "small" ? styles.inputsmall : styles.input;
+    const stylesl = type === "small" ? styles.labelsmall : styles.label;
+    const rootStyle = { backgroundColor: "transparent" };
+    const borderStyle = noborder
+      ? { borderBottomWidth: 0 }
+      : { borderBottomColor: this.state.color };
+    const textInputStyle = [stylesc, borderStyle];
+    if (!widthAuto) rootStyle.width = this.props.width;
     return (
-      <View style={{ backgroundColor: "transparent", width: this.props.width }}>
+      <View style={[style, rootStyle]}>
         {this.props.label && (
           <Text style={stylesl}>{this.props.label.toUpperCase()}</Text>
         )}
         <TextInput
           ref={ref => (this.input = ref)}
-          style={[
-            stylesc,
-            { borderBottomColor: this.state.color },
-            this.props.style
-          ]}
+          style={textInputStyle}
           editable={this.props.editable}
           placeholder={this.props.placeholder}
           placeholderTextColor={this.props.placeholderTextColor}
@@ -138,6 +143,5 @@ Input.propTypes = propTypes;
 Input.defaultProps = defaultProps;
 
 export default Input;
-
 
 //autoFocus={this.props.autoFocus}  ??? problem

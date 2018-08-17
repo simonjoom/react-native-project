@@ -64,7 +64,7 @@ class Backend extends Component {
       style={{ marginBottom: 20 }}
       key={type}
       onPress={() => this.setModalVisible(type, true)}
-      label={translate(type)}
+      label={translate(type + "s")}
       fontSize={14}
     />
   );

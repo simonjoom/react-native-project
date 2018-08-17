@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Text } from "react-native";
-
-import Colors from "src/statics/colors";
-import Title from "src/components/title/Title";
+ 
 import Helper from "../helper/helper";
 
 import Picture from "../Picture/Container";

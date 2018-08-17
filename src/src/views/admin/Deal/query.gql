@@ -40,6 +40,7 @@ mutation upsertDeal(
   ) {
     id
     title
+    value
     currency
     owner {
       id
@@ -60,10 +61,11 @@ mutation upsertDeal(
     probability
   }
 }
-mutation deleteDeal($name: String) {
-  deleteDeal(where: { name: $name }) {
+mutation deleteDeal($title: String) {
+  deleteDeal(where: { title: $title }) {
     id
-    name
+    title
+    value
     currency
     owner {
       id
@@ -85,10 +87,11 @@ mutation deleteDeal($name: String) {
   }
 }
 
-query deal($name: String) {
-  deal(where: { name: $name }) {
+query deal($title: String) {
+  deal(where: { title: $title }) {
     id
-    name
+    title
+    value
     currency
     owner {
       id
@@ -112,7 +115,8 @@ query deal($name: String) {
 query deals {
   deals {
     id
-    name
+    title
+    value
     currency
     owner {
       id

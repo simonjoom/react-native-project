@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Text } from "react-native";
-
-import Colors from "src/statics/colors";
-import Title from "src/components/title/Title";
+ 
 import Helper from "../helper/helper";
 import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
 
@@ -17,7 +15,7 @@ class Picture extends Component {
     ];
     this.initplaceholder = {
       id: "ID",
-      file: "String"
+      file: "String*"
     };
   }
 
@@ -62,7 +60,7 @@ class Picture extends Component {
           <Helper
             tofetch={datas}
             placeholder={this.initplaceholder}
-            selector="name"
+            selector="id"
             navigation={navigation}
             deleteQuery={deletePicture}
             selectQuery={picture}

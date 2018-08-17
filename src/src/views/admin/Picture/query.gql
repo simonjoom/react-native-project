@@ -1,15 +1,8 @@
-mutation upsertPicture(
-  $id: ID!
-  $file:String!
-) {
+mutation upsertPicture($id: ID!, $file: String!) {
   upsertPicture(
     where: { id: $id }
-    create: {
-    file:$file
-    }
-    update: {
-    file:$file
-    }
+    create: { file: $file }
+    update: { file: $file }
   ) {
     id
     file

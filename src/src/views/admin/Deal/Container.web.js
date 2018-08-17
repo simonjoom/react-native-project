@@ -13,9 +13,9 @@ const DealOut = compose(
   graphql(deals),
   graphql(deleteDeal, {
     props: ({ mutate, ownProps }) => ({
-      deleteDeal: ({ name }) =>
+      deleteDeal: ({ title }) =>
         mutate({
-          variables: { name }
+          variables: { title }
         }).then(() =>
           ownProps.client.query({
             query: deals,
@@ -26,11 +26,11 @@ const DealOut = compose(
   }),
   graphql(upsertDeal, {
     props: ({ mutate, ownProps }) => ({
-      Deal: ({ name }) =>
+      deal: ({ title }) =>
         ownProps.client.query({
           query: deal,
           fetchPolicy: "network-only",
-          variables: { name }
+          variables: { title }
         }),
       upsertDeal: ({
         namewhere,

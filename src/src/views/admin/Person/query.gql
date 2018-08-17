@@ -4,9 +4,9 @@ mutation upsertPerson(
   $owner: UserWhereUniqueInput
   $email: String
   $phone: String
-  $pictures: [PictureWhereUniqueInput!]!
-  $products: [ProductWhereUniqueInput!]!
-  $deals: [DealWhereUniqueInput!]!
+  $pictures: [PictureWhereUniqueInput!]
+  $products: [ProductWhereUniqueInput!]
+  $deals: [DealWhereUniqueInput!]
 ) {
   upsertPerson(
     where: { name: $namewhere }

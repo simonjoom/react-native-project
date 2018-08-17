@@ -23,7 +23,7 @@ const ProductOut = compose(
   }),
   graphql(upsertProduct, {
     props: ({ mutate, ownProps }) => ({
-      Product: ({ name }) =>
+      product: ({ name }) =>
         ownProps.client.query({
           query: product,
           fetchPolicy: "network-only",

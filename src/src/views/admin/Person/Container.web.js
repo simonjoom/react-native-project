@@ -36,23 +36,23 @@ const PersonOut = compose(
       upsertPerson: ({
         namewhere,
         name,
-        ownerId,
+        owner,
         email,
         phone,
-        pictureIds,
-        productIds,
-        dealIds
+        pictures,
+        products,
+        deals
       }) =>
         mutate({
           variables: {
             namewhere,
             name,
-            ownerId,
+            owner,
             email,
             phone,
-            pictureIds,
-            productIds,
-            dealIds
+            pictures,
+            products,
+            deals
           }
         }).then(() =>
           ownProps.client.query({
