@@ -1,28 +1,42 @@
+fragment PictureFragment on Picture {
+  id
+  file
+}
+
 mutation upsertPicture($id: ID!, $file: String!) {
   upsertPicture(
     where: { id: $id }
     create: { file: $file }
     update: { file: $file }
   ) {
-    id
-    file
+    ...PictureFragment
   }
 }
-mutation deletePicture($name: String) {
-  deletePicture(where: { name: $name }) {
-    id
-    file
+mutation deletePicture($id: ID) {
+  deletePicture(where: { id: $id }) {
+    ...PictureFragment
   }
 }
 query picture($id: ID) {
   picture(where: { id: $id }) {
-    id
-    file
+    ...PictureFragment
   }
 }
 query pictures {
   pictures {
-    id
-    file
+    ...PictureFragment
+  }
+}
+
+subscription picturesub($where: PictureSubscriptionWhereInput) {
+  picture(where: $where) {
+    node {
+      ...PictureFragment
+    }
+    updatedFields
+    previousValues {
+      id
+      name
+    }
   }
 }

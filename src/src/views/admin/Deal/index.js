@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import { TouchableHighlight, Text } from "react-native";
-
-import Colors from "src/statics/colors";
-import Title from "src/components/title/Title";
 import Helper from "../helper/helper";
-import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
 
 import User from "../User/Container";
 import Person from "../Person/Container";
@@ -48,11 +43,9 @@ class Deal extends Component {
   render() {
     const {
       data,
-      data: { error },
-      loading,
       deleteDeal,
       deal,
-      upsertDeal,
+      dealsub,
       navigation,
       connected,
       parent,
@@ -60,10 +53,7 @@ class Deal extends Component {
       parentId,
       selectedId,
       setModalVisible
-    } = this.props;
-    if (data && loading) {
-      return null;
-    }
+    } = this.props; 
     //const selected = this.state.selected;
     console.log("updateDeal", data.deals, this.props);
 
@@ -71,39 +61,24 @@ class Deal extends Component {
     if (!(datas && datas.length > 0)) datas = this.initfetch;
 
     return (
-      <KeyboardAwareCenteredView>
-        {error &&
-          error.graphQLErrors && (
-            <Text>
-              Bad:{" "}
-              {error.graphQLErrors.map(({ message }, i) => (
-                <Text key={i}>{message}</Text>
-              ))}
-            </Text>
-          )}
-
-        {!error && (
-          <Helper
-            tofetch={datas}
-            placeholder={this.initplaceholder}
-            selector="title"
-            navigation={navigation}
-            deleteQuery={deleteDeal}
-            selectQuery={deal}
-            upsertQuery={upsertDeal}
-            selectResultSelect="deal"
-            mutateResultSelect="deals"
-            setModalVisible={setModalVisible}
-            root="Deal"
-            connected={connected}
-            parent={parent}
-            saveId={saveId}
-            selectedId={selectedId}
-            parentId={parentId}
-            childrenTree={{ User, Person, Product, Stage, Organization }}
-          />
-        )}
-      </KeyboardAwareCenteredView>
+      <Helper
+        tofetch={datas}
+        placeholder={this.initplaceholder}
+        selector="title"
+        navigation={navigation}
+        deleteQuery={deleteDeal}
+        subscribe={dealsub}
+        selectQuery={deal}
+        selectResultSelect="deal"
+        setModalVisible={setModalVisible}
+        root="Deal"
+        connected={connected}
+        parent={parent}
+        saveId={saveId}
+        selectedId={selectedId}
+        parentId={parentId}
+        childrenTree={{ User, Person, Product, Stage, Organization }}
+      />
     );
   }
 }

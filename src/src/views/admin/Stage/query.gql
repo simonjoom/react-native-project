@@ -1,3 +1,13 @@
+fragment StageFragment on Stage {
+  id
+  name
+  pipeline {
+    id
+  }
+  order_nr
+  deal_probability
+}
+
 mutation upsertStage(
   $name: String!
   $namewhere: String
@@ -20,45 +30,33 @@ mutation upsertStage(
       deal_probability: $deal_probability
     }
   ) {
-    id
-    name
-    pipeline {
-      id
-    }
-    order_nr
-    deal_probability
+    ...StageFragment
   }
 }
 mutation deleteStage($name: String) {
   deleteStage(where: { name: $name }) {
-    id
-    name
-    pipeline {
-      id
-    }
-    order_nr
-    deal_probability
+    ...StageFragment
   }
 }
 query stage($name: String) {
   stage(where: { name: $name }) {
-    id
-    name
-    pipeline {
-      id
-    }
-    order_nr
-    deal_probability
+    ...StageFragment
   }
 }
 query stages {
   stages {
-    id
-    name
-    pipeline {
-      id
+    ...StageFragment
+  }
+}
+subscription stagesub($where: StageSubscriptionWhereInput) {
+  stage(where: $where) {
+    node {
+      ...StageFragment
     }
-    order_nr
-    deal_probability
+    updatedFields
+    previousValues {
+      id
+      name
+    }
   }
 }

@@ -1,27 +1,52 @@
-import { GraphQLServer, Options } from 'graphql-yoga';
-import { formatError } from 'apollo-errors';
-import { mailer } from './third-party/nodemailer';
+var express = require('express') 
+const { ApolloServer } = require("apollo-server-express");
+
+//import { formatError } from 'apollo-errors';
+import { mailer } from "./third-party/nodemailer";
 
 //import resolvers from './resolvers';
-import { ultimateSchema, db,resolvers } from './resolv';
+import { ultimateSchema, db, resolvers } from "./resolv";
 
-const options: Options = {
+var app = express()
+//app.use(cors({credentials: true, origin: true}))
+
+const options = {
   port: 4000,
-  formatError,
-  playground: '/playground',
-  debug: true
+  //formatError,
+  subscriptions: "/subscriptions",
+  playground: "/playground"
+  //debug: true
 };
+/*
+const resolvers = {
+  Query: { 
+  },
+  Mutation: { 
+  },
+  Subscription: {
+    organization: {
+      subscribe: (_, args, ctx, info) => {
+        return ctx.db.subscription.organization({}, info)
+      },
+    },
+  },
+}*/
+//const jwtCheck = jwt({ secret: process.env.JWT_SECRET }); // change out your secret for each environment
+//app.use(path, jwtCheck);
 
-
-export const server = new GraphQLServer({
-  //typeDefs: './prisma/src/schema.graphql',
-  //resolvers,
+export const server = new ApolloServer({
   schema: ultimateSchema,
-  context: req => ({
+  subscriptions: "/subscriptions", 
+  cors: true, 
+  context: ({ req, res }) => ({
     ...req,
     db,
     mailer
-  }),
-});
-
-server.start(options, () => console.log(`Server is running on http://localhost:4000`));
+  })
+}); 
+server.applyMiddleware({
+  app,
+  path:"/",
+//  bodyParserConfig:true,
+  cors: true
+})

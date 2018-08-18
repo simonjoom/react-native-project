@@ -32,6 +32,20 @@ function isEntitie(obj) {
   //return obj.indexOf("[") !== -1 && obj.indexOf("]") !== -1;
   //it's a node like "[Product!]!","[OrderableProduct!]!","ENUM",
 }
+function updateInCollection(collection, object) {
+  return collection.reduce(function(tally, el) {
+    var pick = el.id === object.id ? object : el;
+    tally.push(pick);
+    return tally;
+  }, []);
+}
+function addInCollection(collection, object) {
+  return [...collection, object];
+}
+function removeInCollection(collection, object) {
+  return collection.filter(tally => tally.id !== object.id);
+}
+
 function isRequired(string) {
   return string.indexOf("*") !== -1;
 }
@@ -65,33 +79,38 @@ function removeEmpty(obj, showid) {
   });
   return o; // Return new object.
 }
+function removeField(fields, id) {
+  return fields.filter(field => field.id !== id);
+}
 const styleb = { flexGrow: 1 };
 const styleInput = { flexGrow: 5 };
 const stylerow = { marginLeft: 10, flexDirection: "row" };
-const rowMargin = { marginBottom: 10 };
+const rowMargin = { marginBottom: 10, alignSelf: "flex-start" };
 
 class Helper extends Component {
   constructor(props) {
     super(props);
-    let datas = props.tofetch;
+    const datas = props.tofetch;
     this.index = 0;
     if (props.selectedId)
       datas.forEach((data, i) => {
         if (data.id === props.selectedId) this.index = i;
       });
     this.state = {
+      tofetch: [...datas],
       selected: this.index,
       labelid: null,
       fields: removeEmpty(datas[this.index]),
       modal: [],
-      root: props.root
+      root: props.root,
+      subscription: null
     };
-
+    console.log("datas", this.state.tofetch);
     Object.keys(props.childrenTree).forEach(key => {
       this.state.modal[key] = false;
     });
     this.selectedId = [];
-    this.index_current = 0;
+    this.index_current = -1;
     this.fetchState = this.fetchState.bind(this);
     this.renderPicker = this.renderPicker.bind(this);
     this.validateFields = this.validateFields.bind(this);
@@ -105,6 +124,57 @@ class Helper extends Component {
     this.selectorName = this.state.fields[props.selector];
   }
 
+  /*
+  componentWillReceiveProps(newProps, newstate) {
+    const { tofetch, selectedId } = newProps;
+    if (this.state.tofetch.length !== tofetch.length) {
+      if (selectedId)
+        tofetch.forEach((data, i) => {
+          if (data.id === selectedId) this.index = i;
+        });
+      this.setState({
+        tofetch: [...tofetch],
+        selected: this.index,
+        labelid: null,
+        fields: removeEmpty(tofetch[this.index])
+      });
+    }
+  }*/
+
+  componentDidMount() {
+    const that = this;
+    this.handle = this.props.subscribe().subscribe({
+      next({ data }) {
+        console.log("Received key command: ", data);
+        if (data) {
+          const el = data[that.props.selectResultSelect];
+          if (el.mutation === "CREATED") {
+            const out = el.node;
+            const res = addInCollection(that.state.tofetch, out);
+            that.fetchState(out, out.id, res.length - 1, res);
+          } else if (el.mutation === "DELETED") {
+            const out = el.previousValues;
+            that.selectorName = out[that.props.selector];
+            that.fetchState(
+              null,
+              null,
+              that.index,
+              removeInCollection(that.state.tofetch, out)
+            );
+          }
+        }
+      },
+      error(err) {
+        console.log("error", err);
+      },
+      complete() {
+        console.log("Stream complete");
+      }
+    });
+  }
+  componentWillUnmount() {
+    this.handle.unsubscribe();
+  }
   updateDatabaseQ = (toupd, error) => {
     const { selector, selectQuery, upsertQuery } = this.props;
     var ErrorP = reason => Promise.reject(new Error("fail " + reason));
@@ -148,7 +218,7 @@ class Helper extends Component {
       out = outids.map(val => ({
         id: val
       }));
-    else out = { id }; 
+    else out = { id };
     const toupd = { ...this.state.fields, [getkey]: out };
     this.updateDatabaseQ(toupd, "Something happend not good").then(() =>
       this.setState(prevState => ({
@@ -189,13 +259,16 @@ class Helper extends Component {
 
   validateFields() {
     //one field not filled || required  === not validated
-    const array = Object.keys(this.state.fields).slice(1); //delete id for validation (id is verytime the first element)
-    const bool = array.every(key => {
-      return (
-        !!this.state.fields[key] || !isRequired(this.props.placeholder[key])
-      );
-    });
-    return bool;
+    if (this.state.fields) {
+      const array = Object.keys(this.state.fields).slice(1); //delete id for validation (id is verytime the first element)
+      console.log("debgvalidate", array, this.state.fields);
+      const bool = array.every(key => {
+        return (
+          !!this.state.fields[key] || !isRequired(this.props.placeholder[key])
+        );
+      });
+      return bool;
+    }
   }
 
   focusNextField(nextField) {
@@ -203,11 +276,12 @@ class Helper extends Component {
     //else
   }
 
-  fetchState(fields, labelid, selected) {
+  fetchState(fields, labelid, selected, tofetch) {
     const tomod = {
       fields: fields,
       labelid: labelid,
-      selected: selected
+      selected: selected,
+      tofetch: tofetch ? tofetch : undefined
     };
     console.log("rebuildHelper", removeEmpty(tomod));
     this.setState(removeEmpty(tomod));
@@ -250,17 +324,17 @@ class Helper extends Component {
     selector,
     deleteQuery,
     selectQuery,
-    selectResultSelect,
-    mutateResultSelect
+    selectResultSelect
   ) {
-    var index = selected;
+    //console.log("renderPicker",datas.length - 1)
+    var index = selected == -1 ? datas.length - 1 : selected;
     const datapic = datas.map((data, i) => data[selector]);
-    console.log("search", selectedId);
+
     if (selectedId && !this.eventpicker)
       datas.forEach((data, i) => {
         if (data.id === selectedId) index = i;
       });
-
+    console.log("dataselectQuery", selectedId, index);
     return (
       <Picker
         pickerTitleText={"currentRow"}
@@ -279,31 +353,45 @@ class Helper extends Component {
         selectedValue={datapic ? datapic[index] : ""}
         //onPickerConfirm={(el) => console.log(el)}
         onPickerConfirm={(el, index) => {
-          this.index_current = index - 1;
+          this.index_current = index;
           if (el) {
-            this.fetchState(null, null, 0);
+            // this.fetchState(null, null, 0);
             deleteQuery({ [selector]: el[0] }).then(({ data }) => {
-              const out = data[mutateResultSelect];
+              /* const out = data["delete" + this.props.root];
               this.selectorName = out[selector];
+              this.fetchState(
+                null,
+                null,
+                0,
+                removeInCollection(this.state.tofetch, out)
+              );*/
               // runfetch(out, out[0], out[0] ? out[0].id : "", 0)
               //this.setState({ [delete_result_select]: out, fields: out[0], labelid: out[0] ? out[0].id : "", selected: 0 })
             });
           }
         }}
         onValueChange={(el, index) => {
-          this.index_current = index;
-          this.eventpicker = true;
-          if (el) {
-            selectQuery({ [selector]: el[0] }).then(({ data }) => {
-              const out = data[selectResultSelect];
-              this.selectorName = out[selector];
-
-              //delete out.__typename;
-              this.fetchState(out, out.id, index);
-              //this.setState({ fields: out, labelid: out.id, selected: index })
-            });
-          } else {
-            this.fetchState(null, null, index);
+          if (this.index_current != index) {
+            //prevent bug onpropschangepicker
+            this.index_current = index;
+            this.eventpicker = true;
+            if (el) {
+              console.log(el[0]);
+              selectQuery({ [selector]: el[0] }).then(({ data }) => {
+                console.log(data, selectResultSelect);
+                if (data) {
+                  const out = data[selectResultSelect];
+                  if (out) {
+                    this.selectorName = out[selector];
+                    //delete out.__typename;
+                    this.fetchState(out, out.id, index);
+                  }
+                }
+                //this.setState({ fields: out, labelid: out.id, selected: index })
+              });
+            } else {
+              this.fetchState(null, null, index);
+            }
           }
         }}
       />
@@ -433,11 +521,18 @@ class Helper extends Component {
         if (validator)
           try {
             const toupd = { ...this.state.fields };
+            console.log("beforeUpdated", toupd);
             this.updateDatabaseQ(toupd, error).then(({ data }) => {
-              const out = data[mutateResultSelect];
-              const item = out[this.index_current];
-              this.selectorName = item[selector];
-              this.fetchState(item, item.id, this.index_current);
+              const out = data["upsert" + this.props.root];
+              console.log("afteUpdated", out);
+              // const item = out[this.index_current];
+              this.selectorName = out[selector];
+              this.fetchState(
+                out,
+                out.id,
+                this.index_current,
+                updateInCollection(this.state.tofetch, out)
+              );
             });
           } catch (err) {
             console.log(err);
@@ -461,12 +556,11 @@ class Helper extends Component {
           try {
             const toupd = { ...this.state.fields, id: 0 };
             toupd.namewhere = toupd[selector];
-            console.log("create", toupd);
             upsertQuery(toupd).then(({ data }) => {
-              const out = data[mutateResultSelect];
-              const item = out[out.length - 1];
-              this.selectorName = item[selector];
-              this.fetchState(item, item.id, out.length - 1);
+              const out = data["upsert" + this.props.root];
+              // const item = out[out.length - 1];
+              this.selectorName = out[selector];
+              this.fetchState(out, out.id, -1);
             });
           } catch (err) {
             console.log(err);
@@ -474,10 +568,15 @@ class Helper extends Component {
       }}
     />
   );
+  /*
+  componentWillReceiveProps(newProps) { 
+    if (newProps.tofetch.length != this.props.tofetch.length)
+    this.tofetch=newProps.tofetch;
+ 
+  }*/
 
   render() {
     const {
-      tofetch,
       childrenTree,
       placeholder,
       selector,
@@ -521,7 +620,7 @@ class Helper extends Component {
             "big"
           )}
         {this.renderPicker(
-          tofetch,
+          this.state.tofetch,
           selected,
           selectedId,
           selector,
@@ -567,6 +666,7 @@ class Helper extends Component {
 //
 Helper.propTypes = {};
 Helper.defaultProps = {
+  watchQuery: null,
   setModalVisible: () => {},
   connected: false,
   childrenTree: {},

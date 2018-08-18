@@ -1,12 +1,6 @@
 import { graphql, compose, withApollo } from "react-apollo";
-import { upsertDeal, deal, deleteDeal, deals } from "./query.gql";
+import { upsertDeal, deal, dealsub, deleteDeal, deals } from "./query.gql";
 import Comp from "./index";
-//import ResortComp from "../resort/ResortContainer";
-
-import {
-  createStackNavigator
-} from "react-navigation";
-//TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
 const DealOut = compose(
   withApollo,
@@ -15,17 +9,25 @@ const DealOut = compose(
     props: ({ mutate, ownProps }) => ({
       deleteDeal: ({ title }) =>
         mutate({
-          variables: { title }
-        }).then(() =>
-          ownProps.client.query({
-            query: deals,
-            fetchPolicy: "network-only"
-          })
-        )
+          variables: { title },
+          refetchQueries: [
+            {
+              query: deals
+            }
+          ]
+        })
     })
   }),
   graphql(upsertDeal, {
     props: ({ mutate, ownProps }) => ({
+      dealsub: () =>
+        ownProps.client.subscribe({
+          query: dealsub,
+          fetchPolicy: "network-only",
+          variables: {
+            where: { mutation_in: ["CREATED"] }
+          }
+        }),
       deal: ({ title }) =>
         ownProps.client.query({
           query: deal,
@@ -60,13 +62,13 @@ const DealOut = compose(
             products,
             status,
             probability
-          }
-        }).then(() =>
-          ownProps.client.query({
-            query: deals,
-            fetchPolicy: "network-only"
-          })
-        )
+          },
+          refetchQueries: [
+            {
+              query: deals
+            }
+          ]
+        })
     })
   })
 )(Comp);

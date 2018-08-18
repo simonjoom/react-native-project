@@ -1,6 +1,13 @@
 import { graphql, compose, withApollo } from "react-apollo";
-import { upsertProduct, product, deleteProduct, products } from "./query.gql";
+import {
+  upsertProduct,
+  product,
+  deleteProduct,
+  products,
+  productsub
+} from "./query.gql";
 import Comp from "./index";
+import { loader } from "../loader";
 
 import { createStackNavigator } from "react-navigation";
 //TODO: Faster mutation by invalidating cache instead of using refetchQueries
@@ -12,17 +19,25 @@ const ProductOut = compose(
     props: ({ mutate, ownProps }) => ({
       deleteProduct: ({ name }) =>
         mutate({
-          variables: { name }
-        }).then(() =>
-          ownProps.client.query({
-            query: products,
-            fetchPolicy: "network-only"
-          })
-        )
+          variables: { name },
+          refetchQueries: [
+            {
+              query: products
+            }
+          ]
+        })
     })
   }),
   graphql(upsertProduct, {
     props: ({ mutate, ownProps }) => ({
+      productsub: () =>
+        ownProps.client.subscribe({
+          query: productsub,
+          fetchPolicy: "network-only",
+          variables: {
+            mutation_in: ["CREATED"]
+          }
+        }),
       product: ({ name }) =>
         ownProps.client.query({
           query: product,
@@ -38,14 +53,15 @@ const ProductOut = compose(
             code,
             owner,
             deals
-          }
-        }).then(() =>
-          ownProps.client.query({
-            query: products,
-            fetchPolicy: "network-only"
-          })
-        )
+          },
+          refetchQueries: [
+            {
+              query: products
+            }
+          ]
+        })
     })
-  })
+  }),
+  loader
 )(Comp);
 export default ProductOut;

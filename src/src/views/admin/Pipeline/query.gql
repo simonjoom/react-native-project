@@ -1,3 +1,14 @@
+fragment PipelineFragment on Pipeline {
+    id
+    name
+    deals {
+      id
+    }
+    order_nr
+    deal_probability
+  }
+
+
 mutation upsertPipeline(
   $name: String!
   $namewhere: String
@@ -20,45 +31,34 @@ mutation upsertPipeline(
       deals: { connect: $deals }
     }
   ) {
-    id
-    name
-    deals {
-      id
-    }
-    order_nr
-    deal_probability
+    ...PipelineFragment
   }
 }
 mutation deletePipeline($name: String) {
   deletePipeline(where: { name: $name }) {
-    id
-    name
-    deals {
-      id
-    }
-    order_nr
-    deal_probability
+    ...PipelineFragment
   }
 }
 query pipeline($name: String) {
   pipeline(where: { name: $name }) {
-    id
-    name
-    deals {
-      id
-    }
-    order_nr
-    deal_probability
+    ...PipelineFragment
   }
 }
 query pipelines {
   pipelines {
-    id
-    name
-    deals {
-      id
+    ...PipelineFragment
+  }
+}
+
+subscription pipelinesub($where: PipelineSubscriptionWhereInput) {
+  pipeline(where: $where) {
+    node {
+      ...PipelineFragment
     }
-    order_nr
-    deal_probability
+    updatedFields
+    previousValues {
+      id
+      name
+    }
   }
 }

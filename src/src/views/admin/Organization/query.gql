@@ -1,4 +1,19 @@
-mutation upsertOrganization($namewhere: String,$name: String!,  $owner: UserWhereUniqueInput, $persons: [PersonWhereUniqueInput!]) {
+fragment OrganizationFragment on Organization {
+  id
+  name
+  owner {
+    id
+  }
+  persons {
+    id
+  }
+}
+mutation upsertOrganization(
+  $namewhere: String
+  $name: String!
+  $owner: UserWhereUniqueInput
+  $persons: [PersonWhereUniqueInput!]
+) {
   upsertOrganization(
     where: { name: $namewhere }
     create: {
@@ -9,56 +24,39 @@ mutation upsertOrganization($namewhere: String,$name: String!,  $owner: UserWher
     update: {
       name: $name
       owner: { connect: $owner }
-      persons: { connect: $persons } 
+      persons: { connect: $persons }
     }
   ) {
-    id
-    name
-    owner {
-      id
-      name
-    }
-    persons {
-      id
-    }
+      ...OrganizationFragment
   }
 }
 mutation deleteOrganization($name: String) {
   deleteOrganization(where: { name: $name }) {
-    id
-    name
-    owner {
-      id
-      name
-    }
-    persons {
-      id
-    }
+      ...OrganizationFragment
   }
 }
 query organization($name: String) {
   organization(where: { name: $name }) {
-    id
-    name
-    owner {
-      id
-      name
-    }
-    persons {
-      id
-    }
+      ...OrganizationFragment
   }
 }
+
 query organizations {
   organizations {
-    id
-    name
-    owner {
+      ...OrganizationFragment
+  }
+}
+
+subscription organizationsub($where: OrganizationSubscriptionWhereInput) {
+  organization(where: $where) {
+    mutation
+    node {
+      ...OrganizationFragment
+    }
+    updatedFields
+    previousValues {
       id
       name
-    }
-    persons {
-      id
     }
   }
 }

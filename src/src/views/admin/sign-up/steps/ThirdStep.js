@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {allShops} from '../query.gql';
+//import {allShops} from '../query.gql';
 
 import { graphql } from 'react-apollo';
 import Banner from 'src/components/banner/Banner';
@@ -46,17 +46,6 @@ console.log(this.props.data.allShops)
             {translate('change_your_store_later')}
           </Title>
         </View>
-        {
-          this.props.data.allShops&&this.props.data.allShops.map(shop => (
-            <Banner
-              key={shop.id}
-              {...shop}
-              shopId={shop.id}
-              selected={this.state.selectedShopId === shop.id}
-              onBannerSelected={this.onBannerSelected}
-            />
-          ))
-        }
         {this.state.selectedShopId && (
           <Button
             style={{ marginLeft: 20, marginTop: 40, marginBottom: 10 }}
@@ -74,4 +63,18 @@ console.log(this.props.data.allShops)
 ThirdStep.propTypes = {};
 ThirdStep.defaultProps = {};
 
-export default graphql(allShops)(ThirdStep);
+export default ThirdStep;
+
+
+        /*
+        {
+          this.props.data.allShops&&this.props.data.allShops.map(shop => (
+            <Banner
+              key={shop.id}
+              {...shop}
+              shopId={shop.id}
+              selected={this.state.selectedShopId === shop.id}
+              onBannerSelected={this.onBannerSelected}
+            />
+          ))
+        }*/

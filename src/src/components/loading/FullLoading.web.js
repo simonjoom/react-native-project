@@ -1,9 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components/native";
 
-import LoadingIndicator from './LoadingIndicator';
-
-import Colors from '../../statics/colors';
+import LoadingIndicator from "./LoadingIndicator";
 
 export default () => (
   <LoadingContainer>
@@ -11,9 +9,8 @@ export default () => (
   </LoadingContainer>
 );
 
-const LoadingContainer = styled.div`
+const LoadingContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: ${Colors.white};
 `;

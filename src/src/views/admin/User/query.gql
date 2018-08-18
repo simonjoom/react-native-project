@@ -1,6 +1,21 @@
+fragment UserFragment on User {
+  id
+  name
+  email
+  company {
+    id
+    name
+  }
+  password
+  firstName
+  lastName
+  active_flag
+  role
+}
+
 mutation upsertUser(
   $name: String!
-  $namewhere: String,
+  $namewhere: String
   $email: String!
   $password: String!
   $company: OrganizationWhereUniqueInput
@@ -14,7 +29,7 @@ mutation upsertUser(
     create: {
       name: $name
       email: $email
-      company: {connect:$company } 
+      company: { connect: $company }
       password: $password
       firstName: $firstName
       lastName: $lastName
@@ -24,7 +39,7 @@ mutation upsertUser(
     update: {
       name: $name
       email: $email
-      company: {connect:$company } 
+      company: { connect: $company }
       password: $password
       firstName: $firstName
       lastName: $lastName
@@ -32,65 +47,33 @@ mutation upsertUser(
       role: $role
     }
   ) {
-    id
-    name
-    email
-    company {
-      id
-      name
-    }
-    password
-    firstName
-    lastName
-    active_flag
-    role
+    ...UserFragment
   }
 }
 mutation deleteUser($name: String) {
   deleteUser(where: { name: $name }) {
-    id
-    name
-    email
-    company {
-      id
-      name
-    }
-    password
-    firstName
-    lastName
-    active_flag
-    role
+    ...UserFragment
   }
 }
 query user($name: String) {
   user(where: { name: $name }) {
-    id
-    name
-    email
-    company {
-      id
-      name
-    }
-    password
-    firstName
-    lastName
-    active_flag
-    role
+    ...UserFragment
   }
 }
 query users {
   users {
-    id
-    name
-    email
-    company {
+    ...UserFragment
+  }
+}
+subscription usersub($where: UserSubscriptionWhereInput) {
+  user(where: $where) {
+    node {
+      ...UserFragment
+    }
+    updatedFields
+    previousValues {
       id
       name
     }
-    password
-    firstName
-    lastName
-    active_flag
-    role
   }
 }

@@ -2,13 +2,14 @@ import { graphql, compose, withApollo } from "react-apollo";
 import {
   upsertPipeline,
   pipeline,
+  pipelinesub,
   deletePipeline,
   pipelines
 } from "./query.gql";
 import Comp from "./index";
+import { loader } from "../loader";
 //import ResortComp from "../resort/ResortContainer";
-
-import { createStackNavigator } from "react-navigation";
+ 
 //TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
 const PipelineOut = compose(
@@ -18,17 +19,25 @@ const PipelineOut = compose(
     props: ({ mutate, ownProps }) => ({
       deletePipeline: ({ name }) =>
         mutate({
-          variables: { name }
-        }).then(() =>
-          ownProps.client.query({
-            query: pipelines,
-            fetchPolicy: "network-only"
-          })
-        )
+          variables: { name },
+          refetchQueries: [
+            {
+              query: pipelines
+            }
+          ]
+        })
     })
   }),
   graphql(upsertPipeline, {
     props: ({ mutate, ownProps }) => ({
+      pipelinesub: () =>
+        ownProps.client.subscribe({
+          query: pipelinesub,
+          fetchPolicy: "network-only",
+          variables: {
+            where: { mutation_in: ["CREATED"] }
+          }
+        }),
       pipeline: ({ name }) =>
         ownProps.client.query({
           query: pipeline,
@@ -49,15 +58,16 @@ const PipelineOut = compose(
             deals,
             order_nr,
             deal_probability
-          }
-        }).then(() =>
-          ownProps.client.query({
-            query: pipelines,
-            fetchPolicy: "network-only"
-          })
-        )
+          },
+          refetchQueries: [
+            {
+              query: pipelines
+            }
+          ]
+        })
     })
-  })
+  }),
+  loader
 )(Comp);
 
 export default PipelineOut;

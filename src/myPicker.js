@@ -66,7 +66,7 @@ export default class PickerAny extends Component {
 
   componentDidMount() {
     this.show();
-  }
+  } 
   componentWillReceiveProps(newProps) {
     let newState = this._getStateFromProps(newProps);
     //console.log("newProps",newProps.selectedValue,"oldProps",this.props.selectedValue)
@@ -75,11 +75,11 @@ export default class PickerAny extends Component {
       this.props.onValueChange([newProps.selectedValue], newProps.index);
 
     this.setState(newState);
-  }
-
+  } 
+/*
   shouldComponentUpdate(nextProps, nextState, context) {
     return true;
-  }
+  }*/
 
   _getStateFromProps(props) {
     //the pickedValue must looks like [wheelone's, wheeltwo's, ...]
@@ -230,9 +230,9 @@ export default class PickerAny extends Component {
                 JSON.parse(JSON.stringify(this.pickedValue)),
                 id
               );
-              this.setState({
+              /* this.setState({
                 selectedValue: JSON.parse(JSON.stringify(this.pickedValue))
-              });
+              });*/
             }}
           >
             {item.map((value, index) => (
@@ -468,7 +468,7 @@ export default class PickerAny extends Component {
     let mask = showMask ? (
       <View style={styles.mask}>
         <Text
-          style={{ width: style.width||Mywidth, height: Myheight }}
+          style={{ width: style.width || Mywidth, height: Myheight }}
           onPress={this._pickerCancel}
         />
       </View>
@@ -477,7 +477,8 @@ export default class PickerAny extends Component {
     return (
       <Animated.View
         style={[
-          styles.picker, style,
+          styles.picker,
+          style,
           {
             elevation: pickerElevation,
             width: Mywidth,
@@ -487,13 +488,8 @@ export default class PickerAny extends Component {
         ]}
       >
         {mask}
-        <View style={[styles.pickerBox,{width: style.width||Mywidth}]}>
-          <View
-            style={[
-              styles.pickerToolbar,
-              pickerToolBarStyle
-            ]}
-          >
+        <View style={[styles.pickerBox, { width: style.width || Mywidth }]}>
+          <View style={[styles.pickerToolbar, pickerToolBarStyle]}>
             {this.props.onPickerCancel && (
               <View style={styles.pickerCancelBtn}>
                 <Text
@@ -510,14 +506,16 @@ export default class PickerAny extends Component {
             >
               {pickerTitleText}
             </Text>
-            {this.props.onPickerConfirm && <View style={styles.pickerFinishBtn}>
-              <Text
-                style={[styles.pickerFinishBtnText, pickerBtnStyle]}
-                onPress={this._pickerFinish}
-              >
-                {pickerConfirmBtnText}
-              </Text>
-            </View>}
+            {this.props.onPickerConfirm && (
+              <View style={styles.pickerFinishBtn}>
+                <Text
+                  style={[styles.pickerFinishBtnText, pickerBtnStyle]}
+                  onPress={this._pickerFinish}
+                >
+                  {pickerConfirmBtnText}
+                </Text>
+              </View>
+            )}
           </View>
           <View style={styles.pickerWrap}>
             {this._renderWheel(this.state.pickerData)}
@@ -530,12 +528,12 @@ export default class PickerAny extends Component {
 
 let styles = StyleSheet.create({
   picker: {
-	backgroundColor: "transparent"
-  }, 
+    backgroundColor: "transparent"
+  },
   pickerToolbar: {
     height: 30,
     backgroundColor: "#e6e6e6",
-	flexDirection: "row", 
+    flexDirection: "row",
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: "#c3c3c3",

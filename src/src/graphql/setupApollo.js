@@ -30,12 +30,14 @@ export function setupApolloClient() {
     return token ? { authorization: `Bearer ${token}` } : {};
   };
 
+
   const wsLink = new WebSocketLink({
-    uri: 'ws://localhost:4000/',
+    uri: "wss://eu1.prisma.sh/public-greenslayer-136/my-app/dev",
+   // uri: "ws://localhost:4000/subscriptions",
     options: {
       reconnect: true,
       connectionParams: connectionParams
-    },
+    }
   });
 
   const httpLink = new createHttpLink({

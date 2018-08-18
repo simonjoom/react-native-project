@@ -40,3 +40,25 @@ export function prepareTopLevelResolvers(resolverObject: Query | Mutation) {
         };
     }, {});
 }
+
+export function prepareTopLevelSubscriptionResolvers(
+    resolverObject: Subscription
+  ) { 
+    return Object.entries(resolverObject).reduce((result, entry) => {
+      const resolverName = entry[0];
+     // const resolverNameSub=entry[0] +"sub";
+      const resolverFunction: any = entry[1];
+      return {
+        ...result,
+        [resolverName]: (parent, args, context, info) => {
+          return resolverFunction(args, info);
+        }/*,
+        [resolverName]: {
+          subscribe: async (parent, args, context, info) => {
+            return await context.db.subscription.organization({}, info);
+          }
+        }*/
+      };
+    }, {});
+  }
+  

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {allShops} from '../query.gql';
+//import {allShops} from '../query.gql';
 
 import { graphql } from 'react-apollo';
 //import Banner from 'src/components/banner/Banner';
@@ -34,8 +34,7 @@ class SecondStep extends PureComponent {
   render() {
     if (this.props.data.loading) {
       return null;
-    }
-console.log(this.props.data.allShops)
+    } 
     return (
       <View>
         <View style={{ marginLeft: 20 }}>
@@ -73,8 +72,8 @@ console.log(this.props.data.allShops)
 
 SecondStep.propTypes = {};
 SecondStep.defaultProps = {};
-
-export default graphql(allShops)(SecondStep);
+export default SecondStep;
+ 
 
 /*
 {

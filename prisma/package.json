@@ -1,29 +1,29 @@
 {
-  "name": "aromaclop-prisma",
+  "name": "myapp-prisma",
   "scripts": {
-    "start": "dotenv -- nodemon -e ts,graphql -x ts-node src/index.ts",
-    "dev": "npm-run-all --parallel start playground",
-    "debug": "dotenv -- nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
+    "start": "nodemon -e js,graphql -x ts-node -r dotenv/config src/index.ts",
+    "debug": "nodemon -e js,graphql -x ts-node --inspect -r dotenv/config src/index.ts",
     "playground": "graphql playground",
+    "dev": "npm-run-all --parallel start playground",
     "build": "rimraf dist && tsc",
     "deploy": "scripts/deploy.sh",
     "backup": "scripts/backup.sh"
   },
   "dependencies": {
+    "apollo-server-express": "file:apollo-server/packages/apollo-server-express",
     "bcryptjs": "2.4.3",
     "bluebird": "^3.5.1",
     "generate-password": "latest",
     "graphql-cli": "^2.16.5",
-    "graphql-yoga": "^1.16.0",
     "jsonwebtoken": "latest",
     "lodash": "^4.17.10",
     "merge-graphql-schemas": "latest",
-    "nodemailer": "^4.6.7",
+    "nodemailer": "^4.6.8",
     "onesignal-node": "^1.2.0",
-    "prisma": "^1.13.7",
+    "prisma": "^1.14.0",
     "prisma-binding": "^2.1.4",
     "stripe": "^6.7.0",
-    "validator": "^10.5.0"
+    "validator": "^10.6.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "2.4.1",
@@ -40,5 +40,8 @@
     "rimraf": "latest",
     "ts-node": "^7.0.1",
     "typescript": "^3.0.1"
+  },
+  "resolutions": {
+    "graphql": "^0.13.2"
   }
 }

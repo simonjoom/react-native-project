@@ -1,6 +1,6 @@
 {
   "name": "myapp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "browserslist": {
     "development": [
@@ -18,6 +18,26 @@
   "optionalDependencies": {
     "fsevents": "1.2.0"
   },
+  "apollo": {
+    "schemas": {
+      "myPrimaryBackend": {
+        "schema": "schema.json",
+        "endpoint": "http://localhost:4000",
+        "engineKey": false
+      }
+    },
+    "queries": [
+      {
+        "schema": "myPrimaryBackend",
+        "includes": [
+          "./src/**/*.gql"
+        ],
+        "excludes": [
+          "node_modules/**"
+        ]
+      }
+    ]
+  },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry-web.js",
   "scripts": {
     "startdev": "dotenv -- nodemon -e ts,graphql -x ts-node prisma/src/index.ts",
@@ -31,14 +51,15 @@
     "ios": "react-native-scripts ios",
     "test": "jest",
     "lintinit": "eslint --init",
-    "codegen": "graphql codegen"
+    "codegen": "graphql codegen",
+    "gen": "apollo codegen:generate"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@babel/core": "^7.0.0-rc.1",
     "@babel/code-frame": "^7.0.0-rc.1",
+    "@babel/core": "^7.0.0-rc.1",
     "@babel/plugin-proposal-class-properties": "^7.0.0-rc.1",
     "@babel/plugin-proposal-decorators": "^7.0.0-rc.1",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-rc.1",
@@ -78,31 +99,32 @@
     "@babel/types": "^7.0.0-rc.1",
     "@storybook/addon-knobs": "^3.4.10",
     "@svgr/webpack": "^2.2.0",
-    "apollo-cache-inmemory": "^1.2.7",
-    "apollo-client": "^2.3.8",
+    "apollo-cache-inmemory": "latest",
+    "apollo-client": "latest",
     "apollo-errors": "latest",
     "apollo-link": "latest",
     "apollo-link-context": "latest",
-    "apollo-link-error": "1.1.0",
+    "apollo-link-error": "^1.1.0",
     "apollo-link-http": "latest",
     "apollo-link-ws": "latest",
-    "apollo-utilities": "^1.0.18",
+    "apollo-utilities": "latest",
     "autoprefixer": "^9.1.0",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-react-native": "^3.2.1",
-    "espree": "^3.5.2",
     "babel-plugin-module-resolver": "3.1.1",
     "babylon": "^7.0.0-beta.47",
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
     "css-loader": "^1.0.0",
     "dotenv": "^6.0.0",
     "dotenv-expand": "^4.2.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-react-native": "^3.2.1",
+    "espree": "^3.5.2",
     "expo": "^29.0.0",
     "expo-web": "^0.0.14",
     "fecha": "^2.3.3",
     "file-loader": "^1.1.11",
-    "graphql": "latest",
-    "graphql-tag": "latest",
+    "graphql": "^0.13.2",
+    "graphql-anywhere": "latest",
+    "graphql-tag": "^2.9.2",
     "html-webpack-plugin": "^4.0.0-alpha",
     "identity-obj-proxy": "3.0.0",
     "loader-utils": "^1.1.0",
@@ -153,30 +175,35 @@
     "yargs": "^12.0.1"
   },
   "devDependencies": {
-    "dedent": "^0.7.0",
-    "eslint": "^4.19.1",
-    "eslint-scope": "3.7.1",
-    "eslint-loader": "^2.1.0",
-    "eslint-visitor-keys": "^1.0.0",
-    "eslint-config-babel": "^7.0.1",
-    "eslint-config-prettier": "^3.0.1",
-    "eslint-config-react-app": "^2.1.0",
-    "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-flowtype": "^2.50.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-prettier": "^2.6.2",
-    "eslint-plugin-react": "7.11.0",
-    "eslint-plugin-standard": "^3.1.0",
-    "babel-preset-react-native": "^5.0.2",
     "babel-loader": "^8.0.0-beta.4",
     "babel-plugin-expo-web": "^0.0.5",
     "babel-plugin-react-native-web": "^0.4.0",
     "babel-plugin-transform-imports": "^1.4.1",
-    "lint-staged": "^6.1.1",
+    "babel-preset-react-native": "^5.0.2",
+    "dedent": "^0.7.0",
+    "eslint": "^4.19.1",
+    "eslint-config-babel": "^7.0.1",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-config-react-app": "^2.1.0",
+    "eslint-loader": "^2.1.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-react": "7.11.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "eslint-scope": "3.7.1",
+    "eslint-visitor-keys": "^1.0.0",
+    "husky": "^0.14.3",
     "jest-expo": "^28.0.0",
+    "lint-staged": "^6.1.1",
+    "prettier": "^1.14.2",
     "react-native-scripts": "next",
     "react-test-renderer": "16.2.0"
+  },
+  "resolutions": {
+    "graphql": "^0.13.2"
   }
 }

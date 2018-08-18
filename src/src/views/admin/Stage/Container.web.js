@@ -1,6 +1,7 @@
 import { graphql, compose, withApollo } from "react-apollo";
-import { upsertStage, stage, deleteStage, stages } from "./query.gql";
+import { upsertStage, stage, deleteStage, stages, stagesub } from "./query.gql";
 import Comp from "./index";
+import { loader } from "../loader";
 //import ResortComp from "../resort/ResortContainer";
 
 import { createStackNavigator } from "react-navigation";
@@ -13,17 +14,25 @@ const StageOut = compose(
     props: ({ mutate, ownProps }) => ({
       deleteStage: ({ name }) =>
         mutate({
-          variables: { name }
-        }).then(() =>
-          ownProps.client.query({
-            query: stages,
-            fetchPolicy: "network-only"
-          })
-        )
+          variables: { name },
+          refetchQueries: [
+            {
+              query: stages
+            }
+          ]
+        })
     })
   }),
   graphql(upsertStage, {
     props: ({ mutate, ownProps }) => ({
+      stagesub: () =>
+        ownProps.client.subscribe({
+          query: stagesub,
+          fetchPolicy: "network-only",
+          variables: {
+            mutation_in: ["CREATED"]
+          }
+        }),
       stage: ({ name }) =>
         ownProps.client.query({
           query: stage,
@@ -44,15 +53,16 @@ const StageOut = compose(
             pipeline,
             order_nr,
             deal_probability
-          }
-        }).then(() =>
-          ownProps.client.query({
-            query: stages,
-            fetchPolicy: "network-only"
-          })
-        )
+          },
+          refetchQueries: [
+            {
+              query: stages
+            }
+          ]
+        })
     })
-  })
+  }),
+  loader
 )(Comp);
 
 export default StageOut;

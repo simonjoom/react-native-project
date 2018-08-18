@@ -1,3 +1,27 @@
+fragment FragmentDeal on Deal{
+  id
+    title
+    value
+    currency
+    owner {
+      id
+    }
+    org {
+      id
+    }
+    stage {
+      id
+    }
+    products {
+      id
+    }
+    participants {
+      id
+    }
+    status
+    probability
+}
+
 mutation upsertDeal(
   $title: String!
   $namewhere: String!
@@ -38,102 +62,38 @@ mutation upsertDeal(
       probability: $probability
     }
   ) {
-    id
-    title
-    value
-    currency
-    owner {
-      id
-    }
-    org {
-      id
-    }
-    stage {
-      id
-    }
-    products {
-      id
-    }
-    participants {
-      id
-    }
-    status
-    probability
+    
+...FragmentDeal
   }
 }
 mutation deleteDeal($title: String) {
   deleteDeal(where: { title: $title }) {
-    id
-    title
-    value
-    currency
-    owner {
-      id
-    }
-    org {
-      id
-    }
-    stage {
-      id
-    }
-    products {
-      id
-    }
-    participants {
-      id
-    }
-    status
-    probability
+...FragmentDeal
   }
 }
 
 query deal($title: String) {
   deal(where: { title: $title }) {
-    id
-    title
-    value
-    currency
-    owner {
-      id
-    }
-    org {
-      id
-    }
-    stage {
-      id
-    }
-    products {
-      id
-    }
-    participants {
-      id
-    }
-    status
-    probability
+...FragmentDeal
   }
 }
 query deals {
   deals {
-    id
-    title
-    value
-    currency
-    owner {
-      id
+...FragmentDeal
+  }
+}
+
+
+subscription dealsub($where: DealSubscriptionWhereInput) {
+  deal(where: $where) {
+    mutation
+    node {
+      ...FragmentDeal
     }
-    org {
+    updatedFields
+    previousValues {
       id
+      name
     }
-    stage {
-      id
-    }
-    products {
-      id
-    }
-    participants {
-      id
-    }
-    status
-    probability
   }
 }

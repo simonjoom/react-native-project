@@ -70,11 +70,11 @@ class Backend extends Component {
   );
 
   render() {
-    const { data, loading } = this.props;
-    if (data && loading) {
+    const { data, error } = this.props;
+
+    if (data && data.loading) {
       return null;
     }
-    const error = data ? data.error : null;
     const Arr = [
       "Organization",
       "User",

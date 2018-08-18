@@ -1,3 +1,22 @@
+fragment PersonFragment on Person {
+  id
+  name
+  email
+  phone
+  owner {
+    id
+    name
+  }
+  pictures {
+    id
+  }
+  products {
+    id
+  }
+  deals {
+    id
+  }
+}
 mutation upsertPerson(
   $name: String!
   $namewhere: String
@@ -29,89 +48,34 @@ mutation upsertPerson(
       deals: { connect: $deals }
     }
   ) {
-    id
-    name
-    email
-    phone
-    owner {
-      id
-      name
-    }
-    pictures {
-      id
-    }
-    products {
-      id
-    }
-
-    deals {
-      id
-    }
+    ...PersonFragment
   }
 }
 mutation deletePerson($name: String) {
   deletePerson(where: { name: $name }) {
-    id
-    name
-    email
-    phone
-    owner {
-      id
-      name
-    }
-    pictures {
-      id
-    }
-    products {
-      id
-    }
-
-    deals {
-      id
-    }
+    ...PersonFragment
   }
 }
 query person($name: String) {
   person(where: { name: $name }) {
-    id
-    name
-    email
-    phone
-    owner {
-      id
-      name
-    }
-    pictures {
-      id
-    }
-    products {
-      id
-    }
-
-    deals {
-      id
-    }
+    ...PersonFragment
   }
 }
 query persons {
   persons {
-    id
-    name
-    email
-    phone
-    owner {
+    ...PersonFragment
+  }
+}
+
+subscription personsub($where: PersonSubscriptionWhereInput) {
+  person(where: $where) {
+    node {
+      ...PersonFragment
+    }
+    updatedFields
+    previousValues {
       id
       name
-    }
-    pictures {
-      id
-    }
-    products {
-      id
-    }
-
-    deals {
-      id
     }
   }
 }

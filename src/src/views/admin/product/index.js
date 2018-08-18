@@ -1,9 +1,7 @@
-import React, { Component } from "react";
-import { Text } from "react-native";
+import React, { Component } from "react"; 
 import Helper from "../helper/helper";
 import Deal from "../Deal/Container";
-import User from "../User/Container";
-import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
+import User from "../User/Container";  
 
 class Product extends Component {
   constructor(props) {
@@ -31,62 +29,42 @@ class Product extends Component {
   render() {
     const {
       data,
-      data: { error },
-      loading,
       deleteProduct,
       product,
-      upsertProduct,
       navigation,
       connected,
       parent,
       saveId,
       parentId,
       selectedId,
+      productsub,
       setModalVisible
     } = this.props;
-    if (data && loading) {
-      return null;
-    }
+
     //  const products = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allProducts;
 
     let datas = data.products;
-    console.log("ProductProps",this.props)
     if (!(datas && datas.length > 0)) datas = this.initfetch;
     //{products && products.map((product, i) => (<Title key={"tt" + i}>{product.name}</Title>))}
     return (
-      <KeyboardAwareCenteredView>
-        {error &&
-          error.graphQLErrors && (
-            <Text>
-              Bad:{" "}
-              {error.graphQLErrors.map(({ message }, i) => (
-                <Text key={i}>{message}</Text>
-              ))}
-            </Text>
-          )}
-
-        {!error && (
-          <Helper
-            tofetch={datas}
-            placeholder={this.initplaceholder}
-            selector="name"
-            navigation={navigation}
-            deleteQuery={deleteProduct}
-            selectQuery={product}
-            upsertQuery={upsertProduct}
-            selectResultSelect="product"
-            mutateResultSelect="products"
-            setModalVisible={setModalVisible}
-            root="Product"
-            connected={connected}
-            parent={parent}
-            saveId={saveId}
-            parentId={parentId}
-            selectedId={selectedId}
-            childrenTree={{User, Deal }}
-          />
-        )}
-      </KeyboardAwareCenteredView>
+      <Helper
+        tofetch={datas}
+        placeholder={this.initplaceholder}
+        selector="name"
+        navigation={navigation}
+        deleteQuery={deleteProduct}
+        selectQuery={product}
+        subscribe={productsub}
+        selectResultSelect="product"
+        setModalVisible={setModalVisible}
+        root="Product"
+        connected={connected}
+        parent={parent}
+        saveId={saveId}
+        parentId={parentId}
+        selectedId={selectedId}
+        childrenTree={{ User, Deal }}
+      />
     );
   }
 }

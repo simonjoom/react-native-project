@@ -1,13 +1,17 @@
 import { graphql, compose, withApollo } from "react-apollo";
-import { upsertPerson, person, deletePerson, persons } from "./query.gql";
+import {
+  upsertPerson,
+  person,
+  personsub,
+  deletePerson,
+  persons
+} from "./query.gql";
 import Comp from "./index";
+import {loader} from "../loader";
 //import ResortComp from "../resort/ResortContainer";
 
-import {
-  createStackNavigator
-} from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 //TODO: Faster mutation by invalidating cache instead of using refetchQueries
-
 
 const PersonOut = compose(
   withApollo,
@@ -16,17 +20,25 @@ const PersonOut = compose(
     props: ({ mutate, ownProps }) => ({
       deletePerson: ({ name }) =>
         mutate({
-          variables: { name }
-        }).then(() =>
-          ownProps.client.query({
-            query: persons,
-            fetchPolicy: "network-only"
-          })
-        )
+          variables: { name },
+          refetchQueries: [
+            {
+              query: persons
+            }
+          ]
+        })
     })
   }),
   graphql(upsertPerson, {
     props: ({ mutate, ownProps }) => ({
+      personsub: () =>
+        ownProps.client.subscribe({
+          query: personsub,
+          fetchPolicy: "network-only",
+          variables: {
+            mutation_in: ["CREATED"]
+          }
+        }),
       person: ({ name }) =>
         ownProps.client.query({
           query: person,
@@ -53,15 +65,16 @@ const PersonOut = compose(
             pictures,
             products,
             deals
-          }
-        }).then(() =>
-          ownProps.client.query({
-            query: persons,
-            fetchPolicy: "network-only"
-          })
-        )
+          },
+          refetchQueries: [
+            {
+              query: persons
+            }
+          ]
+        })
     })
-  })
+  }),
+  loader
 )(Comp);
 
 export default PersonOut;

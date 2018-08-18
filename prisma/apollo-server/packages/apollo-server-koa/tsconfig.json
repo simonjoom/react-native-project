@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "noImplicitReturns": false
+  },
+  "include": ["src/**/*"],
+  "exclude": ["**/__tests__", "**/__mocks__"]
+}

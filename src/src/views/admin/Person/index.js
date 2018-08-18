@@ -1,14 +1,12 @@
-import React, { Component } from "react";
-import { Text } from "react-native";
- 
+import React, { Component } from "react"; 
+
 import Helper from "../helper/helper";
 
 import Picture from "../Picture/Container";
 import Product from "../Product/Container";
 import Deal from "../Deal/Container";
 import User from "../User/Container";
-
-import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
+ 
 
 class Person extends Component {
   constructor(props) {
@@ -40,10 +38,9 @@ class Person extends Component {
   render() {
     const {
       data,
-      data: { error },
-      loading,
       deletePerson,
       person,
+      personsub,
       upsertPerson,
       navigation,
       connected,
@@ -52,10 +49,7 @@ class Person extends Component {
       parentId,
       selectedId,
       setModalVisible
-    } = this.props;
-    if (data && loading) {
-      return null;
-    }
+    } = this.props; 
     //const selected = this.state.selected;
     console.log("updatePerson", data.persons, this.props);
     //  const persons = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allPersons;
@@ -63,39 +57,25 @@ class Person extends Component {
     let datas = data.persons;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
     return (
-      <KeyboardAwareCenteredView>
-        {error &&
-          error.graphQLErrors && (
-            <Text>
-              Bad:{" "}
-              {error.graphQLErrors.map(({ message }, i) => (
-                <Text key={i}>{message}</Text>
-              ))}
-            </Text>
-          )}
-
-        {!error && (
-          <Helper
-            tofetch={datas}
-            placeholder={this.initplaceholder}
-            selector="name"
-            navigation={navigation}
-            deleteQuery={deletePerson}
-            selectQuery={person}
-            upsertQuery={upsertPerson}
-            selectResultSelect="person"
-            mutateResultSelect="persons"
-            setModalVisible={setModalVisible}
-            root="Person"
-            connected={connected}
-            parent={parent}
-            saveId={saveId}
-            parentId={parentId}
-            selectedId={selectedId}
-            childrenTree={{ Picture, Product, Deal, User }}
-          />
-        )}
-      </KeyboardAwareCenteredView>
+      <Helper
+        tofetch={datas}
+        placeholder={this.initplaceholder}
+        selector="name"
+        navigation={navigation}
+        subscribe={personsub}
+        deleteQuery={deletePerson}
+        selectQuery={person}
+        upsertQuery={upsertPerson}
+        selectResultSelect="person"
+        setModalVisible={setModalVisible}
+        root="Person"
+        connected={connected}
+        parent={parent}
+        saveId={saveId}
+        parentId={parentId}
+        selectedId={selectedId}
+        childrenTree={{ Picture, Product, Deal, User }}
+      />
     );
   }
 }

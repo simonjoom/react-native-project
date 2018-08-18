@@ -1,3 +1,18 @@
+    fragment ProductFragment on Product {
+    id
+    name
+    unit
+    code
+    owner {
+      id
+      name
+    }
+    deals {
+      id
+      title
+    }
+  }
+
 mutation upsertProduct(
   $name: String!
   $namewhere: String
@@ -23,65 +38,34 @@ mutation upsertProduct(
       deals: { connect: $deals }
     }
   ) {
-    id
-    name
-    unit
-    code
-    owner {
-      id
-      name
-    }
-    deals {
-      id
-      title
-    }
+    ...ProductFragment
   }
 }
 mutation deleteProduct($name: String) {
   deleteProduct(where: { name: $name }) {
-    id
-    name
-    unit
-    code
-    owner {
-      id
-      name
-    }
-    deals {
-      id
-      title
-    }
+   ...ProductFragment
   }
 }
 query product($name: String) {
   product(where: { name: $name }) {
-    id
-    name
-    unit
-    code
-    owner {
-      id
-      name
-    }
-    deals {
-      id
-      title
-    }
+...ProductFragment
   }
 }
 query products {
   products {
-    id
-    name
-    unit
-    code
-    owner {
+    ...ProductFragment
+  }
+}
+
+subscription productsub($where: PipelineSubscriptionWhereInput) {
+  product(where: $where) {
+    node {
+      ...ProductFragment
+    }
+    updatedFields
+    previousValues {
       id
       name
-    }
-    deals {
-      id
-      title
     }
   }
 }

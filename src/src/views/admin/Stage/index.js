@@ -1,9 +1,7 @@
-import React, { Component } from "react";
-import { TouchableHighlight, Text } from "react-native";
+import React, { Component } from "react"; 
 
 import Helper from "../helper/helper";
-import Pipeline from "../Pipeline/Container";
-import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
+import Pipeline from "../Pipeline/Container"; 
 
 class Stage extends Component {
   constructor(props) {
@@ -29,11 +27,9 @@ class Stage extends Component {
   render() {
     const {
       data,
-      data: { error },
-      loading,
       deleteStage,
       stage,
-      upsertStage,
+      stagesub,
       navigation,
       connected,
       parent,
@@ -42,9 +38,6 @@ class Stage extends Component {
       selectedId,
       setModalVisible
     } = this.props;
-    if (data && loading) {
-      return null;
-    }
     //const selected = this.state.selected;
     console.log("updateStage", data.stages, this.props);
     //  const stages = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allStages;
@@ -52,39 +45,24 @@ class Stage extends Component {
     let datas = data.stages;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
     return (
-      <KeyboardAwareCenteredView>
-        {error &&
-          error.graphQLErrors && (
-            <Text>
-              Bad:{" "}
-              {error.graphQLErrors.map(({ message }, i) => (
-                <Text key={i}>{message}</Text>
-              ))}
-            </Text>
-          )}
-
-        {!error && (
-          <Helper
-            tofetch={datas}
-            placeholder={this.initplaceholder}
-            selector="name"
-            navigation={navigation}
-            deleteQuery={deleteStage}
-            selectQuery={stage}
-            upsertQuery={upsertStage}
-            selectResultSelect="stage"
-            mutateResultSelect="stages"
-            setModalVisible={setModalVisible}
-            root="Stage"
-            connected={connected}
-            parent={parent}
-            saveId={saveId}
-            parentId={parentId}
-            selectedId={selectedId}
-            childrenTree={{ Pipeline }}
-          />
-        )}
-      </KeyboardAwareCenteredView>
+      <Helper
+        tofetch={datas}
+        placeholder={this.initplaceholder}
+        selector="name"
+        navigation={navigation}
+        deleteQuery={deleteStage}
+        selectQuery={stage}
+        subscribe={stagesub}
+        selectResultSelect="stage"
+        setModalVisible={setModalVisible}
+        root="Stage"
+        connected={connected}
+        parent={parent}
+        saveId={saveId}
+        parentId={parentId}
+        selectedId={selectedId}
+        childrenTree={{ Pipeline }}
+      />
     );
   }
 }

@@ -13,12 +13,12 @@ import Colors from '../../statics/colors';
 import font from '../../statics/fonts';
 
 export default () => (
-  <View>
+  <>
     <Title color={Colors.text} font={font}>
       {translate('loading')}
     </Title>
-    <ActivityIndicator size="small" color={Colors.text} style={{marginTop:"10px"}} />
-  </View>
+    <ActivityIndicator size="large" color={Colors.text} style={{marginTop:"10px"}} />
+  </>
 );
 /*
 const LoadingIndicator = styled.ActivityIndicator`

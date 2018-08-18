@@ -1,13 +1,11 @@
 projects:
-  aromaclop:
-    schemaPath: "src/schema.graphql"
-    includes: ["**/*.graphql"]
+  app:
+    schemaPath: src/schema.graphql
     extensions:
       endpoints:
-        dev: "http://localhost:4000"
+        default: http://localhost:4000 
   database:
     schemaPath: "src/generated/prisma.graphql"
-    includes: ["**/*.graphql"]
     extensions:
       prisma: database/prisma.yml
       codegen:
@@ -15,4 +13,3 @@ projects:
         language: typescript
         output:
           binding: src/generated/prisma.ts
-
