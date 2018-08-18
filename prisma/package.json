@@ -10,7 +10,6 @@
     "backup": "scripts/backup.sh"
   },
   "dependencies": {
-    "apollo-server-express": "file:apollo-server/packages/apollo-server-express",
     "bcryptjs": "2.4.3",
     "bluebird": "^3.5.1",
     "generate-password": "latest",

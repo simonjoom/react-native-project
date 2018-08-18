@@ -8,7 +8,7 @@ rm -Rf ./node_modules/@type/graphql/
 rm -Rf ./node_modules/graphql/
 rm -Rf ./node_modules/graphql-tag/
 cd ../apollo-server
-npm i
+npm run clean && npm i
 cd ..
 npm link --only=production apollo-server/packages/apollo-server-express
 npm link --only=production apollo-server/packages/apollo-server-core
