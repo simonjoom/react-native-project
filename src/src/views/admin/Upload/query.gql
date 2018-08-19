@@ -1,0 +1,19 @@
+fragment FileFragment on File {
+  id
+  filename
+  encoding
+  mimetype
+  path
+}
+
+mutation singleUpload($file: Upload!) {
+  singleUpload(file: $file) {
+    ...FileFragment
+  }
+}
+
+query uploads {
+  uploads {
+    ...FileFragment
+  }
+}

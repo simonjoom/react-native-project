@@ -31,8 +31,6 @@ class Organization extends Component {
       deleteOrganization,
       organization,
       organizationsub,
-      watchOrganization,
-      upsertOrganization,
       navigation,
       connected,
       parent,
@@ -54,12 +52,10 @@ class Organization extends Component {
         tofetch={datas}
         placeholder={this.initplaceholder}
         selector="name"
-        watchQuery={watchOrganization}
         subscribe={organizationsub}
         navigation={navigation}
         deleteQuery={deleteOrganization}
         selectQuery={organization}
-        upsertQuery={upsertOrganization}
         selectResultSelect="organization"
         setModalVisible={setModalVisible}
         root="Organization"

@@ -1,4 +1,4 @@
-import { Query, Mutation } from "../generated/prisma"
+import { Query, Mutation,Subscription } from "../generated/prisma"
 
 export function addFragmentToFieldResolvers(schemaAST, fragmentSelection) {
     return schemaAST.definitions.reduce((result, schemaDefinition) => {

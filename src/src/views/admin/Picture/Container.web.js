@@ -1,7 +1,13 @@
 import { graphql, compose, withApollo } from "react-apollo";
-import { upsertPicture, picture,picturesub, deletePicture, pictures } from "./query.gql";
+import {
+  upsertPicture,
+  picture,
+  picturesub,
+  deletePicture,
+  pictures
+} from "./query.gql";
 import Comp from "./index";
-import {loader} from "../loader";
+import { loader } from "../loader";
 //import ResortComp from "../resort/ResortContainer";
 
 import { createStackNavigator } from "react-navigation";

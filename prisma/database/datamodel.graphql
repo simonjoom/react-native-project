@@ -1,4 +1,11 @@
 
+type File {
+  id: ID! @unique
+  path: String!
+  filename: String!
+  mimetype: String!
+  encoding: String!
+}
 #skiscool
 type Organization {
   id: ID! @unique
@@ -30,7 +37,6 @@ type Person {
   products: [Product!]!
   deals: [Deal!]!
 }
-
 
 enum Active {
   ACTIVATED
@@ -89,6 +95,7 @@ type Deal {
 type Picture {
   id: ID! @unique
   file: String!
+  uploads: [File!]!
 }
 
 enum OrderStatus {
@@ -97,4 +104,3 @@ enum OrderStatus {
   LOST
   DELETED
 }
-

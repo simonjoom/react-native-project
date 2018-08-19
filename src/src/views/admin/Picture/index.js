@@ -8,12 +8,14 @@ class Picture extends Component {
     this.initfetch = [
       {
         id: "",
-        file: ""
+        file: "",
+        uploads: []
       }
     ];
     this.initplaceholder = {
       id: "ID",
-      file: "String*"
+      file: "String*",
+      uploads: "[File]"
     };
   }
 
@@ -22,6 +24,7 @@ class Picture extends Component {
       data,
       deletePicture,
       picturesub,
+      upsertPicture,
       picture, 
       navigation,
       connected,
@@ -44,8 +47,9 @@ class Picture extends Component {
         selector="id"
         navigation={navigation}
         subscribe={picturesub}
+        upsertQuery={upsertPicture}
         deleteQuery={deletePicture}
-        selectQuery={picture} 
+        selectQuery={picture}
         selectResultSelect="picture"
         setModalVisible={setModalVisible}
         root="Picture"

@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "moduleResolution": "node",
-    "module": "commonjs",
+    "target": "ESNEXT",
+    "moduleResolution": "Node",
+    "module": "esnext",
     "sourceMap": true,
     "noUnusedLocals": false,
     "rootDir": "prisma/src",

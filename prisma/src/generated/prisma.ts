@@ -4,6 +4,7 @@ import { Options } from 'graphql-binding'
 import { makePrismaBindingClass, BasePrismaOptions } from 'prisma-binding'
 
 export interface Query {
+    files: <T = File[]>(args: { where?: FileWhereInput, orderBy?: FileOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     products: <T = Product[]>(args: { where?: ProductWhereInput, orderBy?: ProductOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deals: <T = Deal[]>(args: { where?: DealWhereInput, orderBy?: DealOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     users: <T = User[]>(args: { where?: UserWhereInput, orderBy?: UserOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -12,6 +13,7 @@ export interface Query {
     pictures: <T = Picture[]>(args: { where?: PictureWhereInput, orderBy?: PictureOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     organizations: <T = Organization[]>(args: { where?: OrganizationWhereInput, orderBy?: OrganizationOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     stages: <T = Stage[]>(args: { where?: StageWhereInput, orderBy?: StageOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    file: <T = File | null>(args: { where: FileWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     product: <T = Product | null>(args: { where: ProductWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deal: <T = Deal | null>(args: { where: DealWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     user: <T = User | null>(args: { where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -20,6 +22,7 @@ export interface Query {
     picture: <T = Picture | null>(args: { where: PictureWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     organization: <T = Organization | null>(args: { where: OrganizationWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     stage: <T = Stage | null>(args: { where: StageWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    filesConnection: <T = FileConnection>(args: { where?: FileWhereInput, orderBy?: FileOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     productsConnection: <T = ProductConnection>(args: { where?: ProductWhereInput, orderBy?: ProductOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     dealsConnection: <T = DealConnection>(args: { where?: DealWhereInput, orderBy?: DealOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     usersConnection: <T = UserConnection>(args: { where?: UserWhereInput, orderBy?: UserOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -32,6 +35,7 @@ export interface Query {
   }
 
 export interface Mutation {
+    createFile: <T = File>(args: { data: FileCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createProduct: <T = Product>(args: { data: ProductCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createDeal: <T = Deal>(args: { data: DealCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createUser: <T = User>(args: { data: UserCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -40,6 +44,7 @@ export interface Mutation {
     createPicture: <T = Picture>(args: { data: PictureCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createOrganization: <T = Organization>(args: { data: OrganizationCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createStage: <T = Stage>(args: { data: StageCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    updateFile: <T = File | null>(args: { data: FileUpdateInput, where: FileWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateProduct: <T = Product | null>(args: { data: ProductUpdateInput, where: ProductWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateDeal: <T = Deal | null>(args: { data: DealUpdateInput, where: DealWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateUser: <T = User | null>(args: { data: UserUpdateInput, where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -48,6 +53,7 @@ export interface Mutation {
     updatePicture: <T = Picture | null>(args: { data: PictureUpdateInput, where: PictureWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateOrganization: <T = Organization | null>(args: { data: OrganizationUpdateInput, where: OrganizationWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateStage: <T = Stage | null>(args: { data: StageUpdateInput, where: StageWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    deleteFile: <T = File | null>(args: { where: FileWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteProduct: <T = Product | null>(args: { where: ProductWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteDeal: <T = Deal | null>(args: { where: DealWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteUser: <T = User | null>(args: { where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -56,6 +62,7 @@ export interface Mutation {
     deletePicture: <T = Picture | null>(args: { where: PictureWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteOrganization: <T = Organization | null>(args: { where: OrganizationWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteStage: <T = Stage | null>(args: { where: StageWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    upsertFile: <T = File>(args: { where: FileWhereUniqueInput, create: FileCreateInput, update: FileUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     upsertProduct: <T = Product>(args: { where: ProductWhereUniqueInput, create: ProductCreateInput, update: ProductUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     upsertDeal: <T = Deal>(args: { where: DealWhereUniqueInput, create: DealCreateInput, update: DealUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     upsertUser: <T = User>(args: { where: UserWhereUniqueInput, create: UserCreateInput, update: UserUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -64,6 +71,7 @@ export interface Mutation {
     upsertPicture: <T = Picture>(args: { where: PictureWhereUniqueInput, create: PictureCreateInput, update: PictureUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     upsertOrganization: <T = Organization>(args: { where: OrganizationWhereUniqueInput, create: OrganizationCreateInput, update: OrganizationUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     upsertStage: <T = Stage>(args: { where: StageWhereUniqueInput, create: StageCreateInput, update: StageUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    updateManyFiles: <T = BatchPayload>(args: { data: FileUpdateInput, where?: FileWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateManyProducts: <T = BatchPayload>(args: { data: ProductUpdateInput, where?: ProductWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateManyDeals: <T = BatchPayload>(args: { data: DealUpdateInput, where?: DealWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateManyUsers: <T = BatchPayload>(args: { data: UserUpdateInput, where?: UserWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -72,6 +80,7 @@ export interface Mutation {
     updateManyPictures: <T = BatchPayload>(args: { data: PictureUpdateInput, where?: PictureWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateManyOrganizations: <T = BatchPayload>(args: { data: OrganizationUpdateInput, where?: OrganizationWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateManyStages: <T = BatchPayload>(args: { data: StageUpdateInput, where?: StageWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    deleteManyFiles: <T = BatchPayload>(args: { where?: FileWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteManyProducts: <T = BatchPayload>(args: { where?: ProductWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteManyDeals: <T = BatchPayload>(args: { where?: DealWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteManyUsers: <T = BatchPayload>(args: { where?: UserWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -83,6 +92,7 @@ export interface Mutation {
   }
 
 export interface Subscription {
+    file: <T = FileSubscriptionPayload | null>(args: { where?: FileSubscriptionWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<AsyncIterator<T>> ,
     product: <T = ProductSubscriptionPayload | null>(args: { where?: ProductSubscriptionWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<AsyncIterator<T>> ,
     deal: <T = DealSubscriptionPayload | null>(args: { where?: DealSubscriptionWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<AsyncIterator<T>> ,
     user: <T = UserSubscriptionPayload | null>(args: { where?: UserSubscriptionWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<AsyncIterator<T>> ,
@@ -94,6 +104,7 @@ export interface Subscription {
   }
 
 export interface Exists {
+  File: (where?: FileWhereInput) => Promise<boolean>
   Product: (where?: ProductWhereInput) => Promise<boolean>
   Deal: (where?: DealWhereInput) => Promise<boolean>
   User: (where?: UserWhereInput) => Promise<boolean>
@@ -132,6 +143,10 @@ const typeDefs = `enum Active {
 }
 
 type AggregateDeal {
+  count: Int!
+}
+
+type AggregateFile {
   count: Int!
 }
 
@@ -665,6 +680,358 @@ input DealWhereUniqueInput {
   title: String
 }
 
+type File implements Node {
+  id: ID!
+  path: String!
+  filename: String!
+  mimetype: String!
+  encoding: String!
+}
+
+"""A connection to a list of items."""
+type FileConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [FileEdge]!
+  aggregate: AggregateFile!
+}
+
+input FileCreateInput {
+  path: String!
+  filename: String!
+  mimetype: String!
+  encoding: String!
+}
+
+input FileCreateManyInput {
+  create: [FileCreateInput!]
+  connect: [FileWhereUniqueInput!]
+}
+
+"""An edge in a connection."""
+type FileEdge {
+  """The item at the end of the edge."""
+  node: File!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum FileOrderByInput {
+  id_ASC
+  id_DESC
+  path_ASC
+  path_DESC
+  filename_ASC
+  filename_DESC
+  mimetype_ASC
+  mimetype_DESC
+  encoding_ASC
+  encoding_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type FilePreviousValues {
+  id: ID!
+  path: String!
+  filename: String!
+  mimetype: String!
+  encoding: String!
+}
+
+type FileSubscriptionPayload {
+  mutation: MutationType!
+  node: File
+  updatedFields: [String!]
+  previousValues: FilePreviousValues
+}
+
+input FileSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [FileSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [FileSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [FileSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: FileWhereInput
+}
+
+input FileUpdateDataInput {
+  path: String
+  filename: String
+  mimetype: String
+  encoding: String
+}
+
+input FileUpdateInput {
+  path: String
+  filename: String
+  mimetype: String
+  encoding: String
+}
+
+input FileUpdateManyInput {
+  create: [FileCreateInput!]
+  connect: [FileWhereUniqueInput!]
+  disconnect: [FileWhereUniqueInput!]
+  delete: [FileWhereUniqueInput!]
+  update: [FileUpdateWithWhereUniqueNestedInput!]
+  upsert: [FileUpsertWithWhereUniqueNestedInput!]
+}
+
+input FileUpdateWithWhereUniqueNestedInput {
+  where: FileWhereUniqueInput!
+  data: FileUpdateDataInput!
+}
+
+input FileUpsertWithWhereUniqueNestedInput {
+  where: FileWhereUniqueInput!
+  update: FileUpdateDataInput!
+  create: FileCreateInput!
+}
+
+input FileWhereInput {
+  """Logical AND on all given filters."""
+  AND: [FileWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [FileWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [FileWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  path: String
+
+  """All values that are not equal to given value."""
+  path_not: String
+
+  """All values that are contained in given list."""
+  path_in: [String!]
+
+  """All values that are not contained in given list."""
+  path_not_in: [String!]
+
+  """All values less than the given value."""
+  path_lt: String
+
+  """All values less than or equal the given value."""
+  path_lte: String
+
+  """All values greater than the given value."""
+  path_gt: String
+
+  """All values greater than or equal the given value."""
+  path_gte: String
+
+  """All values containing the given string."""
+  path_contains: String
+
+  """All values not containing the given string."""
+  path_not_contains: String
+
+  """All values starting with the given string."""
+  path_starts_with: String
+
+  """All values not starting with the given string."""
+  path_not_starts_with: String
+
+  """All values ending with the given string."""
+  path_ends_with: String
+
+  """All values not ending with the given string."""
+  path_not_ends_with: String
+  filename: String
+
+  """All values that are not equal to given value."""
+  filename_not: String
+
+  """All values that are contained in given list."""
+  filename_in: [String!]
+
+  """All values that are not contained in given list."""
+  filename_not_in: [String!]
+
+  """All values less than the given value."""
+  filename_lt: String
+
+  """All values less than or equal the given value."""
+  filename_lte: String
+
+  """All values greater than the given value."""
+  filename_gt: String
+
+  """All values greater than or equal the given value."""
+  filename_gte: String
+
+  """All values containing the given string."""
+  filename_contains: String
+
+  """All values not containing the given string."""
+  filename_not_contains: String
+
+  """All values starting with the given string."""
+  filename_starts_with: String
+
+  """All values not starting with the given string."""
+  filename_not_starts_with: String
+
+  """All values ending with the given string."""
+  filename_ends_with: String
+
+  """All values not ending with the given string."""
+  filename_not_ends_with: String
+  mimetype: String
+
+  """All values that are not equal to given value."""
+  mimetype_not: String
+
+  """All values that are contained in given list."""
+  mimetype_in: [String!]
+
+  """All values that are not contained in given list."""
+  mimetype_not_in: [String!]
+
+  """All values less than the given value."""
+  mimetype_lt: String
+
+  """All values less than or equal the given value."""
+  mimetype_lte: String
+
+  """All values greater than the given value."""
+  mimetype_gt: String
+
+  """All values greater than or equal the given value."""
+  mimetype_gte: String
+
+  """All values containing the given string."""
+  mimetype_contains: String
+
+  """All values not containing the given string."""
+  mimetype_not_contains: String
+
+  """All values starting with the given string."""
+  mimetype_starts_with: String
+
+  """All values not starting with the given string."""
+  mimetype_not_starts_with: String
+
+  """All values ending with the given string."""
+  mimetype_ends_with: String
+
+  """All values not ending with the given string."""
+  mimetype_not_ends_with: String
+  encoding: String
+
+  """All values that are not equal to given value."""
+  encoding_not: String
+
+  """All values that are contained in given list."""
+  encoding_in: [String!]
+
+  """All values that are not contained in given list."""
+  encoding_not_in: [String!]
+
+  """All values less than the given value."""
+  encoding_lt: String
+
+  """All values less than or equal the given value."""
+  encoding_lte: String
+
+  """All values greater than the given value."""
+  encoding_gt: String
+
+  """All values greater than or equal the given value."""
+  encoding_gte: String
+
+  """All values containing the given string."""
+  encoding_contains: String
+
+  """All values not containing the given string."""
+  encoding_not_contains: String
+
+  """All values starting with the given string."""
+  encoding_starts_with: String
+
+  """All values not starting with the given string."""
+  encoding_not_starts_with: String
+
+  """All values ending with the given string."""
+  encoding_ends_with: String
+
+  """All values not ending with the given string."""
+  encoding_not_ends_with: String
+}
+
+input FileWhereUniqueInput {
+  id: ID
+}
+
 """
 The \`Long\` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
@@ -672,6 +1039,7 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
+  createFile(data: FileCreateInput!): File!
   createProduct(data: ProductCreateInput!): Product!
   createDeal(data: DealCreateInput!): Deal!
   createUser(data: UserCreateInput!): User!
@@ -680,6 +1048,7 @@ type Mutation {
   createPicture(data: PictureCreateInput!): Picture!
   createOrganization(data: OrganizationCreateInput!): Organization!
   createStage(data: StageCreateInput!): Stage!
+  updateFile(data: FileUpdateInput!, where: FileWhereUniqueInput!): File
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   updateDeal(data: DealUpdateInput!, where: DealWhereUniqueInput!): Deal
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
@@ -688,6 +1057,7 @@ type Mutation {
   updatePicture(data: PictureUpdateInput!, where: PictureWhereUniqueInput!): Picture
   updateOrganization(data: OrganizationUpdateInput!, where: OrganizationWhereUniqueInput!): Organization
   updateStage(data: StageUpdateInput!, where: StageWhereUniqueInput!): Stage
+  deleteFile(where: FileWhereUniqueInput!): File
   deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteDeal(where: DealWhereUniqueInput!): Deal
   deleteUser(where: UserWhereUniqueInput!): User
@@ -696,6 +1066,7 @@ type Mutation {
   deletePicture(where: PictureWhereUniqueInput!): Picture
   deleteOrganization(where: OrganizationWhereUniqueInput!): Organization
   deleteStage(where: StageWhereUniqueInput!): Stage
+  upsertFile(where: FileWhereUniqueInput!, create: FileCreateInput!, update: FileUpdateInput!): File!
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   upsertDeal(where: DealWhereUniqueInput!, create: DealCreateInput!, update: DealUpdateInput!): Deal!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
@@ -704,6 +1075,7 @@ type Mutation {
   upsertPicture(where: PictureWhereUniqueInput!, create: PictureCreateInput!, update: PictureUpdateInput!): Picture!
   upsertOrganization(where: OrganizationWhereUniqueInput!, create: OrganizationCreateInput!, update: OrganizationUpdateInput!): Organization!
   upsertStage(where: StageWhereUniqueInput!, create: StageCreateInput!, update: StageUpdateInput!): Stage!
+  updateManyFiles(data: FileUpdateInput!, where: FileWhereInput): BatchPayload!
   updateManyProducts(data: ProductUpdateInput!, where: ProductWhereInput): BatchPayload!
   updateManyDeals(data: DealUpdateInput!, where: DealWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
@@ -712,6 +1084,7 @@ type Mutation {
   updateManyPictures(data: PictureUpdateInput!, where: PictureWhereInput): BatchPayload!
   updateManyOrganizations(data: OrganizationUpdateInput!, where: OrganizationWhereInput): BatchPayload!
   updateManyStages(data: StageUpdateInput!, where: StageWhereInput): BatchPayload!
+  deleteManyFiles(where: FileWhereInput): BatchPayload!
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
   deleteManyDeals(where: DealWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
@@ -1381,6 +1754,7 @@ input PersonWhereUniqueInput {
 type Picture implements Node {
   id: ID!
   file: String!
+  uploads(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File!]
 }
 
 """A connection to a list of items."""
@@ -1395,6 +1769,7 @@ type PictureConnection {
 
 input PictureCreateInput {
   file: String!
+  uploads: FileCreateManyInput
 }
 
 input PictureCreateManyInput {
@@ -1468,10 +1843,12 @@ input PictureSubscriptionWhereInput {
 
 input PictureUpdateDataInput {
   file: String
+  uploads: FileUpdateManyInput
 }
 
 input PictureUpdateInput {
   file: String
+  uploads: FileUpdateManyInput
 }
 
 input PictureUpdateManyInput {
@@ -1583,6 +1960,9 @@ input PictureWhereInput {
 
   """All values not ending with the given string."""
   file_not_ends_with: String
+  uploads_every: FileWhereInput
+  uploads_some: FileWhereInput
+  uploads_none: FileWhereInput
 }
 
 input PictureWhereUniqueInput {
@@ -2229,6 +2609,7 @@ input ProductWhereUniqueInput {
 }
 
 type Query {
+  files(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File]!
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   deals(where: DealWhereInput, orderBy: DealOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Deal]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
@@ -2237,6 +2618,7 @@ type Query {
   pictures(where: PictureWhereInput, orderBy: PictureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Picture]!
   organizations(where: OrganizationWhereInput, orderBy: OrganizationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Organization]!
   stages(where: StageWhereInput, orderBy: StageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Stage]!
+  file(where: FileWhereUniqueInput!): File
   product(where: ProductWhereUniqueInput!): Product
   deal(where: DealWhereUniqueInput!): Deal
   user(where: UserWhereUniqueInput!): User
@@ -2245,6 +2627,7 @@ type Query {
   picture(where: PictureWhereUniqueInput!): Picture
   organization(where: OrganizationWhereUniqueInput!): Organization
   stage(where: StageWhereUniqueInput!): Stage
+  filesConnection(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
   dealsConnection(where: DealWhereInput, orderBy: DealOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DealConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -2542,6 +2925,7 @@ input StageWhereUniqueInput {
 }
 
 type Subscription {
+  file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   deal(where: DealSubscriptionWhereInput): DealSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -3032,6 +3416,126 @@ export const Prisma = makePrismaBindingClass<BindingConstructor<Prisma>>({typeDe
  * Types
 */
 
+export type DealOrderByInput =   'id_ASC' |
+  'id_DESC' |
+  'title_ASC' |
+  'title_DESC' |
+  'value_ASC' |
+  'value_DESC' |
+  'currency_ASC' |
+  'currency_DESC' |
+  'status_ASC' |
+  'status_DESC' |
+  'probability_ASC' |
+  'probability_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC'
+
+export type OrderStatus =   'OPEN' |
+  'WON' |
+  'LOST' |
+  'DELETED'
+
+export type Active =   'ACTIVATED' |
+  'NOTACTIVATED'
+
+export type FileOrderByInput =   'id_ASC' |
+  'id_DESC' |
+  'path_ASC' |
+  'path_DESC' |
+  'filename_ASC' |
+  'filename_DESC' |
+  'mimetype_ASC' |
+  'mimetype_DESC' |
+  'encoding_ASC' |
+  'encoding_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC'
+
+export type Role =   'USER' |
+  'PERSON'
+
+export type OrganizationOrderByInput =   'id_ASC' |
+  'id_DESC' |
+  'name_ASC' |
+  'name_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC'
+
+export type Probability =   'DISABLE' |
+  'ENABLE'
+
+export type ProductOrderByInput =   'id_ASC' |
+  'id_DESC' |
+  'name_ASC' |
+  'name_DESC' |
+  'unit_ASC' |
+  'unit_DESC' |
+  'code_ASC' |
+  'code_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC'
+
+export type PersonOrderByInput =   'id_ASC' |
+  'id_DESC' |
+  'name_ASC' |
+  'name_DESC' |
+  'email_ASC' |
+  'email_DESC' |
+  'phone_ASC' |
+  'phone_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC'
+
+export type PictureOrderByInput =   'id_ASC' |
+  'id_DESC' |
+  'file_ASC' |
+  'file_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC'
+
+export type PipelineOrderByInput =   'id_ASC' |
+  'id_DESC' |
+  'name_ASC' |
+  'name_DESC' |
+  'order_nr_ASC' |
+  'order_nr_DESC' |
+  'deal_probability_ASC' |
+  'deal_probability_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC'
+
+export type StageOrderByInput =   'id_ASC' |
+  'id_DESC' |
+  'name_ASC' |
+  'name_DESC' |
+  'order_nr_ASC' |
+  'order_nr_DESC' |
+  'deal_probability_ASC' |
+  'deal_probability_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC'
+
+export type MutationType =   'CREATED' |
+  'UPDATED' |
+  'DELETED'
+
 export type UserOrderByInput =   'id_ASC' |
   'id_DESC' |
   'name_ASC' |
@@ -3053,111 +3557,6 @@ export type UserOrderByInput =   'id_ASC' |
   'createdAt_ASC' |
   'createdAt_DESC'
 
-export type ProductOrderByInput =   'id_ASC' |
-  'id_DESC' |
-  'name_ASC' |
-  'name_DESC' |
-  'unit_ASC' |
-  'unit_DESC' |
-  'code_ASC' |
-  'code_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC'
-
-export type DealOrderByInput =   'id_ASC' |
-  'id_DESC' |
-  'title_ASC' |
-  'title_DESC' |
-  'value_ASC' |
-  'value_DESC' |
-  'currency_ASC' |
-  'currency_DESC' |
-  'status_ASC' |
-  'status_DESC' |
-  'probability_ASC' |
-  'probability_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC'
-
-export type StageOrderByInput =   'id_ASC' |
-  'id_DESC' |
-  'name_ASC' |
-  'name_DESC' |
-  'order_nr_ASC' |
-  'order_nr_DESC' |
-  'deal_probability_ASC' |
-  'deal_probability_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC'
-
-export type PersonOrderByInput =   'id_ASC' |
-  'id_DESC' |
-  'name_ASC' |
-  'name_DESC' |
-  'email_ASC' |
-  'email_DESC' |
-  'phone_ASC' |
-  'phone_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC'
-
-export type Probability =   'DISABLE' |
-  'ENABLE'
-
-export type PictureOrderByInput =   'id_ASC' |
-  'id_DESC' |
-  'file_ASC' |
-  'file_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC'
-
-export type OrderStatus =   'OPEN' |
-  'WON' |
-  'LOST' |
-  'DELETED'
-
-export type Active =   'ACTIVATED' |
-  'NOTACTIVATED'
-
-export type MutationType =   'CREATED' |
-  'UPDATED' |
-  'DELETED'
-
-export type PipelineOrderByInput =   'id_ASC' |
-  'id_DESC' |
-  'name_ASC' |
-  'name_DESC' |
-  'order_nr_ASC' |
-  'order_nr_DESC' |
-  'deal_probability_ASC' |
-  'deal_probability_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC'
-
-export type OrganizationOrderByInput =   'id_ASC' |
-  'id_DESC' |
-  'name_ASC' |
-  'name_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC'
-
-export type Role =   'USER' |
-  'PERSON'
-
 export interface DealCreateInput {
   title: String
   value: String
@@ -3171,10 +3570,97 @@ export interface DealCreateInput {
   stage?: StageCreateOneInput
 }
 
-export interface ProductWhereInput {
-  AND?: ProductWhereInput[] | ProductWhereInput
-  OR?: ProductWhereInput[] | ProductWhereInput
-  NOT?: ProductWhereInput[] | ProductWhereInput
+export interface FileWhereInput {
+  AND?: FileWhereInput[] | FileWhereInput
+  OR?: FileWhereInput[] | FileWhereInput
+  NOT?: FileWhereInput[] | FileWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  path?: String
+  path_not?: String
+  path_in?: String[] | String
+  path_not_in?: String[] | String
+  path_lt?: String
+  path_lte?: String
+  path_gt?: String
+  path_gte?: String
+  path_contains?: String
+  path_not_contains?: String
+  path_starts_with?: String
+  path_not_starts_with?: String
+  path_ends_with?: String
+  path_not_ends_with?: String
+  filename?: String
+  filename_not?: String
+  filename_in?: String[] | String
+  filename_not_in?: String[] | String
+  filename_lt?: String
+  filename_lte?: String
+  filename_gt?: String
+  filename_gte?: String
+  filename_contains?: String
+  filename_not_contains?: String
+  filename_starts_with?: String
+  filename_not_starts_with?: String
+  filename_ends_with?: String
+  filename_not_ends_with?: String
+  mimetype?: String
+  mimetype_not?: String
+  mimetype_in?: String[] | String
+  mimetype_not_in?: String[] | String
+  mimetype_lt?: String
+  mimetype_lte?: String
+  mimetype_gt?: String
+  mimetype_gte?: String
+  mimetype_contains?: String
+  mimetype_not_contains?: String
+  mimetype_starts_with?: String
+  mimetype_not_starts_with?: String
+  mimetype_ends_with?: String
+  mimetype_not_ends_with?: String
+  encoding?: String
+  encoding_not?: String
+  encoding_in?: String[] | String
+  encoding_not_in?: String[] | String
+  encoding_lt?: String
+  encoding_lte?: String
+  encoding_gt?: String
+  encoding_gte?: String
+  encoding_contains?: String
+  encoding_not_contains?: String
+  encoding_starts_with?: String
+  encoding_not_starts_with?: String
+  encoding_ends_with?: String
+  encoding_not_ends_with?: String
+}
+
+export interface UserUpdateDataInput {
+  name?: String
+  email?: String
+  password?: String
+  firstName?: String
+  lastName?: String
+  active_flag?: Active
+  role?: Role
+  company?: OrganizationUpdateOneWithoutOwnerInput
+}
+
+export interface StageWhereInput {
+  AND?: StageWhereInput[] | StageWhereInput
+  OR?: StageWhereInput[] | StageWhereInput
+  NOT?: StageWhereInput[] | StageWhereInput
   id?: ID_Input
   id_not?: ID_Input
   id_in?: ID_Input[] | ID_Input
@@ -3203,57 +3689,25 @@ export interface ProductWhereInput {
   name_not_starts_with?: String
   name_ends_with?: String
   name_not_ends_with?: String
-  unit?: String
-  unit_not?: String
-  unit_in?: String[] | String
-  unit_not_in?: String[] | String
-  unit_lt?: String
-  unit_lte?: String
-  unit_gt?: String
-  unit_gte?: String
-  unit_contains?: String
-  unit_not_contains?: String
-  unit_starts_with?: String
-  unit_not_starts_with?: String
-  unit_ends_with?: String
-  unit_not_ends_with?: String
-  code?: String
-  code_not?: String
-  code_in?: String[] | String
-  code_not_in?: String[] | String
-  code_lt?: String
-  code_lte?: String
-  code_gt?: String
-  code_gte?: String
-  code_contains?: String
-  code_not_contains?: String
-  code_starts_with?: String
-  code_not_starts_with?: String
-  code_ends_with?: String
-  code_not_ends_with?: String
-  owner?: UserWhereInput
-  deals_every?: DealWhereInput
-  deals_some?: DealWhereInput
-  deals_none?: DealWhereInput
-}
-
-export interface OrganizationCreateWithoutOwnerInput {
-  name: String
-  persons?: PersonCreateManyInput
-}
-
-export interface PipelineUpdateOneInput {
-  create?: PipelineCreateInput
-  connect?: PipelineWhereUniqueInput
-  disconnect?: Boolean
-  delete?: Boolean
-  update?: PipelineUpdateDataInput
-  upsert?: PipelineUpsertNestedInput
-}
-
-export interface PersonCreateManyInput {
-  create?: PersonCreateInput[] | PersonCreateInput
-  connect?: PersonWhereUniqueInput[] | PersonWhereUniqueInput
+  order_nr?: String
+  order_nr_not?: String
+  order_nr_in?: String[] | String
+  order_nr_not_in?: String[] | String
+  order_nr_lt?: String
+  order_nr_lte?: String
+  order_nr_gt?: String
+  order_nr_gte?: String
+  order_nr_contains?: String
+  order_nr_not_contains?: String
+  order_nr_starts_with?: String
+  order_nr_not_starts_with?: String
+  order_nr_ends_with?: String
+  order_nr_not_ends_with?: String
+  deal_probability?: Probability
+  deal_probability_not?: Probability
+  deal_probability_in?: Probability[] | Probability
+  deal_probability_not_in?: Probability[] | Probability
+  pipeline?: PipelineWhereInput
 }
 
 export interface OrganizationUpdateOneWithoutOwnerInput {
@@ -3263,32 +3717,6 @@ export interface OrganizationUpdateOneWithoutOwnerInput {
   delete?: Boolean
   update?: OrganizationUpdateWithoutOwnerDataInput
   upsert?: OrganizationUpsertWithoutOwnerInput
-}
-
-export interface PersonCreateInput {
-  name: String
-  email?: String
-  phone?: String
-  owner?: UserCreateOneInput
-  pictures?: PictureCreateManyInput
-  products?: ProductCreateManyInput
-  deals?: DealCreateManyWithoutParticipantsInput
-}
-
-export interface StageSubscriptionWhereInput {
-  AND?: StageSubscriptionWhereInput[] | StageSubscriptionWhereInput
-  OR?: StageSubscriptionWhereInput[] | StageSubscriptionWhereInput
-  NOT?: StageSubscriptionWhereInput[] | StageSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: StageWhereInput
-}
-
-export interface PictureCreateManyInput {
-  create?: PictureCreateInput[] | PictureCreateInput
-  connect?: PictureWhereUniqueInput[] | PictureWhereUniqueInput
 }
 
 export interface PipelineWhereInput {
@@ -3346,539 +3774,20 @@ export interface PipelineWhereInput {
   deals_none?: DealWhereInput
 }
 
-export interface PictureCreateInput {
-  file: String
-}
-
-export interface StageWhereInput {
-  AND?: StageWhereInput[] | StageWhereInput
-  OR?: StageWhereInput[] | StageWhereInput
-  NOT?: StageWhereInput[] | StageWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  name?: String
-  name_not?: String
-  name_in?: String[] | String
-  name_not_in?: String[] | String
-  name_lt?: String
-  name_lte?: String
-  name_gt?: String
-  name_gte?: String
-  name_contains?: String
-  name_not_contains?: String
-  name_starts_with?: String
-  name_not_starts_with?: String
-  name_ends_with?: String
-  name_not_ends_with?: String
-  order_nr?: String
-  order_nr_not?: String
-  order_nr_in?: String[] | String
-  order_nr_not_in?: String[] | String
-  order_nr_lt?: String
-  order_nr_lte?: String
-  order_nr_gt?: String
-  order_nr_gte?: String
-  order_nr_contains?: String
-  order_nr_not_contains?: String
-  order_nr_starts_with?: String
-  order_nr_not_starts_with?: String
-  order_nr_ends_with?: String
-  order_nr_not_ends_with?: String
-  deal_probability?: Probability
-  deal_probability_not?: Probability
-  deal_probability_in?: Probability[] | Probability
-  deal_probability_not_in?: Probability[] | Probability
-  pipeline?: PipelineWhereInput
-}
-
-export interface ProductCreateManyInput {
-  create?: ProductCreateInput[] | ProductCreateInput
-  connect?: ProductWhereUniqueInput[] | ProductWhereUniqueInput
-}
-
-export interface DealWhereInput {
-  AND?: DealWhereInput[] | DealWhereInput
-  OR?: DealWhereInput[] | DealWhereInput
-  NOT?: DealWhereInput[] | DealWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  title?: String
-  title_not?: String
-  title_in?: String[] | String
-  title_not_in?: String[] | String
-  title_lt?: String
-  title_lte?: String
-  title_gt?: String
-  title_gte?: String
-  title_contains?: String
-  title_not_contains?: String
-  title_starts_with?: String
-  title_not_starts_with?: String
-  title_ends_with?: String
-  title_not_ends_with?: String
-  value?: String
-  value_not?: String
-  value_in?: String[] | String
-  value_not_in?: String[] | String
-  value_lt?: String
-  value_lte?: String
-  value_gt?: String
-  value_gte?: String
-  value_contains?: String
-  value_not_contains?: String
-  value_starts_with?: String
-  value_not_starts_with?: String
-  value_ends_with?: String
-  value_not_ends_with?: String
-  currency?: String
-  currency_not?: String
-  currency_in?: String[] | String
-  currency_not_in?: String[] | String
-  currency_lt?: String
-  currency_lte?: String
-  currency_gt?: String
-  currency_gte?: String
-  currency_contains?: String
-  currency_not_contains?: String
-  currency_starts_with?: String
-  currency_not_starts_with?: String
-  currency_ends_with?: String
-  currency_not_ends_with?: String
-  status?: OrderStatus
-  status_not?: OrderStatus
-  status_in?: OrderStatus[] | OrderStatus
-  status_not_in?: OrderStatus[] | OrderStatus
-  probability?: String
-  probability_not?: String
-  probability_in?: String[] | String
-  probability_not_in?: String[] | String
-  probability_lt?: String
-  probability_lte?: String
-  probability_gt?: String
-  probability_gte?: String
-  probability_contains?: String
-  probability_not_contains?: String
-  probability_starts_with?: String
-  probability_not_starts_with?: String
-  probability_ends_with?: String
-  probability_not_ends_with?: String
-  owner?: UserWhereInput
-  org?: OrganizationWhereInput
-  participants_every?: PersonWhereInput
-  participants_some?: PersonWhereInput
-  participants_none?: PersonWhereInput
-  products_every?: ProductWhereInput
-  products_some?: ProductWhereInput
-  products_none?: ProductWhereInput
-  stage?: StageWhereInput
-}
-
-export interface DealCreateManyWithoutParticipantsInput {
-  create?: DealCreateWithoutParticipantsInput[] | DealCreateWithoutParticipantsInput
-  connect?: DealWhereUniqueInput[] | DealWhereUniqueInput
-}
-
-export interface UserSubscriptionWhereInput {
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: UserWhereInput
-}
-
-export interface DealCreateWithoutParticipantsInput {
-  title: String
-  value: String
-  currency: String
-  status?: OrderStatus
-  probability?: String
-  owner?: UserCreateOneInput
-  org?: OrganizationCreateOneInput
-  products?: ProductCreateManyWithoutDealsInput
-  stage?: StageCreateOneInput
-}
-
-export interface PictureWhereInput {
-  AND?: PictureWhereInput[] | PictureWhereInput
-  OR?: PictureWhereInput[] | PictureWhereInput
-  NOT?: PictureWhereInput[] | PictureWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  file?: String
-  file_not?: String
-  file_in?: String[] | String
-  file_not_in?: String[] | String
-  file_lt?: String
-  file_lte?: String
-  file_gt?: String
-  file_gte?: String
-  file_contains?: String
-  file_not_contains?: String
-  file_starts_with?: String
-  file_not_starts_with?: String
-  file_ends_with?: String
-  file_not_ends_with?: String
-}
-
-export interface OrganizationCreateOneInput {
-  create?: OrganizationCreateInput
-  connect?: OrganizationWhereUniqueInput
-}
-
-export interface OrganizationWhereInput {
-  AND?: OrganizationWhereInput[] | OrganizationWhereInput
-  OR?: OrganizationWhereInput[] | OrganizationWhereInput
-  NOT?: OrganizationWhereInput[] | OrganizationWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  name?: String
-  name_not?: String
-  name_in?: String[] | String
-  name_not_in?: String[] | String
-  name_lt?: String
-  name_lte?: String
-  name_gt?: String
-  name_gte?: String
-  name_contains?: String
-  name_not_contains?: String
-  name_starts_with?: String
-  name_not_starts_with?: String
-  name_ends_with?: String
-  name_not_ends_with?: String
-  owner?: UserWhereInput
-  persons_every?: PersonWhereInput
-  persons_some?: PersonWhereInput
-  persons_none?: PersonWhereInput
-}
-
-export interface OrganizationCreateInput {
+export interface OrganizationCreateWithoutOwnerInput {
   name: String
-  owner?: UserCreateOneWithoutCompanyInput
   persons?: PersonCreateManyInput
 }
 
-export interface ProductWhereUniqueInput {
-  id?: ID_Input
-  name?: String
-}
-
-export interface UserCreateOneWithoutCompanyInput {
-  create?: UserCreateWithoutCompanyInput
-  connect?: UserWhereUniqueInput
-}
-
-export interface UserWhereUniqueInput {
-  id?: ID_Input
-  name?: String
-  email?: String
-}
-
-export interface UserCreateWithoutCompanyInput {
-  name: String
-  email: String
-  password: String
-  firstName?: String
-  lastName?: String
-  active_flag?: Active
-  role?: Role
-}
-
-export interface PipelineWhereUniqueInput {
-  id?: ID_Input
-  name?: String
-}
-
-export interface ProductCreateManyWithoutDealsInput {
-  create?: ProductCreateWithoutDealsInput[] | ProductCreateWithoutDealsInput
-  connect?: ProductWhereUniqueInput[] | ProductWhereUniqueInput
-}
-
-export interface OrganizationWhereUniqueInput {
-  id?: ID_Input
-  name?: String
-}
-
-export interface ProductCreateWithoutDealsInput {
-  name: String
-  unit?: String
-  code?: String
-  owner?: UserCreateOneInput
-}
-
-export interface ProductSubscriptionWhereInput {
-  AND?: ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput
-  OR?: ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput
-  NOT?: ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: ProductWhereInput
-}
-
-export interface StageCreateOneInput {
-  create?: StageCreateInput
-  connect?: StageWhereUniqueInput
-}
-
-export interface OrganizationUpdateInput {
-  name?: String
-  owner?: UserUpdateOneWithoutCompanyInput
-  persons?: PersonUpdateManyInput
-}
-
-export interface StageCreateInput {
-  name: String
-  order_nr?: String
-  deal_probability?: Probability
-  pipeline?: PipelineCreateOneInput
-}
-
-export interface PipelineUpdateInput {
-  name?: String
-  order_nr?: String
-  deal_probability?: Probability
-  deals?: DealUpdateManyInput
-}
-
-export interface PipelineCreateOneInput {
-  create?: PipelineCreateInput
-  connect?: PipelineWhereUniqueInput
-}
-
-export interface UserUpdateInput {
-  name?: String
-  email?: String
-  password?: String
-  firstName?: String
-  lastName?: String
-  active_flag?: Active
-  role?: Role
-  company?: OrganizationUpdateOneWithoutOwnerInput
-}
-
-export interface PipelineCreateInput {
-  name: String
-  order_nr?: String
-  deal_probability?: Probability
-  deals?: DealCreateManyInput
-}
-
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput
-  create: UserCreateInput
-}
-
-export interface DealCreateManyInput {
-  create?: DealCreateInput[] | DealCreateInput
-  connect?: DealWhereUniqueInput[] | DealWhereUniqueInput
-}
-
-export interface PersonUpsertWithWhereUniqueNestedInput {
+export interface PersonUpsertWithWhereUniqueWithoutDealsInput {
   where: PersonWhereUniqueInput
-  update: PersonUpdateDataInput
-  create: PersonCreateInput
+  update: PersonUpdateWithoutDealsDataInput
+  create: PersonCreateWithoutDealsInput
 }
 
-export interface DealUpdateManyInput {
-  create?: DealCreateInput[] | DealCreateInput
-  connect?: DealWhereUniqueInput[] | DealWhereUniqueInput
-  disconnect?: DealWhereUniqueInput[] | DealWhereUniqueInput
-  delete?: DealWhereUniqueInput[] | DealWhereUniqueInput
-  update?: DealUpdateWithWhereUniqueNestedInput[] | DealUpdateWithWhereUniqueNestedInput
-  upsert?: DealUpsertWithWhereUniqueNestedInput[] | DealUpsertWithWhereUniqueNestedInput
-}
-
-export interface DealUpdateWithoutParticipantsDataInput {
-  title?: String
-  value?: String
-  currency?: String
-  status?: OrderStatus
-  probability?: String
-  owner?: UserUpdateOneInput
-  org?: OrganizationUpdateOneInput
-  products?: ProductUpdateManyWithoutDealsInput
-  stage?: StageUpdateOneInput
-}
-
-export interface PersonCreateManyWithoutDealsInput {
-  create?: PersonCreateWithoutDealsInput[] | PersonCreateWithoutDealsInput
+export interface PersonCreateManyInput {
+  create?: PersonCreateInput[] | PersonCreateInput
   connect?: PersonWhereUniqueInput[] | PersonWhereUniqueInput
-}
-
-export interface DealUpdateManyWithoutParticipantsInput {
-  create?: DealCreateWithoutParticipantsInput[] | DealCreateWithoutParticipantsInput
-  connect?: DealWhereUniqueInput[] | DealWhereUniqueInput
-  disconnect?: DealWhereUniqueInput[] | DealWhereUniqueInput
-  delete?: DealWhereUniqueInput[] | DealWhereUniqueInput
-  update?: DealUpdateWithWhereUniqueWithoutParticipantsInput[] | DealUpdateWithWhereUniqueWithoutParticipantsInput
-  upsert?: DealUpsertWithWhereUniqueWithoutParticipantsInput[] | DealUpsertWithWhereUniqueWithoutParticipantsInput
-}
-
-export interface PersonCreateWithoutDealsInput {
-  name: String
-  email?: String
-  phone?: String
-  owner?: UserCreateOneInput
-  pictures?: PictureCreateManyInput
-  products?: ProductCreateManyInput
-}
-
-export interface DealUpsertWithWhereUniqueWithoutProductsInput {
-  where: DealWhereUniqueInput
-  update: DealUpdateWithoutProductsDataInput
-  create: DealCreateWithoutProductsInput
-}
-
-export interface DealCreateManyWithoutProductsInput {
-  create?: DealCreateWithoutProductsInput[] | DealCreateWithoutProductsInput
-  connect?: DealWhereUniqueInput[] | DealWhereUniqueInput
-}
-
-export interface PipelineUpsertNestedInput {
-  update: PipelineUpdateDataInput
-  create: PipelineCreateInput
-}
-
-export interface DealCreateWithoutProductsInput {
-  title: String
-  value: String
-  currency: String
-  status?: OrderStatus
-  probability?: String
-  owner?: UserCreateOneInput
-  org?: OrganizationCreateOneInput
-  participants?: PersonCreateManyWithoutDealsInput
-  stage?: StageCreateOneInput
-}
-
-export interface ProductUpsertWithWhereUniqueWithoutDealsInput {
-  where: ProductWhereUniqueInput
-  update: ProductUpdateWithoutDealsDataInput
-  create: ProductCreateWithoutDealsInput
-}
-
-export interface ProductUpdateInput {
-  name?: String
-  unit?: String
-  code?: String
-  owner?: UserUpdateOneInput
-  deals?: DealUpdateManyWithoutProductsInput
-}
-
-export interface ProductUpdateWithWhereUniqueWithoutDealsInput {
-  where: ProductWhereUniqueInput
-  data: ProductUpdateWithoutDealsDataInput
-}
-
-export interface UserUpdateOneInput {
-  create?: UserCreateInput
-  connect?: UserWhereUniqueInput
-  disconnect?: Boolean
-  delete?: Boolean
-  update?: UserUpdateDataInput
-  upsert?: UserUpsertNestedInput
-}
-
-export interface DealUpdateDataInput {
-  title?: String
-  value?: String
-  currency?: String
-  status?: OrderStatus
-  probability?: String
-  owner?: UserUpdateOneInput
-  org?: OrganizationUpdateOneInput
-  participants?: PersonUpdateManyWithoutDealsInput
-  products?: ProductUpdateManyWithoutDealsInput
-  stage?: StageUpdateOneInput
-}
-
-export interface UserUpdateDataInput {
-  name?: String
-  email?: String
-  password?: String
-  firstName?: String
-  lastName?: String
-  active_flag?: Active
-  role?: Role
-  company?: OrganizationUpdateOneWithoutOwnerInput
-}
-
-export interface ProductCreateInput {
-  name: String
-  unit?: String
-  code?: String
-  owner?: UserCreateOneInput
-  deals?: DealCreateManyWithoutProductsInput
-}
-
-export interface PipelineUpdateDataInput {
-  name?: String
-  order_nr?: String
-  deal_probability?: Probability
-  deals?: DealUpdateManyInput
-}
-
-export interface UserCreateInput {
-  name: String
-  email: String
-  password: String
-  firstName?: String
-  lastName?: String
-  active_flag?: Active
-  role?: Role
-  company?: OrganizationCreateOneWithoutOwnerInput
 }
 
 export interface OrganizationUpdateWithoutOwnerDataInput {
@@ -3886,40 +3795,14 @@ export interface OrganizationUpdateWithoutOwnerDataInput {
   persons?: PersonUpdateManyInput
 }
 
-export interface PictureSubscriptionWhereInput {
-  AND?: PictureSubscriptionWhereInput[] | PictureSubscriptionWhereInput
-  OR?: PictureSubscriptionWhereInput[] | PictureSubscriptionWhereInput
-  NOT?: PictureSubscriptionWhereInput[] | PictureSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: PictureWhereInput
-}
-
-export interface PersonUpdateManyInput {
-  create?: PersonCreateInput[] | PersonCreateInput
-  connect?: PersonWhereUniqueInput[] | PersonWhereUniqueInput
-  disconnect?: PersonWhereUniqueInput[] | PersonWhereUniqueInput
-  delete?: PersonWhereUniqueInput[] | PersonWhereUniqueInput
-  update?: PersonUpdateWithWhereUniqueNestedInput[] | PersonUpdateWithWhereUniqueNestedInput
-  upsert?: PersonUpsertWithWhereUniqueNestedInput[] | PersonUpsertWithWhereUniqueNestedInput
-}
-
-export interface PersonSubscriptionWhereInput {
-  AND?: PersonSubscriptionWhereInput[] | PersonSubscriptionWhereInput
-  OR?: PersonSubscriptionWhereInput[] | PersonSubscriptionWhereInput
-  NOT?: PersonSubscriptionWhereInput[] | PersonSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: PersonWhereInput
-}
-
-export interface PersonUpdateWithWhereUniqueNestedInput {
-  where: PersonWhereUniqueInput
-  data: PersonUpdateDataInput
+export interface PersonCreateInput {
+  name: String
+  email?: String
+  phone?: String
+  owner?: UserCreateOneInput
+  pictures?: PictureCreateManyInput
+  products?: ProductCreateManyInput
+  deals?: DealCreateManyWithoutParticipantsInput
 }
 
 export interface PersonWhereInput {
@@ -3994,164 +3877,52 @@ export interface PersonWhereInput {
   deals_none?: DealWhereInput
 }
 
-export interface PersonUpdateDataInput {
-  name?: String
-  email?: String
-  phone?: String
-  owner?: UserUpdateOneInput
-  pictures?: PictureUpdateManyInput
-  products?: ProductUpdateManyInput
-  deals?: DealUpdateManyWithoutParticipantsInput
-}
-
-export interface DealWhereUniqueInput {
-  id?: ID_Input
-  title?: String
-}
-
-export interface PictureUpdateManyInput {
+export interface PictureCreateManyInput {
   create?: PictureCreateInput[] | PictureCreateInput
   connect?: PictureWhereUniqueInput[] | PictureWhereUniqueInput
-  disconnect?: PictureWhereUniqueInput[] | PictureWhereUniqueInput
-  delete?: PictureWhereUniqueInput[] | PictureWhereUniqueInput
-  update?: PictureUpdateWithWhereUniqueNestedInput[] | PictureUpdateWithWhereUniqueNestedInput
-  upsert?: PictureUpsertWithWhereUniqueNestedInput[] | PictureUpsertWithWhereUniqueNestedInput
 }
 
-export interface PictureWhereUniqueInput {
+export interface OrganizationWhereInput {
+  AND?: OrganizationWhereInput[] | OrganizationWhereInput
+  OR?: OrganizationWhereInput[] | OrganizationWhereInput
+  NOT?: OrganizationWhereInput[] | OrganizationWhereInput
   id?: ID_Input
-}
-
-export interface PictureUpdateWithWhereUniqueNestedInput {
-  where: PictureWhereUniqueInput
-  data: PictureUpdateDataInput
-}
-
-export interface StageUpdateInput {
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
   name?: String
-  order_nr?: String
-  deal_probability?: Probability
-  pipeline?: PipelineUpdateOneInput
+  name_not?: String
+  name_in?: String[] | String
+  name_not_in?: String[] | String
+  name_lt?: String
+  name_lte?: String
+  name_gt?: String
+  name_gte?: String
+  name_contains?: String
+  name_not_contains?: String
+  name_starts_with?: String
+  name_not_starts_with?: String
+  name_ends_with?: String
+  name_not_ends_with?: String
+  owner?: UserWhereInput
+  persons_every?: PersonWhereInput
+  persons_some?: PersonWhereInput
+  persons_none?: PersonWhereInput
 }
 
-export interface PictureUpdateDataInput {
-  file?: String
-}
-
-export interface PersonUpdateInput {
-  name?: String
-  email?: String
-  phone?: String
-  owner?: UserUpdateOneInput
-  pictures?: PictureUpdateManyInput
-  products?: ProductUpdateManyInput
-  deals?: DealUpdateManyWithoutParticipantsInput
-}
-
-export interface PictureUpsertWithWhereUniqueNestedInput {
-  where: PictureWhereUniqueInput
-  update: PictureUpdateDataInput
-  create: PictureCreateInput
-}
-
-export interface OrganizationUpsertWithoutOwnerInput {
-  update: OrganizationUpdateWithoutOwnerDataInput
-  create: OrganizationCreateWithoutOwnerInput
-}
-
-export interface ProductUpdateManyInput {
-  create?: ProductCreateInput[] | ProductCreateInput
-  connect?: ProductWhereUniqueInput[] | ProductWhereUniqueInput
-  disconnect?: ProductWhereUniqueInput[] | ProductWhereUniqueInput
-  delete?: ProductWhereUniqueInput[] | ProductWhereUniqueInput
-  update?: ProductUpdateWithWhereUniqueNestedInput[] | ProductUpdateWithWhereUniqueNestedInput
-  upsert?: ProductUpsertWithWhereUniqueNestedInput[] | ProductUpsertWithWhereUniqueNestedInput
-}
-
-export interface DealUpdateWithWhereUniqueWithoutParticipantsInput {
-  where: DealWhereUniqueInput
-  data: DealUpdateWithoutParticipantsDataInput
-}
-
-export interface ProductUpdateWithWhereUniqueNestedInput {
-  where: ProductWhereUniqueInput
-  data: ProductUpdateDataInput
-}
-
-export interface StageUpsertNestedInput {
-  update: StageUpdateDataInput
-  create: StageCreateInput
-}
-
-export interface ProductUpdateDataInput {
-  name?: String
-  unit?: String
-  code?: String
-  owner?: UserUpdateOneInput
-  deals?: DealUpdateManyWithoutProductsInput
-}
-
-export interface ProductUpdateWithoutDealsDataInput {
-  name?: String
-  unit?: String
-  code?: String
-  owner?: UserUpdateOneInput
-}
-
-export interface DealUpdateManyWithoutProductsInput {
-  create?: DealCreateWithoutProductsInput[] | DealCreateWithoutProductsInput
-  connect?: DealWhereUniqueInput[] | DealWhereUniqueInput
-  disconnect?: DealWhereUniqueInput[] | DealWhereUniqueInput
-  delete?: DealWhereUniqueInput[] | DealWhereUniqueInput
-  update?: DealUpdateWithWhereUniqueWithoutProductsInput[] | DealUpdateWithWhereUniqueWithoutProductsInput
-  upsert?: DealUpsertWithWhereUniqueWithoutProductsInput[] | DealUpsertWithWhereUniqueWithoutProductsInput
-}
-
-export interface DealUpdateWithWhereUniqueNestedInput {
-  where: DealWhereUniqueInput
-  data: DealUpdateDataInput
-}
-
-export interface DealUpdateWithWhereUniqueWithoutProductsInput {
-  where: DealWhereUniqueInput
-  data: DealUpdateWithoutProductsDataInput
-}
-
-export interface OrganizationCreateOneWithoutOwnerInput {
-  create?: OrganizationCreateWithoutOwnerInput
-  connect?: OrganizationWhereUniqueInput
-}
-
-export interface DealUpdateWithoutProductsDataInput {
-  title?: String
-  value?: String
-  currency?: String
-  status?: OrderStatus
-  probability?: String
-  owner?: UserUpdateOneInput
-  org?: OrganizationUpdateOneInput
-  participants?: PersonUpdateManyWithoutDealsInput
-  stage?: StageUpdateOneInput
-}
-
-export interface PipelineSubscriptionWhereInput {
-  AND?: PipelineSubscriptionWhereInput[] | PipelineSubscriptionWhereInput
-  OR?: PipelineSubscriptionWhereInput[] | PipelineSubscriptionWhereInput
-  NOT?: PipelineSubscriptionWhereInput[] | PipelineSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: PipelineWhereInput
-}
-
-export interface OrganizationUpdateOneInput {
-  create?: OrganizationCreateInput
-  connect?: OrganizationWhereUniqueInput
-  disconnect?: Boolean
-  delete?: Boolean
-  update?: OrganizationUpdateDataInput
-  upsert?: OrganizationUpsertNestedInput
+export interface PictureCreateInput {
+  file: String
+  uploads?: FileCreateManyInput
 }
 
 export interface UserWhereInput {
@@ -4253,10 +4024,163 @@ export interface UserWhereInput {
   company?: OrganizationWhereInput
 }
 
-export interface OrganizationUpdateDataInput {
+export interface FileCreateManyInput {
+  create?: FileCreateInput[] | FileCreateInput
+  connect?: FileWhereUniqueInput[] | FileWhereUniqueInput
+}
+
+export interface PersonSubscriptionWhereInput {
+  AND?: PersonSubscriptionWhereInput[] | PersonSubscriptionWhereInput
+  OR?: PersonSubscriptionWhereInput[] | PersonSubscriptionWhereInput
+  NOT?: PersonSubscriptionWhereInput[] | PersonSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: PersonWhereInput
+}
+
+export interface ProductCreateManyInput {
+  create?: ProductCreateInput[] | ProductCreateInput
+  connect?: ProductWhereUniqueInput[] | ProductWhereUniqueInput
+}
+
+export interface ProductWhereInput {
+  AND?: ProductWhereInput[] | ProductWhereInput
+  OR?: ProductWhereInput[] | ProductWhereInput
+  NOT?: ProductWhereInput[] | ProductWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
   name?: String
-  owner?: UserUpdateOneWithoutCompanyInput
-  persons?: PersonUpdateManyInput
+  name_not?: String
+  name_in?: String[] | String
+  name_not_in?: String[] | String
+  name_lt?: String
+  name_lte?: String
+  name_gt?: String
+  name_gte?: String
+  name_contains?: String
+  name_not_contains?: String
+  name_starts_with?: String
+  name_not_starts_with?: String
+  name_ends_with?: String
+  name_not_ends_with?: String
+  unit?: String
+  unit_not?: String
+  unit_in?: String[] | String
+  unit_not_in?: String[] | String
+  unit_lt?: String
+  unit_lte?: String
+  unit_gt?: String
+  unit_gte?: String
+  unit_contains?: String
+  unit_not_contains?: String
+  unit_starts_with?: String
+  unit_not_starts_with?: String
+  unit_ends_with?: String
+  unit_not_ends_with?: String
+  code?: String
+  code_not?: String
+  code_in?: String[] | String
+  code_not_in?: String[] | String
+  code_lt?: String
+  code_lte?: String
+  code_gt?: String
+  code_gte?: String
+  code_contains?: String
+  code_not_contains?: String
+  code_starts_with?: String
+  code_not_starts_with?: String
+  code_ends_with?: String
+  code_not_ends_with?: String
+  owner?: UserWhereInput
+  deals_every?: DealWhereInput
+  deals_some?: DealWhereInput
+  deals_none?: DealWhereInput
+}
+
+export interface DealCreateManyWithoutParticipantsInput {
+  create?: DealCreateWithoutParticipantsInput[] | DealCreateWithoutParticipantsInput
+  connect?: DealWhereUniqueInput[] | DealWhereUniqueInput
+}
+
+export interface DealSubscriptionWhereInput {
+  AND?: DealSubscriptionWhereInput[] | DealSubscriptionWhereInput
+  OR?: DealSubscriptionWhereInput[] | DealSubscriptionWhereInput
+  NOT?: DealSubscriptionWhereInput[] | DealSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: DealWhereInput
+}
+
+export interface DealCreateWithoutParticipantsInput {
+  title: String
+  value: String
+  currency: String
+  status?: OrderStatus
+  probability?: String
+  owner?: UserCreateOneInput
+  org?: OrganizationCreateOneInput
+  products?: ProductCreateManyWithoutDealsInput
+  stage?: StageCreateOneInput
+}
+
+export interface FileWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface OrganizationCreateOneInput {
+  create?: OrganizationCreateInput
+  connect?: OrganizationWhereUniqueInput
+}
+
+export interface DealWhereUniqueInput {
+  id?: ID_Input
+  title?: String
+}
+
+export interface OrganizationCreateInput {
+  name: String
+  owner?: UserCreateOneWithoutCompanyInput
+  persons?: PersonCreateManyInput
+}
+
+export interface PersonWhereUniqueInput {
+  id?: ID_Input
+  name?: String
+}
+
+export interface UserCreateOneWithoutCompanyInput {
+  create?: UserCreateWithoutCompanyInput
+  connect?: UserWhereUniqueInput
+}
+
+export interface PictureWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface UserCreateWithoutCompanyInput {
+  name: String
+  email: String
+  password: String
+  firstName?: String
+  lastName?: String
+  active_flag?: Active
+  role?: Role
 }
 
 export interface StageWhereUniqueInput {
@@ -4264,13 +4188,50 @@ export interface StageWhereUniqueInput {
   name?: String
 }
 
-export interface UserUpdateOneWithoutCompanyInput {
-  create?: UserCreateWithoutCompanyInput
-  connect?: UserWhereUniqueInput
-  disconnect?: Boolean
-  delete?: Boolean
-  update?: UserUpdateWithoutCompanyDataInput
-  upsert?: UserUpsertWithoutCompanyInput
+export interface ProductCreateManyWithoutDealsInput {
+  create?: ProductCreateWithoutDealsInput[] | ProductCreateWithoutDealsInput
+  connect?: ProductWhereUniqueInput[] | ProductWhereUniqueInput
+}
+
+export interface StageUpdateInput {
+  name?: String
+  order_nr?: String
+  deal_probability?: Probability
+  pipeline?: PipelineUpdateOneInput
+}
+
+export interface ProductCreateWithoutDealsInput {
+  name: String
+  unit?: String
+  code?: String
+  owner?: UserCreateOneInput
+}
+
+export interface PictureUpdateInput {
+  file?: String
+  uploads?: FileUpdateManyInput
+}
+
+export interface StageCreateOneInput {
+  create?: StageCreateInput
+  connect?: StageWhereUniqueInput
+}
+
+export interface PersonUpdateInput {
+  name?: String
+  email?: String
+  phone?: String
+  owner?: UserUpdateOneInput
+  pictures?: PictureUpdateManyInput
+  products?: ProductUpdateManyInput
+  deals?: DealUpdateManyWithoutParticipantsInput
+}
+
+export interface StageCreateInput {
+  name: String
+  order_nr?: String
+  deal_probability?: Probability
+  pipeline?: PipelineCreateOneInput
 }
 
 export interface DealUpdateInput {
@@ -4286,14 +4247,44 @@ export interface DealUpdateInput {
   stage?: StageUpdateOneInput
 }
 
-export interface UserUpdateWithoutCompanyDataInput {
+export interface PipelineCreateOneInput {
+  create?: PipelineCreateInput
+  connect?: PipelineWhereUniqueInput
+}
+
+export interface OrganizationUpsertWithoutOwnerInput {
+  update: OrganizationUpdateWithoutOwnerDataInput
+  create: OrganizationCreateWithoutOwnerInput
+}
+
+export interface PipelineCreateInput {
+  name: String
+  order_nr?: String
+  deal_probability?: Probability
+  deals?: DealCreateManyInput
+}
+
+export interface DealUpsertWithWhereUniqueWithoutParticipantsInput {
+  where: DealWhereUniqueInput
+  update: DealUpdateWithoutParticipantsDataInput
+  create: DealCreateWithoutParticipantsInput
+}
+
+export interface DealCreateManyInput {
+  create?: DealCreateInput[] | DealCreateInput
+  connect?: DealWhereUniqueInput[] | DealWhereUniqueInput
+}
+
+export interface DealUpdateWithWhereUniqueWithoutParticipantsInput {
+  where: DealWhereUniqueInput
+  data: DealUpdateWithoutParticipantsDataInput
+}
+
+export interface StageUpdateDataInput {
   name?: String
-  email?: String
-  password?: String
-  firstName?: String
-  lastName?: String
-  active_flag?: Active
-  role?: Role
+  order_nr?: String
+  deal_probability?: Probability
+  pipeline?: PipelineUpdateOneInput
 }
 
 export interface ProductUpsertWithWhereUniqueNestedInput {
@@ -4302,9 +4293,53 @@ export interface ProductUpsertWithWhereUniqueNestedInput {
   create: ProductCreateInput
 }
 
-export interface UserUpsertWithoutCompanyInput {
-  update: UserUpdateWithoutCompanyDataInput
-  create: UserCreateWithoutCompanyInput
+export interface PersonCreateManyWithoutDealsInput {
+  create?: PersonCreateWithoutDealsInput[] | PersonCreateWithoutDealsInput
+  connect?: PersonWhereUniqueInput[] | PersonWhereUniqueInput
+}
+
+export interface StageUpsertNestedInput {
+  update: StageUpdateDataInput
+  create: StageCreateInput
+}
+
+export interface PersonCreateWithoutDealsInput {
+  name: String
+  email?: String
+  phone?: String
+  owner?: UserCreateOneInput
+  pictures?: PictureCreateManyInput
+  products?: ProductCreateManyInput
+}
+
+export interface DealUpsertWithWhereUniqueNestedInput {
+  where: DealWhereUniqueInput
+  update: DealUpdateDataInput
+  create: DealCreateInput
+}
+
+export interface DealCreateManyWithoutProductsInput {
+  create?: DealCreateWithoutProductsInput[] | DealCreateWithoutProductsInput
+  connect?: DealWhereUniqueInput[] | DealWhereUniqueInput
+}
+
+export interface ProductUpdateWithoutDealsDataInput {
+  name?: String
+  unit?: String
+  code?: String
+  owner?: UserUpdateOneInput
+}
+
+export interface DealCreateWithoutProductsInput {
+  title: String
+  value: String
+  currency: String
+  status?: OrderStatus
+  probability?: String
+  owner?: UserCreateOneInput
+  org?: OrganizationCreateOneInput
+  participants?: PersonCreateManyWithoutDealsInput
+  stage?: StageCreateOneInput
 }
 
 export interface ProductUpdateManyWithoutDealsInput {
@@ -4316,9 +4351,192 @@ export interface ProductUpdateManyWithoutDealsInput {
   upsert?: ProductUpsertWithWhereUniqueWithoutDealsInput[] | ProductUpsertWithWhereUniqueWithoutDealsInput
 }
 
-export interface OrganizationUpsertNestedInput {
-  update: OrganizationUpdateDataInput
-  create: OrganizationCreateInput
+export interface FileUpdateInput {
+  path?: String
+  filename?: String
+  mimetype?: String
+  encoding?: String
+}
+
+export interface DealUpdateWithWhereUniqueNestedInput {
+  where: DealWhereUniqueInput
+  data: DealUpdateDataInput
+}
+
+export interface ProductUpdateInput {
+  name?: String
+  unit?: String
+  code?: String
+  owner?: UserUpdateOneInput
+  deals?: DealUpdateManyWithoutProductsInput
+}
+
+export interface PipelineUpdateDataInput {
+  name?: String
+  order_nr?: String
+  deal_probability?: Probability
+  deals?: DealUpdateManyInput
+}
+
+export interface UserUpdateOneInput {
+  create?: UserCreateInput
+  connect?: UserWhereUniqueInput
+  disconnect?: Boolean
+  delete?: Boolean
+  update?: UserUpdateDataInput
+  upsert?: UserUpsertNestedInput
+}
+
+export interface FileCreateInput {
+  path: String
+  filename: String
+  mimetype: String
+  encoding: String
+}
+
+export interface DealWhereInput {
+  AND?: DealWhereInput[] | DealWhereInput
+  OR?: DealWhereInput[] | DealWhereInput
+  NOT?: DealWhereInput[] | DealWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  title?: String
+  title_not?: String
+  title_in?: String[] | String
+  title_not_in?: String[] | String
+  title_lt?: String
+  title_lte?: String
+  title_gt?: String
+  title_gte?: String
+  title_contains?: String
+  title_not_contains?: String
+  title_starts_with?: String
+  title_not_starts_with?: String
+  title_ends_with?: String
+  title_not_ends_with?: String
+  value?: String
+  value_not?: String
+  value_in?: String[] | String
+  value_not_in?: String[] | String
+  value_lt?: String
+  value_lte?: String
+  value_gt?: String
+  value_gte?: String
+  value_contains?: String
+  value_not_contains?: String
+  value_starts_with?: String
+  value_not_starts_with?: String
+  value_ends_with?: String
+  value_not_ends_with?: String
+  currency?: String
+  currency_not?: String
+  currency_in?: String[] | String
+  currency_not_in?: String[] | String
+  currency_lt?: String
+  currency_lte?: String
+  currency_gt?: String
+  currency_gte?: String
+  currency_contains?: String
+  currency_not_contains?: String
+  currency_starts_with?: String
+  currency_not_starts_with?: String
+  currency_ends_with?: String
+  currency_not_ends_with?: String
+  status?: OrderStatus
+  status_not?: OrderStatus
+  status_in?: OrderStatus[] | OrderStatus
+  status_not_in?: OrderStatus[] | OrderStatus
+  probability?: String
+  probability_not?: String
+  probability_in?: String[] | String
+  probability_not_in?: String[] | String
+  probability_lt?: String
+  probability_lte?: String
+  probability_gt?: String
+  probability_gte?: String
+  probability_contains?: String
+  probability_not_contains?: String
+  probability_starts_with?: String
+  probability_not_starts_with?: String
+  probability_ends_with?: String
+  probability_not_ends_with?: String
+  owner?: UserWhereInput
+  org?: OrganizationWhereInput
+  participants_every?: PersonWhereInput
+  participants_some?: PersonWhereInput
+  participants_none?: PersonWhereInput
+  products_every?: ProductWhereInput
+  products_some?: ProductWhereInput
+  products_none?: ProductWhereInput
+  stage?: StageWhereInput
+}
+
+export interface UserCreateOneInput {
+  create?: UserCreateInput
+  connect?: UserWhereUniqueInput
+}
+
+export interface PictureWhereInput {
+  AND?: PictureWhereInput[] | PictureWhereInput
+  OR?: PictureWhereInput[] | PictureWhereInput
+  NOT?: PictureWhereInput[] | PictureWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  file?: String
+  file_not?: String
+  file_in?: String[] | String
+  file_not_in?: String[] | String
+  file_lt?: String
+  file_lte?: String
+  file_gt?: String
+  file_gte?: String
+  file_contains?: String
+  file_not_contains?: String
+  file_starts_with?: String
+  file_not_starts_with?: String
+  file_ends_with?: String
+  file_not_ends_with?: String
+  uploads_every?: FileWhereInput
+  uploads_some?: FileWhereInput
+  uploads_none?: FileWhereInput
+}
+
+export interface OrganizationCreateOneWithoutOwnerInput {
+  create?: OrganizationCreateWithoutOwnerInput
+  connect?: OrganizationWhereUniqueInput
+}
+
+export interface StageUpdateOneInput {
+  create?: StageCreateInput
+  connect?: StageWhereUniqueInput
+  disconnect?: Boolean
+  delete?: Boolean
+  update?: StageUpdateDataInput
+  upsert?: StageUpsertNestedInput
 }
 
 export interface OrganizationSubscriptionWhereInput {
@@ -4332,51 +4550,350 @@ export interface OrganizationSubscriptionWhereInput {
   node?: OrganizationWhereInput
 }
 
-export interface PersonUpdateManyWithoutDealsInput {
-  create?: PersonCreateWithoutDealsInput[] | PersonCreateWithoutDealsInput
+export interface PersonUpdateManyInput {
+  create?: PersonCreateInput[] | PersonCreateInput
   connect?: PersonWhereUniqueInput[] | PersonWhereUniqueInput
   disconnect?: PersonWhereUniqueInput[] | PersonWhereUniqueInput
   delete?: PersonWhereUniqueInput[] | PersonWhereUniqueInput
-  update?: PersonUpdateWithWhereUniqueWithoutDealsInput[] | PersonUpdateWithWhereUniqueWithoutDealsInput
-  upsert?: PersonUpsertWithWhereUniqueWithoutDealsInput[] | PersonUpsertWithWhereUniqueWithoutDealsInput
+  update?: PersonUpdateWithWhereUniqueNestedInput[] | PersonUpdateWithWhereUniqueNestedInput
+  upsert?: PersonUpsertWithWhereUniqueNestedInput[] | PersonUpsertWithWhereUniqueNestedInput
 }
 
-export interface PersonWhereUniqueInput {
+export interface PipelineSubscriptionWhereInput {
+  AND?: PipelineSubscriptionWhereInput[] | PipelineSubscriptionWhereInput
+  OR?: PipelineSubscriptionWhereInput[] | PipelineSubscriptionWhereInput
+  NOT?: PipelineSubscriptionWhereInput[] | PipelineSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: PipelineWhereInput
+}
+
+export interface PersonUpdateWithWhereUniqueNestedInput {
+  where: PersonWhereUniqueInput
+  data: PersonUpdateDataInput
+}
+
+export interface ProductWhereUniqueInput {
   id?: ID_Input
   name?: String
 }
 
-export interface PersonUpdateWithWhereUniqueWithoutDealsInput {
-  where: PersonWhereUniqueInput
-  data: PersonUpdateWithoutDealsDataInput
+export interface PersonUpdateDataInput {
+  name?: String
+  email?: String
+  phone?: String
+  owner?: UserUpdateOneInput
+  pictures?: PictureUpdateManyInput
+  products?: ProductUpdateManyInput
+  deals?: DealUpdateManyWithoutParticipantsInput
 }
 
-export interface DealUpsertWithWhereUniqueWithoutParticipantsInput {
-  where: DealWhereUniqueInput
-  update: DealUpdateWithoutParticipantsDataInput
-  create: DealCreateWithoutParticipantsInput
+export interface PipelineWhereUniqueInput {
+  id?: ID_Input
+  name?: String
 }
 
-export interface StageUpdateDataInput {
+export interface PictureUpdateManyInput {
+  create?: PictureCreateInput[] | PictureCreateInput
+  connect?: PictureWhereUniqueInput[] | PictureWhereUniqueInput
+  disconnect?: PictureWhereUniqueInput[] | PictureWhereUniqueInput
+  delete?: PictureWhereUniqueInput[] | PictureWhereUniqueInput
+  update?: PictureUpdateWithWhereUniqueNestedInput[] | PictureUpdateWithWhereUniqueNestedInput
+  upsert?: PictureUpsertWithWhereUniqueNestedInput[] | PictureUpsertWithWhereUniqueNestedInput
+}
+
+export interface FileSubscriptionWhereInput {
+  AND?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
+  OR?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
+  NOT?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: FileWhereInput
+}
+
+export interface PictureUpdateWithWhereUniqueNestedInput {
+  where: PictureWhereUniqueInput
+  data: PictureUpdateDataInput
+}
+
+export interface PipelineUpdateInput {
   name?: String
   order_nr?: String
   deal_probability?: Probability
-  pipeline?: PipelineUpdateOneInput
+  deals?: DealUpdateManyInput
 }
 
-export interface StageUpdateOneInput {
-  create?: StageCreateInput
-  connect?: StageWhereUniqueInput
+export interface PictureUpdateDataInput {
+  file?: String
+  uploads?: FileUpdateManyInput
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput
+  create: UserCreateInput
+}
+
+export interface FileUpdateManyInput {
+  create?: FileCreateInput[] | FileCreateInput
+  connect?: FileWhereUniqueInput[] | FileWhereUniqueInput
+  disconnect?: FileWhereUniqueInput[] | FileWhereUniqueInput
+  delete?: FileWhereUniqueInput[] | FileWhereUniqueInput
+  update?: FileUpdateWithWhereUniqueNestedInput[] | FileUpdateWithWhereUniqueNestedInput
+  upsert?: FileUpsertWithWhereUniqueNestedInput[] | FileUpsertWithWhereUniqueNestedInput
+}
+
+export interface DealUpdateWithoutParticipantsDataInput {
+  title?: String
+  value?: String
+  currency?: String
+  status?: OrderStatus
+  probability?: String
+  owner?: UserUpdateOneInput
+  org?: OrganizationUpdateOneInput
+  products?: ProductUpdateManyWithoutDealsInput
+  stage?: StageUpdateOneInput
+}
+
+export interface FileUpdateWithWhereUniqueNestedInput {
+  where: FileWhereUniqueInput
+  data: FileUpdateDataInput
+}
+
+export interface DealUpsertWithWhereUniqueWithoutProductsInput {
+  where: DealWhereUniqueInput
+  update: DealUpdateWithoutProductsDataInput
+  create: DealCreateWithoutProductsInput
+}
+
+export interface FileUpdateDataInput {
+  path?: String
+  filename?: String
+  mimetype?: String
+  encoding?: String
+}
+
+export interface ProductUpsertWithWhereUniqueWithoutDealsInput {
+  where: ProductWhereUniqueInput
+  update: ProductUpdateWithoutDealsDataInput
+  create: ProductCreateWithoutDealsInput
+}
+
+export interface FileUpsertWithWhereUniqueNestedInput {
+  where: FileWhereUniqueInput
+  update: FileUpdateDataInput
+  create: FileCreateInput
+}
+
+export interface DealUpdateDataInput {
+  title?: String
+  value?: String
+  currency?: String
+  status?: OrderStatus
+  probability?: String
+  owner?: UserUpdateOneInput
+  org?: OrganizationUpdateOneInput
+  participants?: PersonUpdateManyWithoutDealsInput
+  products?: ProductUpdateManyWithoutDealsInput
+  stage?: StageUpdateOneInput
+}
+
+export interface PictureUpsertWithWhereUniqueNestedInput {
+  where: PictureWhereUniqueInput
+  update: PictureUpdateDataInput
+  create: PictureCreateInput
+}
+
+export interface PipelineUpdateOneInput {
+  create?: PipelineCreateInput
+  connect?: PipelineWhereUniqueInput
   disconnect?: Boolean
   delete?: Boolean
-  update?: StageUpdateDataInput
-  upsert?: StageUpsertNestedInput
+  update?: PipelineUpdateDataInput
+  upsert?: PipelineUpsertNestedInput
 }
 
-export interface PersonUpsertWithWhereUniqueWithoutDealsInput {
-  where: PersonWhereUniqueInput
-  update: PersonUpdateWithoutDealsDataInput
-  create: PersonCreateWithoutDealsInput
+export interface ProductUpdateManyInput {
+  create?: ProductCreateInput[] | ProductCreateInput
+  connect?: ProductWhereUniqueInput[] | ProductWhereUniqueInput
+  disconnect?: ProductWhereUniqueInput[] | ProductWhereUniqueInput
+  delete?: ProductWhereUniqueInput[] | ProductWhereUniqueInput
+  update?: ProductUpdateWithWhereUniqueNestedInput[] | ProductUpdateWithWhereUniqueNestedInput
+  upsert?: ProductUpsertWithWhereUniqueNestedInput[] | ProductUpsertWithWhereUniqueNestedInput
+}
+
+export interface UserCreateInput {
+  name: String
+  email: String
+  password: String
+  firstName?: String
+  lastName?: String
+  active_flag?: Active
+  role?: Role
+  company?: OrganizationCreateOneWithoutOwnerInput
+}
+
+export interface ProductUpdateWithWhereUniqueNestedInput {
+  where: ProductWhereUniqueInput
+  data: ProductUpdateDataInput
+}
+
+export interface PictureSubscriptionWhereInput {
+  AND?: PictureSubscriptionWhereInput[] | PictureSubscriptionWhereInput
+  OR?: PictureSubscriptionWhereInput[] | PictureSubscriptionWhereInput
+  NOT?: PictureSubscriptionWhereInput[] | PictureSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: PictureWhereInput
+}
+
+export interface ProductUpdateDataInput {
+  name?: String
+  unit?: String
+  code?: String
+  owner?: UserUpdateOneInput
+  deals?: DealUpdateManyWithoutProductsInput
+}
+
+export interface ProductSubscriptionWhereInput {
+  AND?: ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput
+  OR?: ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput
+  NOT?: ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: ProductWhereInput
+}
+
+export interface DealUpdateManyWithoutProductsInput {
+  create?: DealCreateWithoutProductsInput[] | DealCreateWithoutProductsInput
+  connect?: DealWhereUniqueInput[] | DealWhereUniqueInput
+  disconnect?: DealWhereUniqueInput[] | DealWhereUniqueInput
+  delete?: DealWhereUniqueInput[] | DealWhereUniqueInput
+  update?: DealUpdateWithWhereUniqueWithoutProductsInput[] | DealUpdateWithWhereUniqueWithoutProductsInput
+  upsert?: DealUpsertWithWhereUniqueWithoutProductsInput[] | DealUpsertWithWhereUniqueWithoutProductsInput
+}
+
+export interface OrganizationWhereUniqueInput {
+  id?: ID_Input
+  name?: String
+}
+
+export interface DealUpdateWithWhereUniqueWithoutProductsInput {
+  where: DealWhereUniqueInput
+  data: DealUpdateWithoutProductsDataInput
+}
+
+export interface UserUpdateInput {
+  name?: String
+  email?: String
+  password?: String
+  firstName?: String
+  lastName?: String
+  active_flag?: Active
+  role?: Role
+  company?: OrganizationUpdateOneWithoutOwnerInput
+}
+
+export interface DealUpdateWithoutProductsDataInput {
+  title?: String
+  value?: String
+  currency?: String
+  status?: OrderStatus
+  probability?: String
+  owner?: UserUpdateOneInput
+  org?: OrganizationUpdateOneInput
+  participants?: PersonUpdateManyWithoutDealsInput
+  stage?: StageUpdateOneInput
+}
+
+export interface DealUpdateManyWithoutParticipantsInput {
+  create?: DealCreateWithoutParticipantsInput[] | DealCreateWithoutParticipantsInput
+  connect?: DealWhereUniqueInput[] | DealWhereUniqueInput
+  disconnect?: DealWhereUniqueInput[] | DealWhereUniqueInput
+  delete?: DealWhereUniqueInput[] | DealWhereUniqueInput
+  update?: DealUpdateWithWhereUniqueWithoutParticipantsInput[] | DealUpdateWithWhereUniqueWithoutParticipantsInput
+  upsert?: DealUpsertWithWhereUniqueWithoutParticipantsInput[] | DealUpsertWithWhereUniqueWithoutParticipantsInput
+}
+
+export interface OrganizationUpdateOneInput {
+  create?: OrganizationCreateInput
+  connect?: OrganizationWhereUniqueInput
+  disconnect?: Boolean
+  delete?: Boolean
+  update?: OrganizationUpdateDataInput
+  upsert?: OrganizationUpsertNestedInput
+}
+
+export interface ProductUpdateWithWhereUniqueWithoutDealsInput {
+  where: ProductWhereUniqueInput
+  data: ProductUpdateWithoutDealsDataInput
+}
+
+export interface OrganizationUpdateDataInput {
+  name?: String
+  owner?: UserUpdateOneWithoutCompanyInput
+  persons?: PersonUpdateManyInput
+}
+
+export interface ProductCreateInput {
+  name: String
+  unit?: String
+  code?: String
+  owner?: UserCreateOneInput
+  deals?: DealCreateManyWithoutProductsInput
+}
+
+export interface UserUpdateOneWithoutCompanyInput {
+  create?: UserCreateWithoutCompanyInput
+  connect?: UserWhereUniqueInput
+  disconnect?: Boolean
+  delete?: Boolean
+  update?: UserUpdateWithoutCompanyDataInput
+  upsert?: UserUpsertWithoutCompanyInput
+}
+
+export interface UserSubscriptionWhereInput {
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: UserWhereInput
+}
+
+export interface UserUpdateWithoutCompanyDataInput {
+  name?: String
+  email?: String
+  password?: String
+  firstName?: String
+  lastName?: String
+  active_flag?: Active
+  role?: Role
+}
+
+export interface OrganizationUpdateInput {
+  name?: String
+  owner?: UserUpdateOneWithoutCompanyInput
+  persons?: PersonUpdateManyInput
+}
+
+export interface UserUpsertWithoutCompanyInput {
+  update: UserUpdateWithoutCompanyDataInput
+  create: UserCreateWithoutCompanyInput
+}
+
+export interface PipelineUpsertNestedInput {
+  update: PipelineUpdateDataInput
+  create: PipelineCreateInput
 }
 
 export interface PersonUpdateWithoutDealsDataInput {
@@ -4388,30 +4905,55 @@ export interface PersonUpdateWithoutDealsDataInput {
   products?: ProductUpdateManyInput
 }
 
-export interface DealUpsertWithWhereUniqueNestedInput {
-  where: DealWhereUniqueInput
-  update: DealUpdateDataInput
-  create: DealCreateInput
+export interface PersonUpdateWithWhereUniqueWithoutDealsInput {
+  where: PersonWhereUniqueInput
+  data: PersonUpdateWithoutDealsDataInput
 }
 
-export interface PictureUpdateInput {
-  file?: String
+export interface PersonUpdateManyWithoutDealsInput {
+  create?: PersonCreateWithoutDealsInput[] | PersonCreateWithoutDealsInput
+  connect?: PersonWhereUniqueInput[] | PersonWhereUniqueInput
+  disconnect?: PersonWhereUniqueInput[] | PersonWhereUniqueInput
+  delete?: PersonWhereUniqueInput[] | PersonWhereUniqueInput
+  update?: PersonUpdateWithWhereUniqueWithoutDealsInput[] | PersonUpdateWithWhereUniqueWithoutDealsInput
+  upsert?: PersonUpsertWithWhereUniqueWithoutDealsInput[] | PersonUpsertWithWhereUniqueWithoutDealsInput
 }
 
-export interface DealSubscriptionWhereInput {
-  AND?: DealSubscriptionWhereInput[] | DealSubscriptionWhereInput
-  OR?: DealSubscriptionWhereInput[] | DealSubscriptionWhereInput
-  NOT?: DealSubscriptionWhereInput[] | DealSubscriptionWhereInput
+export interface OrganizationUpsertNestedInput {
+  update: OrganizationUpdateDataInput
+  create: OrganizationCreateInput
+}
+
+export interface DealUpdateManyInput {
+  create?: DealCreateInput[] | DealCreateInput
+  connect?: DealWhereUniqueInput[] | DealWhereUniqueInput
+  disconnect?: DealWhereUniqueInput[] | DealWhereUniqueInput
+  delete?: DealWhereUniqueInput[] | DealWhereUniqueInput
+  update?: DealUpdateWithWhereUniqueNestedInput[] | DealUpdateWithWhereUniqueNestedInput
+  upsert?: DealUpsertWithWhereUniqueNestedInput[] | DealUpsertWithWhereUniqueNestedInput
+}
+
+export interface PersonUpsertWithWhereUniqueNestedInput {
+  where: PersonWhereUniqueInput
+  update: PersonUpdateDataInput
+  create: PersonCreateInput
+}
+
+export interface UserWhereUniqueInput {
+  id?: ID_Input
+  name?: String
+  email?: String
+}
+
+export interface StageSubscriptionWhereInput {
+  AND?: StageSubscriptionWhereInput[] | StageSubscriptionWhereInput
+  OR?: StageSubscriptionWhereInput[] | StageSubscriptionWhereInput
+  NOT?: StageSubscriptionWhereInput[] | StageSubscriptionWhereInput
   mutation_in?: MutationType[] | MutationType
   updatedFields_contains?: String
   updatedFields_contains_every?: String[] | String
   updatedFields_contains_some?: String[] | String
-  node?: DealWhereInput
-}
-
-export interface UserCreateOneInput {
-  create?: UserCreateInput
-  connect?: UserWhereUniqueInput
+  node?: StageWhereInput
 }
 
 /*
@@ -4442,24 +4984,6 @@ export interface Product extends Node {
   deals?: Deal[]
 }
 
-/*
- * Information about pagination in a connection.
-
- */
-export interface PageInfo {
-  hasNextPage: Boolean
-  hasPreviousPage: Boolean
-  startCursor?: String
-  endCursor?: String
-}
-
-export interface OrganizationSubscriptionPayload {
-  mutation: MutationType
-  node?: Organization
-  updatedFields?: String[]
-  previousValues?: OrganizationPreviousValues
-}
-
 export interface User extends Node {
   id: ID_Output
   name: String
@@ -4477,6 +5001,26 @@ export interface AggregateStage {
 }
 
 /*
+ * A connection to a list of items.
+
+ */
+export interface FileConnection {
+  pageInfo: PageInfo
+  edges: FileEdge[]
+  aggregate: AggregateFile
+}
+
+/*
+ * A connection to a list of items.
+
+ */
+export interface StageConnection {
+  pageInfo: PageInfo
+  edges: StageEdge[]
+  aggregate: AggregateStage
+}
+
+/*
  * An edge in a connection.
 
  */
@@ -4485,18 +5029,24 @@ export interface StageEdge {
   cursor: String
 }
 
+export interface OrganizationSubscriptionPayload {
+  mutation: MutationType
+  node?: Organization
+  updatedFields?: String[]
+  previousValues?: OrganizationPreviousValues
+}
+
 export interface AggregateOrganization {
   count: Int
 }
 
 /*
- * A connection to a list of items.
+ * An edge in a connection.
 
  */
-export interface ProductConnection {
-  pageInfo: PageInfo
-  edges: ProductEdge[]
-  aggregate: AggregateProduct
+export interface OrganizationEdge {
+  node: Organization
+  cursor: String
 }
 
 /*
@@ -4509,6 +5059,44 @@ export interface OrganizationConnection {
   aggregate: AggregateOrganization
 }
 
+/*
+ * An edge in a connection.
+
+ */
+export interface PictureEdge {
+  node: Picture
+  cursor: String
+}
+
+export interface FileSubscriptionPayload {
+  mutation: MutationType
+  node?: File
+  updatedFields?: String[]
+  previousValues?: FilePreviousValues
+}
+
+export interface AggregatePipeline {
+  count: Int
+}
+
+export interface FilePreviousValues {
+  id: ID_Output
+  path: String
+  filename: String
+  mimetype: String
+  encoding: String
+}
+
+/*
+ * A connection to a list of items.
+
+ */
+export interface PipelineConnection {
+  pageInfo: PageInfo
+  edges: PipelineEdge[]
+  aggregate: AggregatePipeline
+}
+
 export interface OrganizationPreviousValues {
   id: ID_Output
   name: String
@@ -4518,8 +5106,8 @@ export interface OrganizationPreviousValues {
  * An edge in a connection.
 
  */
-export interface PictureEdge {
-  node: Picture
+export interface PersonEdge {
+  node: Person
   cursor: String
 }
 
@@ -4530,7 +5118,7 @@ export interface ProductSubscriptionPayload {
   previousValues?: ProductPreviousValues
 }
 
-export interface AggregatePipeline {
+export interface AggregateUser {
   count: Int
 }
 
@@ -4545,26 +5133,26 @@ export interface ProductPreviousValues {
  * A connection to a list of items.
 
  */
-export interface PipelineConnection {
+export interface UserConnection {
   pageInfo: PageInfo
-  edges: PipelineEdge[]
-  aggregate: AggregatePipeline
+  edges: UserEdge[]
+  aggregate: AggregateUser
 }
 
-export interface Pipeline extends Node {
+export interface File extends Node {
   id: ID_Output
-  name: String
-  order_nr?: String
-  deal_probability?: Probability
-  deals?: Deal[]
+  path: String
+  filename: String
+  mimetype: String
+  encoding: String
 }
 
 /*
  * An edge in a connection.
 
  */
-export interface PersonEdge {
-  node: Person
+export interface DealEdge {
+  node: Deal
   cursor: String
 }
 
@@ -4575,7 +5163,7 @@ export interface DealSubscriptionPayload {
   previousValues?: DealPreviousValues
 }
 
-export interface AggregateUser {
+export interface AggregateProduct {
   count: Int
 }
 
@@ -4592,10 +5180,60 @@ export interface DealPreviousValues {
  * A connection to a list of items.
 
  */
-export interface UserConnection {
+export interface ProductConnection {
   pageInfo: PageInfo
-  edges: UserEdge[]
-  aggregate: AggregateUser
+  edges: ProductEdge[]
+  aggregate: AggregateProduct
+}
+
+export interface Pipeline extends Node {
+  id: ID_Output
+  name: String
+  order_nr?: String
+  deal_probability?: Probability
+  deals?: Deal[]
+}
+
+/*
+ * An edge in a connection.
+
+ */
+export interface FileEdge {
+  node: File
+  cursor: String
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType
+  node?: User
+  updatedFields?: String[]
+  previousValues?: UserPreviousValues
+}
+
+/*
+ * Information about pagination in a connection.
+
+ */
+export interface PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor?: String
+  endCursor?: String
+}
+
+export interface UserPreviousValues {
+  id: ID_Output
+  name: String
+  email: String
+  password: String
+  firstName?: String
+  lastName?: String
+  active_flag?: Active
+  role?: Role
+}
+
+export interface AggregatePicture {
+  count: Int
 }
 
 export interface Stage extends Node {
@@ -4610,38 +5248,37 @@ export interface Stage extends Node {
  * An edge in a connection.
 
  */
-export interface DealEdge {
-  node: Deal
+export interface PipelineEdge {
+  node: Pipeline
   cursor: String
 }
 
-export interface UserSubscriptionPayload {
+export interface PersonSubscriptionPayload {
   mutation: MutationType
-  node?: User
+  node?: Person
   updatedFields?: String[]
-  previousValues?: UserPreviousValues
+  previousValues?: PersonPreviousValues
 }
 
-export interface AggregateProduct {
-  count: Int
+/*
+ * A connection to a list of items.
+
+ */
+export interface PersonConnection {
+  pageInfo: PageInfo
+  edges: PersonEdge[]
+  aggregate: AggregatePerson
 }
 
-export interface UserPreviousValues {
+export interface PersonPreviousValues {
   id: ID_Output
   name: String
-  email: String
-  password: String
-  firstName?: String
-  lastName?: String
-  active_flag?: Active
-  role?: Role
+  email?: String
+  phone?: String
 }
 
-export interface StageSubscriptionPayload {
-  mutation: MutationType
-  node?: Stage
-  updatedFields?: String[]
-  previousValues?: StagePreviousValues
+export interface AggregateDeal {
+  count: Int
 }
 
 export interface Deal extends Node {
@@ -4662,50 +5299,8 @@ export interface Deal extends Node {
  * An edge in a connection.
 
  */
-export interface OrganizationEdge {
-  node: Organization
-  cursor: String
-}
-
-export interface PersonSubscriptionPayload {
-  mutation: MutationType
-  node?: Person
-  updatedFields?: String[]
-  previousValues?: PersonPreviousValues
-}
-
-/*
- * A connection to a list of items.
-
- */
-export interface PictureConnection {
-  pageInfo: PageInfo
-  edges: PictureEdge[]
-  aggregate: AggregatePicture
-}
-
-export interface PersonPreviousValues {
-  id: ID_Output
-  name: String
-  email?: String
-  phone?: String
-}
-
-export interface AggregatePerson {
-  count: Int
-}
-
-export interface Picture extends Node {
-  id: ID_Output
-  file: String
-}
-
-/*
- * An edge in a connection.
-
- */
-export interface UserEdge {
-  node: User
+export interface ProductEdge {
+  node: Product
   cursor: String
 }
 
@@ -4716,14 +5311,11 @@ export interface PipelineSubscriptionPayload {
   previousValues?: PipelinePreviousValues
 }
 
-/*
- * A connection to a list of items.
-
- */
-export interface DealConnection {
-  pageInfo: PageInfo
-  edges: DealEdge[]
-  aggregate: AggregateDeal
+export interface StageSubscriptionPayload {
+  mutation: MutationType
+  node?: Stage
+  updatedFields?: String[]
+  previousValues?: StagePreviousValues
 }
 
 export interface PipelinePreviousValues {
@@ -4737,26 +5329,30 @@ export interface PipelinePreviousValues {
  * A connection to a list of items.
 
  */
-export interface StageConnection {
+export interface PictureConnection {
   pageInfo: PageInfo
-  edges: StageEdge[]
-  aggregate: AggregateStage
+  edges: PictureEdge[]
+  aggregate: AggregatePicture
 }
 
 /*
  * An edge in a connection.
 
  */
-export interface PipelineEdge {
-  node: Pipeline
+export interface UserEdge {
+  node: User
   cursor: String
 }
 
-export interface Organization extends Node {
+export interface Person extends Node {
   id: ID_Output
   name: String
   owner?: User
-  persons?: Person[]
+  email?: String
+  phone?: String
+  pictures?: Picture[]
+  products?: Product[]
+  deals?: Deal[]
 }
 
 export interface PicturePreviousValues {
@@ -4771,54 +5367,47 @@ export interface PictureSubscriptionPayload {
   previousValues?: PicturePreviousValues
 }
 
-export interface Person extends Node {
+export interface Picture extends Node {
   id: ID_Output
-  name: String
-  owner?: User
-  email?: String
-  phone?: String
-  pictures?: Picture[]
-  products?: Product[]
-  deals?: Deal[]
+  file: String
+  uploads?: File[]
 }
 
 /*
  * A connection to a list of items.
 
  */
-export interface PersonConnection {
+export interface DealConnection {
   pageInfo: PageInfo
-  edges: PersonEdge[]
-  aggregate: AggregatePerson
+  edges: DealEdge[]
+  aggregate: AggregateDeal
 }
 
-export interface AggregatePicture {
+export interface AggregatePerson {
+  count: Int
+}
+
+export interface Organization extends Node {
+  id: ID_Output
+  name: String
+  owner?: User
+  persons?: Person[]
+}
+
+export interface AggregateFile {
   count: Int
 }
 
 /*
- * An edge in a connection.
-
- */
-export interface ProductEdge {
-  node: Product
-  cursor: String
-}
-
-export interface AggregateDeal {
-  count: Int
-}
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string
 
 /*
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
 */
 export type Long = string
-
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
-*/
-export type Int = number
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
@@ -4832,6 +5421,6 @@ export type ID_Input = string | number
 export type ID_Output = string
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
-export type String = string
+export type Int = number

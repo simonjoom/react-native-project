@@ -9,6 +9,7 @@
 "use strict";
 
 const autoprefixer = require("autoprefixer");
+  var DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -507,6 +508,7 @@ module.exports = {
     ]
   },
   plugins: [
+  new DuplicatePackageCheckerPlugin(),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,

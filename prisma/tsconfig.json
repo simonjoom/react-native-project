@@ -1,28 +1,23 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "target": "ES5",
+    "module": "commonjs", 
+    "moduleResolution": "Node",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
     "removeComments": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
+    "strictFunctionTypes":false,
     "forceConsistentCasingInFileNames": true,
     "rootDir": "./src",
-    "outDir": "dist",
-    "types": ["node"],
-    "lib": ["es2017", "esnext.asynciterable"],
-    "include": [
-      "src/**/*"
-    ],
-    "exclude": [
-      "dist"
+    "outDir": "dist", 
+    "lib": [
+      "es5", "es6",
+      "dom",
+      "es2017.object",
+      "esnext.asynciterable"
     ]
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["dist"]
 }

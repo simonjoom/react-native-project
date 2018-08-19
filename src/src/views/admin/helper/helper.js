@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableOpacity, Modal, View, Text } from "react-native";
+import { TouchableOpacity, Modal, View, Text, Image } from "react-native";
 import Input from "src/components/input/Input";
 import { translate } from "src/i18n";
 import NavigationButton from "src/components/navigation-button/NavigationButton";
@@ -8,6 +8,7 @@ import Picker from "react-native-picker";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Button from "src/components/button/Button";
 import Gradient from "src/components/gradient/Gradient";
+import CompUpload from "../Upload/Container";
 
 function isEnum(str) {
   return str.indexOf("Enum") !== -1;
@@ -586,7 +587,8 @@ class Helper extends Component {
       selectResultSelect,
       mutateResultSelect,
       selectedId,
-      setModalVisible
+      setModalVisible,
+      connected
     } = this.props;
     const selected = this.state.selected;
     console.log("DEBUGS", this.state.labelid, this.props.selectedId);
@@ -644,14 +646,14 @@ class Helper extends Component {
           mutateResultSelect={mutateResultSelect}
         />
 
-        {this.props.connected &&
-          (this.state.labelid || this.props.selectedId) && (
+        {connected &&
+          (this.state.labelid || selectedId) && (
             <Button
               style={{ marginBottom: 20 }}
               onPress={() => {
                 this.props.saveId(
                   this.props.root,
-                  this.state.labelid || this.props.selectedId
+                  this.state.labelid || selectedId
                 );
                 setModalVisible(this.props.root, false);
               }}
@@ -659,10 +661,12 @@ class Helper extends Component {
               fontSize={14}
             />
           )}
+        {this.props.root === "Picture" && <CompUpload />}
       </KeyboardAwareCenteredView>
     );
   }
 }
+
 //
 Helper.propTypes = {};
 Helper.defaultProps = {

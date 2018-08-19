@@ -1,6 +1,13 @@
 fragment PictureFragment on Picture {
   id
   file
+  uploads {
+    id
+    path
+    filename
+    mimetype
+    encoding
+  }
 }
 
 mutation upsertPicture($id: ID!, $file: String!) {
@@ -36,7 +43,7 @@ subscription picturesub($where: PictureSubscriptionWhereInput) {
     updatedFields
     previousValues {
       id
-      name
+      file
     }
   }
 }

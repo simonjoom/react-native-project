@@ -1,13 +1,13 @@
-var express = require('express') 
+const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 
 //import { formatError } from 'apollo-errors';
-import { mailer } from "./third-party/nodemailer";
+//import { mailer } from "./third-party/nodemailer";
 
 //import resolvers from './resolvers';
-import { ultimateSchema, db, resolvers } from "./resolv";
+const { ultimateSchema, db, resolvers } = require("./resolv");
 
-var app = express()
+var app = express();
 //app.use(cors({credentials: true, origin: true}))
 
 const options = {
@@ -34,19 +34,38 @@ const resolvers = {
 //const jwtCheck = jwt({ secret: process.env.JWT_SECRET }); // change out your secret for each environment
 //app.use(path, jwtCheck);
 
-export const server = new ApolloServer({
+const server = new ApolloServer({
   schema: ultimateSchema,
-  subscriptions: "/subscriptions", 
-  cors: true, 
+  subscriptions: "/subscriptions",
+  cors: true,
   context: ({ req, res }) => ({
     ...req,
     db,
-    mailer
+    //mailer
   })
-}); 
+});
 server.applyMiddleware({
   app,
-  path:"/",
-//  bodyParserConfig:true,
+  path: "/",
+  //  bodyParserConfig:true,
   cors: true
-})
+});
+/*
+
+app.listen({ port: 4000 }, () => {
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+});
+*/
+/*
+export const server = new GraphQLServer({
+ // typeDefs: './prisma/src/schema.graphql',
+ // resolvers, 
+  schema: ultimateSchema,
+  context: req => ({
+    ...req,
+    db,
+    mailer
+  }),
+});*/
+
+//server.start(options, () => console.log(`Server is running on http://localhost:4000`));
