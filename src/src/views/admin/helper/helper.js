@@ -10,25 +10,25 @@ import Button from "src/components/button/Button";
 import Gradient from "src/components/gradient/Gradient";
 import CompUpload from "../Upload/Container";
 
+function isFile(str) {
+  return str.indexOf("File") !== -1;
+}
 function isEnum(str) {
   return str.indexOf("Enum") !== -1;
-  //return obj.indexOf("[") !== -1 && obj.indexOf("]") !== -1;
-  //it's a node like "[Product!]!","[OrderableProduct!]!","ENUM",
 }
 function getEnum(str) {
   return str.replace("Enum:", "").split(",");
-  //return obj.indexOf("[") !== -1 && obj.indexOf("]") !== -1;
-  //it's a node like "[Product!]!","[OrderableProduct!]!","ENUM",
 }
 function isObject(value) {
   return value && typeof value === "object" && value.constructor === Object;
 }
 
-function isEntitie(obj) {
+function isEntitie(str) {
   return !(
-    obj.indexOf("String") !== -1 ||
-    obj.indexOf("ID") !== -1 ||
-    obj.indexOf("Enum") !== -1
+    isFile(str) ||
+    str.indexOf("String") !== -1 ||
+    str.indexOf("ID") !== -1 ||
+    str.indexOf("Enum") !== -1
   );
   //return obj.indexOf("[") !== -1 && obj.indexOf("]") !== -1;
   //it's a node like "[Product!]!","[OrderableProduct!]!","ENUM",
@@ -92,16 +92,16 @@ class Helper extends Component {
   constructor(props) {
     super(props);
     const datas = props.tofetch;
-    this.index = 0;
+    this.index_current = 0;
     if (props.selectedId)
       datas.forEach((data, i) => {
-        if (data.id === props.selectedId) this.index = i;
+        if (data.id === props.selectedId) this.index_current = i;
       });
     this.state = {
       tofetch: [...datas],
-      selected: this.index,
+      selected: this.index_current,
       labelid: null,
-      fields: removeEmpty(datas[this.index]),
+      fields: removeEmpty(datas[this.index_current]),
       modal: [],
       root: props.root,
       subscription: null
@@ -111,7 +111,6 @@ class Helper extends Component {
       this.state.modal[key] = false;
     });
     this.selectedId = [];
-    this.index_current = -1;
     this.fetchState = this.fetchState.bind(this);
     this.renderPicker = this.renderPicker.bind(this);
     this.validateFields = this.validateFields.bind(this);
@@ -122,7 +121,7 @@ class Helper extends Component {
 
     this.renderModal = this.renderModal.bind(this);
     // this.navigate = this.props.navigation.navigate;
-    this.selectorName = this.state.fields[props.selector];
+    this.selectorVal = this.state.fields[props.selector];
   }
 
   /*
@@ -147,20 +146,30 @@ class Helper extends Component {
     this.handle = this.props.subscribe().subscribe({
       next({ data }) {
         console.log("Received key command: ", data);
+        console.log("that.index_current", that.index_current);
         if (data) {
           const el = data[that.props.selectResultSelect];
           if (el.mutation === "CREATED") {
             const out = el.node;
+            that.index_current = that.state.tofetch.length;
             const res = addInCollection(that.state.tofetch, out);
-            that.fetchState(out, out.id, res.length - 1, res);
+            that.fetchState(out, out.id, that.index_current, res);
           } else if (el.mutation === "DELETED") {
             const out = el.previousValues;
-            that.selectorName = out[that.props.selector];
+            that.index_current = that.index_current - 1;
+            const collec = removeInCollection(that.state.tofetch, out);
+            console.log(collec);
+            const curr = collec[0];
+            that.selectorVal = curr[that.props.selector];
+            that.fetchState(curr, curr.id, 0, collec);
+          } else if (el.mutation === "UPDATED") {
+            const out = el.node;
+            that.selectorVal = out[that.props.selector];
             that.fetchState(
-              null,
-              null,
-              that.index,
-              removeInCollection(that.state.tofetch, out)
+              out,
+              out.id,
+              that.index_current,
+              updateInCollection(that.state.tofetch, out)
             );
           }
         }
@@ -179,21 +188,25 @@ class Helper extends Component {
   updateDatabaseQ = (toupd, error) => {
     const { selector, selectQuery, upsertQuery } = this.props;
     var ErrorP = reason => Promise.reject(new Error("fail " + reason));
-    toupd.namewhere = this.selectorName;
-    return selectQuery({ [selector]: toupd[selector] }).then(
-      ({ data }) => {
-        if (!data.organization) return upsertQuery(toupd);
-        else return ErrorP(error);
-      },
-      reason => {
-        return ErrorP(reason);
-      }
-    );
+    toupd.namewhere = this.selectorVal;
+    if (selector === "id") return upsertQuery(toupd);
+    else
+      return selectQuery({ [selector]: toupd[selector] }).then(
+        ({ data }) => {
+          const te = data[this.props.selectResultSelect];
+          if (te && te.id !== toupd.id) return ErrorP(error);
+          else return upsertQuery(toupd);
+        },
+        reason => {
+          return ErrorP(reason);
+        }
+      );
   };
 
   saveId(entitie, id) {
     const obj = Object.keys(this.state.fields);
     let many = false;
+    const selector = isFile(entitie) ? "file" : "id";
     const getkey = obj.find(key => {
       console.log(getType(this.props.placeholder[key]), entitie);
       if (getType(this.props.placeholder[key]) === entitie) {
@@ -205,27 +218,37 @@ class Helper extends Component {
       console.log("traceerrorfin", getkey);
       return;
     }
-    var cp;
-    var field = this.state.fields[getkey];
-    if (Array.isArray(field)) {
-      cp = field.slice();
-      cp = cp.map(o => o.id);
+
+    let connect;
+    var vals = this.state.fields[getkey];
+    if (!isFile(entitie)) {
+      var cp;
+      if (Array.isArray(vals)) {
+        cp = vals.slice();
+        cp = cp.map(o => o.id);
+      }
+      let outids = Array.isArray(cp)
+        ? (!cp.includes(id) && cp.push(id) && cp) || cp
+        : id;
+      if (many)
+        connect = outids.map(val => ({
+          id: val
+        }));
+      else connect = { id };
+    } else {
+      connect = vals.split(",");
+      if (connect.indexOf(id) !== -1) return;
+      connect.push(id);
+      connect = connect.join();
     }
-    let outids = Array.isArray(cp)
-      ? (!cp.includes(id) && cp.push(id) && cp) || cp
-      : id;
-    let out;
-    if (many)
-      out = outids.map(val => ({
-        id: val
-      }));
-    else out = { id };
-    const toupd = { ...this.state.fields, [getkey]: out };
-    this.updateDatabaseQ(toupd, "Something happend not good").then(() =>
+
+    const toupd = { ...this.state.fields, [getkey]: connect };
+    return this.updateDatabaseQ(toupd, "Something happend not good");
+    /*.then(() =>
       this.setState(prevState => ({
-        fields: { ...prevState.fields, [getkey]: out }
+        fields: { ...prevState.fields, [getkey]: connect }
       }))
-    );
+    );**/
   }
 
   setModalVisible(type, visible) {
@@ -331,10 +354,14 @@ class Helper extends Component {
     var index = selected == -1 ? datas.length - 1 : selected;
     const datapic = datas.map((data, i) => data[selector]);
 
-    if (selectedId && !this.eventpicker)
+    if (selectedId && !this.eventpicker) {
       datas.forEach((data, i) => {
         if (data.id === selectedId) index = i;
       });
+      this.index_current = index;
+    }
+
+    console.log("dataselectQuery", datapic, index);
     console.log("dataselectQuery", selectedId, index);
     return (
       <Picker
@@ -353,13 +380,12 @@ class Helper extends Component {
         index={index}
         selectedValue={datapic ? datapic[index] : ""}
         //onPickerConfirm={(el) => console.log(el)}
-        onPickerConfirm={(el, index) => {
-          this.index_current = index;
+        onPickerConfirm={el => {
           if (el) {
             // this.fetchState(null, null, 0);
             deleteQuery({ [selector]: el[0] }).then(({ data }) => {
               /* const out = data["delete" + this.props.root];
-              this.selectorName = out[selector];
+              this.selectorVal = out[selector];
               this.fetchState(
                 null,
                 null,
@@ -372,9 +398,10 @@ class Helper extends Component {
           }
         }}
         onValueChange={(el, index) => {
+          console.log("valchange", index);
           if (this.index_current != index) {
             //prevent bug onpropschangepicker
-            this.index_current = index;
+            this.index_current = index ;
             this.eventpicker = true;
             if (el) {
               console.log(el[0]);
@@ -383,15 +410,15 @@ class Helper extends Component {
                 if (data) {
                   const out = data[selectResultSelect];
                   if (out) {
-                    this.selectorName = out[selector];
+                    this.selectorVal = out[selector];
                     //delete out.__typename;
-                    this.fetchState(out, out.id, index);
+                    this.fetchState(out, out.id, index );
                   }
                 }
                 //this.setState({ fields: out, labelid: out.id, selected: index })
               });
             } else {
-              this.fetchState(null, null, index);
+              this.fetchState(null, null, index );
             }
           }
         }}
@@ -403,10 +430,11 @@ class Helper extends Component {
       return Object.keys(fields).map((key, index) => {
         const val = fields[key];
         console.log("debug", val, placeholder, key);
-        if (key !== "id" && isEntitie(placeholder[key])) {
-          console.log("entitie:", placeholder[key]);
-          const type = getType(placeholder[key]);
-          const many = isMany(placeholder[key]);
+        const placehold = placeholder[key];
+        if (key !== "id" && isEntitie(placehold)) {
+          console.log("entitie:", placehold);
+          const type = getType(placehold);
+          const many = isMany(placehold);
           let vals;
           if (many) vals = val.map(o => o.id);
           const isSameEntitieParent = this.props.parent === type;
@@ -481,10 +509,30 @@ class Helper extends Component {
               )}
             </View>
           );
-        } else if (isEnum(placeholder[key])) {
+        } else if (isFile(placehold)) {
           return (
-            <>{this.renderPickerEnum(getEnum(placeholder[key]), val, key)}</>
+            <CompUpload
+              content={
+                <Input
+                  autoFocus
+                  widthAuto
+                  type={type}
+                  editable={false}
+                  placeholder={placeholder[key]}
+                  placeholderTextColor="gray"
+                  key={key + "_field_" + selectResultSelect + index}
+                  ref={selectResultSelect + index}
+                  label={translate(key + "_" + selectResultSelect)}
+                  value={val}
+                />
+              }
+              saveUp={out => {
+                return this.saveId("File", out.filename);
+              }}
+            />
           );
+        } else if (isEnum(placehold)) {
+          return <>{this.renderPickerEnum(getEnum(placehold), val, key)}</>;
         } else {
           return (
             <Input
@@ -526,14 +574,15 @@ class Helper extends Component {
             this.updateDatabaseQ(toupd, error).then(({ data }) => {
               const out = data["upsert" + this.props.root];
               console.log("afteUpdated", out);
+              /*
               // const item = out[this.index_current];
-              this.selectorName = out[selector];
+              this.selectorVal = out[selector];
               this.fetchState(
                 out,
                 out.id,
                 this.index_current,
                 updateInCollection(this.state.tofetch, out)
-              );
+              );*/
             });
           } catch (err) {
             console.log(err);
@@ -553,19 +602,11 @@ class Helper extends Component {
       enabled={validator}
       text={text}
       onPress={() => {
-        if (validator)
-          try {
-            const toupd = { ...this.state.fields, id: 0 };
-            toupd.namewhere = toupd[selector];
-            upsertQuery(toupd).then(({ data }) => {
-              const out = data["upsert" + this.props.root];
-              // const item = out[out.length - 1];
-              this.selectorName = out[selector];
-              this.fetchState(out, out.id, -1);
-            });
-          } catch (err) {
-            console.log(err);
-          }
+        if (validator) {
+          const toupd = { ...this.state.fields, id: 0 };
+          toupd.namewhere = toupd[selector];
+         return upsertQuery(toupd);
+        }
       }}
     />
   );
@@ -661,7 +702,6 @@ class Helper extends Component {
               fontSize={14}
             />
           )}
-        {this.props.root === "Picture" && <CompUpload />}
       </KeyboardAwareCenteredView>
     );
   }

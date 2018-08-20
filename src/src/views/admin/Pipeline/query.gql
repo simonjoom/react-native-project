@@ -52,6 +52,7 @@ query pipelines {
 
 subscription pipelinesub($where: PipelineSubscriptionWhereInput) {
   pipeline(where: $where) {
+    mutation
     node {
       ...PipelineFragment
     }

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/public-greenslayer-136/pipedrive/dev
-# timestamp: Sun Aug 19 2018 17:51:35 GMT+0200 (Central European Summer Time)
+# timestamp: Mon Aug 20 2018 00:43:05 GMT+0200 (Central European Summer Time)
 
 enum Active {
   ACTIVATED
@@ -7,10 +7,6 @@ enum Active {
 }
 
 type AggregateDeal {
-  count: Int!
-}
-
-type AggregateFile {
   count: Int!
 }
 
@@ -544,358 +540,6 @@ input DealWhereUniqueInput {
   title: String
 }
 
-type File implements Node {
-  id: ID!
-  path: String!
-  filename: String!
-  mimetype: String!
-  encoding: String!
-}
-
-"""A connection to a list of items."""
-type FileConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [FileEdge]!
-  aggregate: AggregateFile!
-}
-
-input FileCreateInput {
-  path: String!
-  filename: String!
-  mimetype: String!
-  encoding: String!
-}
-
-input FileCreateManyInput {
-  create: [FileCreateInput!]
-  connect: [FileWhereUniqueInput!]
-}
-
-"""An edge in a connection."""
-type FileEdge {
-  """The item at the end of the edge."""
-  node: File!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum FileOrderByInput {
-  id_ASC
-  id_DESC
-  path_ASC
-  path_DESC
-  filename_ASC
-  filename_DESC
-  mimetype_ASC
-  mimetype_DESC
-  encoding_ASC
-  encoding_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
-}
-
-type FilePreviousValues {
-  id: ID!
-  path: String!
-  filename: String!
-  mimetype: String!
-  encoding: String!
-}
-
-type FileSubscriptionPayload {
-  mutation: MutationType!
-  node: File
-  updatedFields: [String!]
-  previousValues: FilePreviousValues
-}
-
-input FileSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [FileSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [FileSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [FileSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: FileWhereInput
-}
-
-input FileUpdateDataInput {
-  path: String
-  filename: String
-  mimetype: String
-  encoding: String
-}
-
-input FileUpdateInput {
-  path: String
-  filename: String
-  mimetype: String
-  encoding: String
-}
-
-input FileUpdateManyInput {
-  create: [FileCreateInput!]
-  connect: [FileWhereUniqueInput!]
-  disconnect: [FileWhereUniqueInput!]
-  delete: [FileWhereUniqueInput!]
-  update: [FileUpdateWithWhereUniqueNestedInput!]
-  upsert: [FileUpsertWithWhereUniqueNestedInput!]
-}
-
-input FileUpdateWithWhereUniqueNestedInput {
-  where: FileWhereUniqueInput!
-  data: FileUpdateDataInput!
-}
-
-input FileUpsertWithWhereUniqueNestedInput {
-  where: FileWhereUniqueInput!
-  update: FileUpdateDataInput!
-  create: FileCreateInput!
-}
-
-input FileWhereInput {
-  """Logical AND on all given filters."""
-  AND: [FileWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [FileWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [FileWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  path: String
-
-  """All values that are not equal to given value."""
-  path_not: String
-
-  """All values that are contained in given list."""
-  path_in: [String!]
-
-  """All values that are not contained in given list."""
-  path_not_in: [String!]
-
-  """All values less than the given value."""
-  path_lt: String
-
-  """All values less than or equal the given value."""
-  path_lte: String
-
-  """All values greater than the given value."""
-  path_gt: String
-
-  """All values greater than or equal the given value."""
-  path_gte: String
-
-  """All values containing the given string."""
-  path_contains: String
-
-  """All values not containing the given string."""
-  path_not_contains: String
-
-  """All values starting with the given string."""
-  path_starts_with: String
-
-  """All values not starting with the given string."""
-  path_not_starts_with: String
-
-  """All values ending with the given string."""
-  path_ends_with: String
-
-  """All values not ending with the given string."""
-  path_not_ends_with: String
-  filename: String
-
-  """All values that are not equal to given value."""
-  filename_not: String
-
-  """All values that are contained in given list."""
-  filename_in: [String!]
-
-  """All values that are not contained in given list."""
-  filename_not_in: [String!]
-
-  """All values less than the given value."""
-  filename_lt: String
-
-  """All values less than or equal the given value."""
-  filename_lte: String
-
-  """All values greater than the given value."""
-  filename_gt: String
-
-  """All values greater than or equal the given value."""
-  filename_gte: String
-
-  """All values containing the given string."""
-  filename_contains: String
-
-  """All values not containing the given string."""
-  filename_not_contains: String
-
-  """All values starting with the given string."""
-  filename_starts_with: String
-
-  """All values not starting with the given string."""
-  filename_not_starts_with: String
-
-  """All values ending with the given string."""
-  filename_ends_with: String
-
-  """All values not ending with the given string."""
-  filename_not_ends_with: String
-  mimetype: String
-
-  """All values that are not equal to given value."""
-  mimetype_not: String
-
-  """All values that are contained in given list."""
-  mimetype_in: [String!]
-
-  """All values that are not contained in given list."""
-  mimetype_not_in: [String!]
-
-  """All values less than the given value."""
-  mimetype_lt: String
-
-  """All values less than or equal the given value."""
-  mimetype_lte: String
-
-  """All values greater than the given value."""
-  mimetype_gt: String
-
-  """All values greater than or equal the given value."""
-  mimetype_gte: String
-
-  """All values containing the given string."""
-  mimetype_contains: String
-
-  """All values not containing the given string."""
-  mimetype_not_contains: String
-
-  """All values starting with the given string."""
-  mimetype_starts_with: String
-
-  """All values not starting with the given string."""
-  mimetype_not_starts_with: String
-
-  """All values ending with the given string."""
-  mimetype_ends_with: String
-
-  """All values not ending with the given string."""
-  mimetype_not_ends_with: String
-  encoding: String
-
-  """All values that are not equal to given value."""
-  encoding_not: String
-
-  """All values that are contained in given list."""
-  encoding_in: [String!]
-
-  """All values that are not contained in given list."""
-  encoding_not_in: [String!]
-
-  """All values less than the given value."""
-  encoding_lt: String
-
-  """All values less than or equal the given value."""
-  encoding_lte: String
-
-  """All values greater than the given value."""
-  encoding_gt: String
-
-  """All values greater than or equal the given value."""
-  encoding_gte: String
-
-  """All values containing the given string."""
-  encoding_contains: String
-
-  """All values not containing the given string."""
-  encoding_not_contains: String
-
-  """All values starting with the given string."""
-  encoding_starts_with: String
-
-  """All values not starting with the given string."""
-  encoding_not_starts_with: String
-
-  """All values ending with the given string."""
-  encoding_ends_with: String
-
-  """All values not ending with the given string."""
-  encoding_not_ends_with: String
-}
-
-input FileWhereUniqueInput {
-  id: ID
-}
-
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
@@ -903,7 +547,6 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
-  createFile(data: FileCreateInput!): File!
   createProduct(data: ProductCreateInput!): Product!
   createDeal(data: DealCreateInput!): Deal!
   createUser(data: UserCreateInput!): User!
@@ -912,7 +555,6 @@ type Mutation {
   createPicture(data: PictureCreateInput!): Picture!
   createOrganization(data: OrganizationCreateInput!): Organization!
   createStage(data: StageCreateInput!): Stage!
-  updateFile(data: FileUpdateInput!, where: FileWhereUniqueInput!): File
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   updateDeal(data: DealUpdateInput!, where: DealWhereUniqueInput!): Deal
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
@@ -921,7 +563,6 @@ type Mutation {
   updatePicture(data: PictureUpdateInput!, where: PictureWhereUniqueInput!): Picture
   updateOrganization(data: OrganizationUpdateInput!, where: OrganizationWhereUniqueInput!): Organization
   updateStage(data: StageUpdateInput!, where: StageWhereUniqueInput!): Stage
-  deleteFile(where: FileWhereUniqueInput!): File
   deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteDeal(where: DealWhereUniqueInput!): Deal
   deleteUser(where: UserWhereUniqueInput!): User
@@ -930,7 +571,6 @@ type Mutation {
   deletePicture(where: PictureWhereUniqueInput!): Picture
   deleteOrganization(where: OrganizationWhereUniqueInput!): Organization
   deleteStage(where: StageWhereUniqueInput!): Stage
-  upsertFile(where: FileWhereUniqueInput!, create: FileCreateInput!, update: FileUpdateInput!): File!
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   upsertDeal(where: DealWhereUniqueInput!, create: DealCreateInput!, update: DealUpdateInput!): Deal!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
@@ -939,7 +579,6 @@ type Mutation {
   upsertPicture(where: PictureWhereUniqueInput!, create: PictureCreateInput!, update: PictureUpdateInput!): Picture!
   upsertOrganization(where: OrganizationWhereUniqueInput!, create: OrganizationCreateInput!, update: OrganizationUpdateInput!): Organization!
   upsertStage(where: StageWhereUniqueInput!, create: StageCreateInput!, update: StageUpdateInput!): Stage!
-  updateManyFiles(data: FileUpdateInput!, where: FileWhereInput): BatchPayload!
   updateManyProducts(data: ProductUpdateInput!, where: ProductWhereInput): BatchPayload!
   updateManyDeals(data: DealUpdateInput!, where: DealWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
@@ -948,7 +587,6 @@ type Mutation {
   updateManyPictures(data: PictureUpdateInput!, where: PictureWhereInput): BatchPayload!
   updateManyOrganizations(data: OrganizationUpdateInput!, where: OrganizationWhereInput): BatchPayload!
   updateManyStages(data: StageUpdateInput!, where: StageWhereInput): BatchPayload!
-  deleteManyFiles(where: FileWhereInput): BatchPayload!
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
   deleteManyDeals(where: DealWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
@@ -1618,7 +1256,6 @@ input PersonWhereUniqueInput {
 type Picture implements Node {
   id: ID!
   file: String!
-  uploads(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File!]
 }
 
 """A connection to a list of items."""
@@ -1633,7 +1270,6 @@ type PictureConnection {
 
 input PictureCreateInput {
   file: String!
-  uploads: FileCreateManyInput
 }
 
 input PictureCreateManyInput {
@@ -1707,12 +1343,10 @@ input PictureSubscriptionWhereInput {
 
 input PictureUpdateDataInput {
   file: String
-  uploads: FileUpdateManyInput
 }
 
 input PictureUpdateInput {
   file: String
-  uploads: FileUpdateManyInput
 }
 
 input PictureUpdateManyInput {
@@ -1824,9 +1458,6 @@ input PictureWhereInput {
 
   """All values not ending with the given string."""
   file_not_ends_with: String
-  uploads_every: FileWhereInput
-  uploads_some: FileWhereInput
-  uploads_none: FileWhereInput
 }
 
 input PictureWhereUniqueInput {
@@ -2473,7 +2104,6 @@ input ProductWhereUniqueInput {
 }
 
 type Query {
-  files(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File]!
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   deals(where: DealWhereInput, orderBy: DealOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Deal]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
@@ -2482,7 +2112,6 @@ type Query {
   pictures(where: PictureWhereInput, orderBy: PictureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Picture]!
   organizations(where: OrganizationWhereInput, orderBy: OrganizationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Organization]!
   stages(where: StageWhereInput, orderBy: StageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Stage]!
-  file(where: FileWhereUniqueInput!): File
   product(where: ProductWhereUniqueInput!): Product
   deal(where: DealWhereUniqueInput!): Deal
   user(where: UserWhereUniqueInput!): User
@@ -2491,7 +2120,6 @@ type Query {
   picture(where: PictureWhereUniqueInput!): Picture
   organization(where: OrganizationWhereUniqueInput!): Organization
   stage(where: StageWhereUniqueInput!): Stage
-  filesConnection(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
   dealsConnection(where: DealWhereInput, orderBy: DealOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DealConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -2789,7 +2417,6 @@ input StageWhereUniqueInput {
 }
 
 type Subscription {
-  file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   deal(where: DealSubscriptionWhereInput): DealSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload

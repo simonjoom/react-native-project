@@ -11,7 +11,7 @@ const UploadOut = compose(
       handleUpload: file => {
         return mutate({
           variables: { file },
-         /* update(
+          update(
             proxy,
             {
               data: { singleUpload }
@@ -20,7 +20,7 @@ const UploadOut = compose(
             const data = proxy.readQuery({ query: uploads });
             data.uploads.push(singleUpload);
             proxy.writeQuery({ query: uploads, data });
-          }*/
+          }
         });
       }
     })

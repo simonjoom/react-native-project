@@ -1,13 +1,6 @@
 fragment PictureFragment on Picture {
   id
   file
-  uploads {
-    id
-    path
-    filename
-    mimetype
-    encoding
-  }
 }
 
 mutation upsertPicture($id: ID!, $file: String!) {
@@ -37,6 +30,7 @@ query pictures {
 
 subscription picturesub($where: PictureSubscriptionWhereInput) {
   picture(where: $where) {
+    mutation
     node {
       ...PictureFragment
     }

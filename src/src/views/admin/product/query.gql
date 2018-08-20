@@ -59,6 +59,7 @@ query products {
 
 subscription productsub($where: PipelineSubscriptionWhereInput) {
   product(where: $where) {
+    mutation
     node {
       ...ProductFragment
     }

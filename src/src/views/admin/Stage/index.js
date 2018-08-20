@@ -30,6 +30,7 @@ class Stage extends Component {
       deleteStage,
       stage,
       stagesub,
+      upsertStage,
       navigation,
       connected,
       parent,
@@ -50,6 +51,7 @@ class Stage extends Component {
         placeholder={this.initplaceholder}
         selector="name"
         navigation={navigation}
+        upsertQuery={upsertStage}
         deleteQuery={deleteStage}
         selectQuery={stage}
         subscribe={stagesub}

@@ -1,5 +1,14 @@
-# import User, Product from "./generated/prisma.graphql"
+# import User, Product,OrganizationSubscriptionWhereInput,OrganizationSubscriptionPayload from "./generated/prisma.graphql"
+# import ProductSubscriptionWhereInput,ProductSubscriptionPayload from "./generated/prisma.graphql"
+# import DealSubscriptionWhereInput,DealSubscriptionPayload from "./generated/prisma.graphql"
+# import StageSubscriptionWhereInput,StageSubscriptionPayload from "./generated/prisma.graphql"
+# import PersonSubscriptionWhereInput,PersonSubscriptionPayload from "./generated/prisma.graphql"
+# import PipelineSubscriptionWhereInput,PipelineSubscriptionPayload from "./generated/prisma.graphql"
+# import PictureSubscriptionWhereInput,PictureSubscriptionPayload from "./generated/prisma.graphql"
+# import UserSubscriptionWhereInput,UserSubscriptionPayload from "./generated/prisma.graphql"
+
 scalar Upload
+ 
 type File {
   id: ID!
   path: String!
@@ -7,6 +16,7 @@ type File {
   mimetype: String!
   encoding: String!
 }
+
 type Query {
   uploads: [File]
 }
@@ -14,6 +24,7 @@ type Mutation {
   singleUpload(file: Upload!): File!
   multipleUpload(files: [Upload!]!): [File!]!
 }
+
 type AuthPayload {
   token: String!
   user: User!
@@ -22,13 +33,17 @@ type UserIdPayload {
   id: ID!
 }
 
-
 type Query {
   me: User
   allProducts: [Product!]
 }
 
 type Mutation {
-  signup(email: String!, password: String!, firstName: String!, lastName: String!): AuthPayload!
+  signup(
+    email: String!
+    password: String!
+    firstName: String!
+    lastName: String!
+  ): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
 }

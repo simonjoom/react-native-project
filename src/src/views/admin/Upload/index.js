@@ -7,12 +7,12 @@ class Uploads extends Component {
     super(props);
     this.state = {
       file: null,
-      url: null,
+      url: null
     };
   }
   openImagePicker = e => {
-    this.props.handleUpload(this.state.file).then(response => {
-      console.log(response);
+    this.props.handleUpload(this.state.file).then(({ data }) => {
+      if (data) return this.props.saveUp(data.singleUpload);
     });
   };
   onChangeFile = e => {
@@ -33,7 +33,6 @@ class Uploads extends Component {
 
   render() {
     const { data } = this.props;
-    console.log(this)
     let datas;
     //const selected = this.state.selected;
     if (data) {
@@ -45,6 +44,7 @@ class Uploads extends Component {
 
     return (
       <View>
+        {this.props.content}
         <NavigationButton
           enabled={this.state.file}
           text="Upload"

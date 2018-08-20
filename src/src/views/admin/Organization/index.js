@@ -1,6 +1,4 @@
-import React, { Component } from "react";
-import { Text } from "react-native";
-
+import React, { Component } from "react"; 
 import Helper from "../helper/helper";
 
 import Person from "../Person/Container";
@@ -29,6 +27,7 @@ class Organization extends Component {
     const {
       data,
       deleteOrganization,
+      upsertOrganization,
       organization,
       organizationsub,
       navigation,
@@ -55,6 +54,7 @@ class Organization extends Component {
         subscribe={organizationsub}
         navigation={navigation}
         deleteQuery={deleteOrganization}
+        upsertQuery={upsertOrganization}
         selectQuery={organization}
         selectResultSelect="organization"
         setModalVisible={setModalVisible}

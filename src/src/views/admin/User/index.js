@@ -38,6 +38,7 @@ class User extends Component {
       user,
       usersub,
       navigation,
+      upsertUser,
       connected,
       parent,
       parentId,
@@ -59,6 +60,7 @@ class User extends Component {
         selector="name"
         navigation={navigation}
         deleteQuery={deleteUser}
+        upsertQuery={upsertUser}
         selectQuery={user}
         subscribe={usersub}
         selectResultSelect="user"

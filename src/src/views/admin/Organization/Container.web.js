@@ -30,17 +30,6 @@ const OrganizationOut = compose(
         })
     })
   }),
-  /*graphql(organizationsub, {
-    props: ({data,ownProps}) => {
-      console.log("ownProps",data,ownProps)
-      return organizationsub:() =>
-      ownProps.client.subscribe({
-        variables: {
-          mutation_in: ["CREATED", "UPDATED"]
-        }
-      })
-    }
-  }),*/
   graphql(upsertOrganization, {
     props: ({ mutate, ownProps }) => ({
       organizationsub: () =>
@@ -48,7 +37,7 @@ const OrganizationOut = compose(
           query: organizationsub,
           fetchPolicy: "network-only",
           variables: {
-            where: { mutation_in: ["CREATED"] }
+            where: { mutation_in: ["CREATED", "UPDATED", "DELETED"] }
           }
         }),
       organization: ({ name }) =>

@@ -50,6 +50,7 @@ query stages {
 }
 subscription stagesub($where: StageSubscriptionWhereInput) {
   stage(where: $where) {
+    mutation
     node {
       ...StageFragment
     }

@@ -67,6 +67,7 @@ query users {
 }
 subscription usersub($where: UserSubscriptionWhereInput) {
   user(where: $where) {
+    mutation
     node {
       ...UserFragment
     }

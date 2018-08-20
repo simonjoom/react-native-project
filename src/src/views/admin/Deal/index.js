@@ -44,6 +44,7 @@ class Deal extends Component {
     const {
       data,
       deleteDeal,
+      upsertDeal,
       deal,
       dealsub,
       navigation,
@@ -67,6 +68,7 @@ class Deal extends Component {
         selector="title"
         navigation={navigation}
         deleteQuery={deleteDeal}
+        upsertQuery={upsertDeal}
         subscribe={dealsub}
         selectQuery={deal}
         selectResultSelect="deal"

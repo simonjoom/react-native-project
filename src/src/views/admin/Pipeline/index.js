@@ -31,6 +31,7 @@ class Pipeline extends Component {
       pipeline,
       pipelinesub,
       navigation,
+      upsertPipeline,
       connected,
       parent,
       saveId,
@@ -51,6 +52,7 @@ class Pipeline extends Component {
         selector="name"
         navigation={navigation}
         subscribe={pipelinesub}
+        upsertQuery={upsertPipeline}
         deleteQuery={deletePipeline}
         selectQuery={pipeline}
         selectResultSelect="pipeline"

@@ -8,14 +8,12 @@ class Picture extends Component {
     this.initfetch = [
       {
         id: "",
-        file: "",
-        uploads: []
+        file: ""
       }
     ];
     this.initplaceholder = {
       id: "ID",
-      file: "String*",
-      uploads: "[File]"
+      file: "[File]"
     };
   }
 
