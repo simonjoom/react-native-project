@@ -100,7 +100,7 @@ class Helper extends Component {
     this.state = {
       tofetch: [...datas],
       selected: this.index_current,
-      labelid: null,
+      labelid: datas[this.index_current].id,
       fields: removeEmpty(datas[this.index_current]),
       modal: [],
       root: props.root,
@@ -251,9 +251,10 @@ class Helper extends Component {
     );**/
   }
 
-  setModalVisible(type, visible) {
+  setModalVisible(type, visible,id) {
     console.log("setModalVisiblehelper", type);
     this.state.modal[type] = visible;
+    this.state.labelid = id;
     this.forceUpdate();
   }
 
@@ -302,9 +303,9 @@ class Helper extends Component {
 
   fetchState(fields, labelid, selected, tofetch) {
     const tomod = {
-      fields: fields,
-      labelid: labelid,
-      selected: selected,
+      fields,
+      labelid,
+      selected,
       tofetch: tofetch ? tofetch : undefined
     };
     console.log("rebuildHelper", removeEmpty(tomod));
