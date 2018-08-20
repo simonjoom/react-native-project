@@ -1,6 +1,6 @@
 {
   "name": "myapp",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "browserslist": {
     "development": [
@@ -41,7 +41,7 @@
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry-web.js",
   "scripts": {
     "startdev": "dotenv -- nodemon -e ts,graphql -x ts-node prisma/src/index.ts",
-    "server": "nodemon -e 'ts,js,graphql' --watch prisma --ignore ./node_modules --ignore ./prisma/node_modules -x 'node -r ts-node/register -r @babel/register -r dotenv/config --inspect prisma/src/index.ts'",
+    "server": "nodemon -e 'ts,js,graphql' --watch prisma --ignore ./node_modules --ignore ./prisma/node_modules -x 'node -r ts-node/register -r dotenv/config --inspect prisma/src/index.ts'",
     "wweb": "nodemon -e 'ts,js,graphql' --watch prisma src --ignore ./node_modules -x 'npm run web'",
     "web": "react-scripts start",
     "build-web": "react-scripts build",

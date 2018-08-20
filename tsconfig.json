@@ -1,21 +1,26 @@
 {
   "compilerOptions": {
-    "target": "ESNEXT",
-    "moduleResolution": "Node",
-    "module": "esnext",
-    "sourceMap": true,
-    "noUnusedLocals": false,
-    "rootDir": "prisma/src",
-    "outDir": "prisma/dist"
-  },    
-  "include": [
-    "prisma/src/**/*.ts",
-    "prisma/src/**/*.js",
-    "prisma/src/*.js",
+    "plugins": [
+      {
+        "name": "@divyenduz/ts-graphql-plugin"
+      }
     ],
-    "exclude": [
-        "node_modules",
-        "**/node_modules",
-        "**/*.spec.ts"
-    ]
+    "jsx": "preserve",
+    // resolve modules as you would expect
+    "moduleResolution": "node",
+    "noUnusedLocals": false,
+    "rootDir": "./prisma/src",
+    "outDir": "prisma/dist",
+    "target": "ES5",
+    "module": "commonjs", 
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "removeComments": true,
+    "strictFunctionTypes": false,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es5", "es6", "dom", "es2017.object", "esnext.asynciterable"]
+  },
+  "include": ["prisma/src/**/*.ts", "prisma/src/**/*.js", "prisma/src/*.js"],
+  "exclude": ["prisma/dist", "node_modules", "**/node_modules", "**/*.spec.ts"]
 }
