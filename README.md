@@ -85,23 +85,13 @@ So continue in root folder install dependencies
 
 > npm install
 
-Please to resolve problem with react-native-vector-icons
+Please to resolve problem with react-native-vector-icons:
 
-> rm -Rf root/node_modules/expo-web/node_modules/ (the dependencies expo-web are outdated)
-> rm -Rf root/prisma/node_modules/@types/graphql/ 
-> rm -Rf root/node_modules/@types/graphql/
-> cp -Rf babel-eslint root/node_modules/babel-eslint
-
-After this
-be sure to have a symbolic link working in node_modules:
-if not: 
-
-> npm link ./react-native-vector-icons
-> npm link ./react-native-web-modal
-> npm link ./react-scripts
 > 
+> sh script.sh    
 
-These 3 folder was a bit hacked to resolve bug with react-native-web
+
+3 folder was a bit hacked to resolve bug with react-native-web
 
 
 -----
