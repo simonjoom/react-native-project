@@ -40,10 +40,12 @@ function isRequired(string) {
 function isMany(string) {
   return string.indexOf("[") !== -1;
 }
+
 function getType(string) {
   return string
     .replace(/!/g, "")
     .replace("*", "")
+    .replace("@", "")
     .replace("[", "")
     .replace("]", "");
 }
@@ -100,7 +102,7 @@ class Helper extends Component {
     this.validateFields = this.validateFields.bind(this);
     this.focusNextField = this.focusNextField.bind(this);
     this.renderFields = this.renderFields.bind(this);
-    this.setModalVisible = this.setModalVisible.bind(this);
+    this.setModalVisible = this.setModalVisible.bind(this); 
     this.saveId = this.saveId.bind(this);
     this.prepareFordtb = this.prepareFordtb.bind(this);
     this.addInCollection = this.addInCollection.bind(this);
@@ -153,11 +155,22 @@ class Helper extends Component {
   componentWillUnmount() {
     this.handle.unsubscribe();
   }
-  updateDatabaseQ = (toupd, error) => {
+  getUniques = () => {
+    const obj = Object.keys(this.props.placeholder);
+    const o= obj.filter(key => this.props.placeholder[key].indexOf("@") !== -1);
+    return o.map(k=>translate(k + "_" + this.props.selectResultSelect))
+  };
+  updateDatabaseQ = toupd => {
+    /*const error= 'Slot exist in DATABASE'
     const { selector, selectQuery, upsertQuery } = this.props;
-    var ErrorP = reason => Promise.reject(new Error("fail " + reason));
+    var ErrorP = reason => Promise.reject(new Error("fail " + reason));*/
     //toupd.namewhere = this.selectorVal;
-    if (selector === "id" || !toupd.id) return upsertQuery(toupd);
+    return this.props.upsertQuery(toupd).catch(reason => {
+      console.log(reason)
+      const un = this.getUniques();
+      alert("Fields already exist in database please change : " + un.join(" or "));
+    });
+    /* if (selector === "id" || !toupd.id) return upsertQuery(toupd);
     else
       return selectQuery({ [selector]: toupd[selector] }).then(
         ({ data }) => {
@@ -168,7 +181,7 @@ class Helper extends Component {
         reason => {
           return ErrorP(reason);
         }
-      );
+      );*/
   };
   updateInCollection = object => {
     const collection = this.state.tofetch;
@@ -215,7 +228,7 @@ class Helper extends Component {
     if (outobj.id === "") {
       delete outobj.id;
     }
-    if (!wherecheck) outobj.namewhere = outobj[this.props.selector];
+    if (!wherecheck) outobj.namewhere = this.selectorVal;
     //on update where defined on old
     else outobj.namewhere = wherecheck; // on create we check that the slot not exist
     console.log("debugfefef", outobj);
@@ -227,7 +240,7 @@ class Helper extends Component {
     const selector = out.filename ? out.filename : out.id ? out.id : false;
 
     const obj = Object.keys(this.state.fields);
-    let many = false;
+    let many;
     let getkey, vals, valout;
     if (entitie) {
       getkey = obj.find(key => {
@@ -265,16 +278,9 @@ class Helper extends Component {
         valout = valout.join();
       }
     }
-    console.log("valout", valout);
     let toupd = { ...this.state.fields, [getkey]: valout };
     toupd = this.prepareFordtb(toupd, wherecheck);
-    console.log("toupd", toupd);
-    return this.updateDatabaseQ(toupd, "Something happend not good");
-    /*.then(() =>
-      this.setState(prevState => ({
-        fields: { ...prevState.fields, [getkey]: connect }
-      }))
-    );**/
+    return this.updateDatabaseQ(toupd);
   }
 
   setModalVisible(type, visible) {
@@ -307,7 +313,7 @@ class Helper extends Component {
       );
   }
 
-  validateFields() {
+  validateFields(testmore) {
     //one field not filled || required  === not validated
     if (this.state.fields) {
       const array = Object.keys(this.state.fields).slice(1); //delete id for validation (id is verytime the first element)
@@ -317,7 +323,7 @@ class Helper extends Component {
           !!this.state.fields[key] || !isRequired(this.props.placeholder[key])
         );
       });
-      return bool;
+      return bool && testmore;
     }
   }
 
@@ -686,28 +692,24 @@ class Helper extends Component {
         )}
         <this.updateButton
           text="Update"
-          validator={this.validateFields()}
+          validator={this.validateFields(
+            this.props.root !== "Picture" ||
+              (this.props.root === "Picture" && this.state.FileOut.filename)
+          )}
           selector={selector}
           mutateResultSelect={mutateResultSelect}
           error="Error Exist"
         />
-        {this.props.root === "Picture" ? (
-          <this.createButton
-            text="Create"
-            validator={this.validateFields() && this.state.FileOut.filename}
-            upsertQuery={upsertQuery}
-            selector={selector}
-            mutateResultSelect={mutateResultSelect}
-          />
-        ) : (
-          <this.createButton
-            text="Create"
-            validator={this.validateFields()}
-            upsertQuery={upsertQuery}
-            selector={selector}
-            mutateResultSelect={mutateResultSelect}
-          />
-        )}
+        <this.createButton
+          text="Create"
+          validator={this.validateFields(
+            this.props.root !== "Picture" ||
+              (this.props.root === "Picture" && this.state.FileOut.filename)
+          )}
+          upsertQuery={upsertQuery}
+          selector={selector}
+          mutateResultSelect={mutateResultSelect}
+        />
 
         {connected &&
           this.state.fields &&

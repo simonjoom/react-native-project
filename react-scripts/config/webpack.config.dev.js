@@ -6,10 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 // @remove-on-eject-end
-"use strict";
+"use strict"; 
 
 const autoprefixer = require("autoprefixer");
-  var DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -177,6 +176,7 @@ module.exports = {
       ".mjs",
       ".js",
       ".json",
+      ".md",
       ".web.jsx",
       ".jsx",
       ".gql",
@@ -266,6 +266,10 @@ module.exports = {
               name: "static/media/[name].[hash:8].[ext]"
             }
           },
+          {
+        test: /\.md$/,
+         use: 'raw-loader'
+      },
           // Process application JS with Babel.
           // The preset includes JSX, Flow, and some ESnext features.
           {
@@ -508,7 +512,6 @@ module.exports = {
     ]
   },
   plugins: [
-  new DuplicatePackageCheckerPlugin(),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,

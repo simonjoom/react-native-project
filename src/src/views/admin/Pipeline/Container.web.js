@@ -35,7 +35,7 @@ const PipelineOut = compose(
           query: pipelinesub,
           fetchPolicy: "network-only",
           variables: {
-            where: { mutation_in: ["CREATED"] }
+            where: { mutation_in: ["CREATED", "UPDATED", "DELETED"] }
           }
         }),
       pipeline: ({ name }) =>

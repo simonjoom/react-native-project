@@ -1,10 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React from "react";
+import PropTypes from "prop-types";
+import {
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  ActivityIndicator
+} from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 
-import color from '../../statics/colors/index';
-import styles from './Button.styles';
+import color from "../../statics/colors/index";
+import styles from "./Button.styles";
 
 const propTypes = {
   style: PropTypes.object,
@@ -17,9 +22,10 @@ const propTypes = {
   height: PropTypes.number,
   width: PropTypes.number,
   borderColor: PropTypes.string,
+  position: PropTypes.string,
   fontSize: PropTypes.number,
   loading: PropTypes.bool,
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 let { width, height } = {
@@ -34,13 +40,13 @@ const defaultProps = {
   style: {},
   labelColor: color.white,
   iconColor: color.white,
-  backgroundColor: 'transparent',
+  backgroundColor: "transparent",
   height: 50,
   //width: "auto",
-  alignSelf: 'center',
+  position: "center",
   borderColor: color.white,
   fontSize: 14,
-  disabled: false,
+  disabled: false
 };
 
 const Button = props => {
@@ -53,11 +59,11 @@ const Button = props => {
     backgroundColor,
     height,
     //width,
-    alignSelf,
+    position,
     borderColor,
     fontSize,
     loading,
-    disabled,
+    disabled
   } = props;
   return (
     <TouchableOpacity
@@ -66,12 +72,16 @@ const Button = props => {
         styles.touchable,
         {
           height: height,
-         // width: width,
-          alignSelf:alignSelf,
+          alignSelf:
+            position === "left"
+              ? "flex-start"
+              : position === "right"
+                ? "flex-end"
+                : position,
           backgroundColor: backgroundColor,
-          borderColor: borderColor,
+          borderColor: borderColor
         },
-        props.style,
+        props.style
       ]}
     >
       {icon && <Icon size={24} name={icon} color={iconColor} />}
@@ -81,16 +91,14 @@ const Button = props => {
             styles.text,
             {
               color: labelColor,
-              fontSize: fontSize,
-            },
+              fontSize: fontSize
+            }
           ]}
         >
           {label}
         </Text>
       )}
-      {loading && (
-        <ActivityIndicator color="white"/>
-      )}
+      {loading && <ActivityIndicator color="white" />}
     </TouchableOpacity>
   );
 };

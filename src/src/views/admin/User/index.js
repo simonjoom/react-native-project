@@ -20,8 +20,8 @@ class User extends Component {
     ];
     this.initplaceholder = {
       id: "ID",
-      name: "String*",
-      email: "String*",
+      name: "String*@",
+      email: "String*@",
       company: "Organization",
       password: "String*",
       firstName: "String",

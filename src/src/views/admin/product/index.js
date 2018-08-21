@@ -18,7 +18,7 @@ class Product extends Component {
     ];
     this.initplaceholder = {
       id: "ID",
-      name: "String*",
+      name: "String*@",
       unit: "String",
       code: "String",
       owner: "User",

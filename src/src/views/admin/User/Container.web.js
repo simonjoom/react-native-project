@@ -1,5 +1,5 @@
 import { graphql, compose, withApollo } from "react-apollo";
-import { upsertUser, user, deleteUser, users, usersub } from "./query.gql";
+import { upsertUser,  deleteUser,user, users, usersub } from "./query.gql";
 import Comp from "./index";
 import { loader } from "../loader";
 //import ResortComp from "../resort/ResortContainer";
@@ -30,7 +30,7 @@ const UserOut = compose(
           query: usersub,
           fetchPolicy: "network-only",
           variables: {
-            mutation_in: ["CREATED"]
+            mutation_in: ["CREATED", "UPDATED", "DELETED"]
           }
         }),
       user: ({ name }) =>

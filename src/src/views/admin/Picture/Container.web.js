@@ -36,7 +36,7 @@ const PictureOut = compose(
           query: picturesub,
           fetchPolicy: "network-only",
           variables: {
-            mutation_in: ["CREATED"]
+            mutation_in: ["CREATED", "UPDATED", "DELETED"]
           }
         }),
       picture: ({ id }) =>

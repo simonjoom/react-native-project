@@ -17,7 +17,7 @@ class Organization extends Component {
     ];
     this.initplaceholder = {
       id: "ID",
-      name: "String*",
+      name: "String*@",
       owner: "User",
       persons: "[Person]"
     };

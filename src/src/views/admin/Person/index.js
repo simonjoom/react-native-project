@@ -25,7 +25,7 @@ class Person extends Component {
     ];
     this.initplaceholder = {
       id: "ID",
-      name: "String*",
+      name: "String*@",
       owner: "User",
       email: "String",
       phone: "String",

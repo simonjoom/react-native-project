@@ -1,7 +1,7 @@
 import React, { Component } from "react"; 
 
 import Helper from "../helper/helper";
-import Pipeline from "../Pipeline/Container"; 
+import Pipeline from "../Pipeline/Container";
 
 class Stage extends Component {
   constructor(props) {

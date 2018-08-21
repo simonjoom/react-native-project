@@ -1,5 +1,5 @@
 import { graphql, compose, withApollo } from "react-apollo";
-import { upsertStage, stage, deleteStage, stages, stagesub } from "./query.gql";
+import { upsertStage, deleteStage, stage, stages, stagesub } from "./query.gql";
 import Comp from "./index";
 import { loader } from "../loader";
 //import ResortComp from "../resort/ResortContainer";
@@ -30,7 +30,7 @@ const StageOut = compose(
           query: stagesub,
           fetchPolicy: "network-only",
           variables: {
-            mutation_in: ["CREATED"]
+            mutation_in: ["CREATED", "UPDATED", "DELETED"]
           }
         }),
       stage: ({ name }) =>

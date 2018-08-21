@@ -46,7 +46,7 @@ const defaultProps = {
   widthAuto: false,
   placeHolder: "",
   placeHolderColor: color.grey,
-  autoFocus: () => {},
+  autoFocus: false,
   keyboardType: "default",
   returnKey: "default",
   maxLength: 50,

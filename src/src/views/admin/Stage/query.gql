@@ -13,19 +13,19 @@ mutation upsertStage(
   $namewhere: String
   $order_nr: String
   $deal_probability: Probability
-  $pipeline: PipelineWhereUniqueInput
+  $pipeline: PipelineUpdateOneInput
 ) {
   upsertStage(
     where: { name: $namewhere }
     create: {
       name: $name
-      pipeline: { connect: $pipeline }
+      pipeline: $pipeline 
       order_nr: $order_nr
       deal_probability: $deal_probability
     }
     update: {
       name: $name
-      pipeline: { connect: $pipeline }
+      pipeline: $pipeline
       order_nr: $order_nr
       deal_probability: $deal_probability
     }

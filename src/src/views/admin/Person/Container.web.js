@@ -36,7 +36,7 @@ const PersonOut = compose(
           query: personsub,
           fetchPolicy: "network-only",
           variables: {
-            mutation_in: ["CREATED"]
+            mutation_in: ["CREATED", "UPDATED", "DELETED"]
           }
         }),
       person: ({ name }) =>

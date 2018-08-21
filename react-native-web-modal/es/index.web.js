@@ -35,6 +35,7 @@ var Modal = function (_Component) {
     var _props = this.props,
         transparent = _props.transparent,
         visible = _props.visible,
+        style = _props.style,
         animationType = _props.animationType,
         children = _props.children;
 
@@ -80,7 +81,7 @@ var Modal = function (_Component) {
     var animationState = visible ? "visible" : "hidden";
     var animationStyle = animationStyles[animationType][animationState];
 
-    var style = Object.assign({}, baseStyle, animationStyle);
+    var style = Object.assign({}, baseStyle, animationStyle,style);
 
     return createElement(Portal, null, createElement("div", { style: style, children: children }));
   };
