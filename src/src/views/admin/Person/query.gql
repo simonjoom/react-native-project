@@ -20,32 +20,32 @@ fragment PersonFragment on Person {
 mutation upsertPerson(
   $name: String!
   $namewhere: String
-  $owner: UserWhereUniqueInput
   $email: String
   $phone: String
-  $pictures: [PictureWhereUniqueInput!]
-  $products: [ProductWhereUniqueInput!]
-  $deals: [DealWhereUniqueInput!]
+  $owner: UserUpdateOneInput
+  $pictures: PictureUpdateManyInput
+  $products: ProductUpdateManyInput
+  $deals: DealUpdateManyWithoutParticipantsInput
 ) {
   upsertPerson(
     where: { name: $namewhere }
     create: {
       name: $name
-      owner: { connect: $owner }
+      owner: $owner 
       email: $email
       phone: $phone
-      pictures: { connect: $pictures }
-      products: { connect: $products }
-      deals: { connect: $deals }
+      pictures: $pictures
+      products: $products
+      deals: $deals
     }
     update: {
       name: $name
-      owner: { connect: $owner }
+      owner: $owner
       email: $email
       phone: $phone
-      pictures: { connect: $pictures }
-      products: { connect: $products }
-      deals: { connect: $deals }
+      pictures: $pictures
+      products: $products
+      deals: $deals
     }
   ) {
     ...PersonFragment

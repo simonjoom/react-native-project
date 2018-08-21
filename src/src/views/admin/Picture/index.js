@@ -13,7 +13,7 @@ class Picture extends Component {
     ];
     this.initplaceholder = {
       id: "ID",
-      file: "[File]"
+      file: "[File]*"
     };
   }
 

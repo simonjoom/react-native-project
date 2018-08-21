@@ -21,17 +21,17 @@ fragment FragmentDeal on Deal{
     status
     probability
 }
-
+ 
 mutation upsertDeal(
   $title: String!
   $namewhere: String!
   $value: String!
   $currency: String!
-  $owner: UserWhereUniqueInput
-  $org: OrganizationWhereUniqueInput
-  $stage: StageWhereUniqueInput
-  $participants: [PersonWhereUniqueInput!]
-  $products: [ProductWhereUniqueInput!]
+  $owner:  UserUpdateOneInput
+  $org:  OrganizationUpdateOneInput
+  $participants: PersonUpdateManyWithoutDealsInput
+  $products:  ProductUpdateManyWithoutDealsInput
+  $stage: StageUpdateOneInput 
   $status: OrderStatus
   $probability: String
 ) {
@@ -41,11 +41,11 @@ mutation upsertDeal(
       title: $title
       value: $value
       currency: $currency
-      owner: { connect: $owner }
-      org: { connect: $org }
-      stage: { connect: $stage }
-      products: { connect: $products }
-      participants: { connect: $participants }
+      owner: $owner
+      org: $org
+      stage: $stage
+      products: $products
+      participants: $participants
       status: $status
       probability: $probability
     }
@@ -53,11 +53,11 @@ mutation upsertDeal(
       title: $title
       value: $value
       currency: $currency
-      owner: { connect: $owner }
-      org: { connect: $org }
-      stage: { connect: $stage }
-      products: { connect: $products }
-      participants: { connect: $participants }
+      owner: $owner
+      org: $org
+      stage: $stage
+      products: $products
+      participants: $participants
       status: $status
       probability: $probability
     }
@@ -93,7 +93,7 @@ subscription dealsub($where: DealSubscriptionWhereInput) {
     updatedFields
     previousValues {
       id
-      name
+      title
     }
   }
 }

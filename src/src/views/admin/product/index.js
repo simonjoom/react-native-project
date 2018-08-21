@@ -54,7 +54,7 @@ class Product extends Component {
         selector="name"
         navigation={navigation}
         deleteQuery={deleteProduct}
-        upsertProduct={upsertProduct}
+        upsertQuery={upsertProduct}
         selectQuery={product}
         subscribe={productsub}
         selectResultSelect="product"

@@ -36,7 +36,7 @@ class Deal extends Component {
       products: "[Product]",
       stage: "Stage",
       status: "Enum:OPEN,WON,LOST,DELETED",
-      probability: "String*"
+      probability: "String"
     };
   }
 

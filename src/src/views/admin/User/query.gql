@@ -18,7 +18,7 @@ mutation upsertUser(
   $namewhere: String
   $email: String!
   $password: String!
-  $company: OrganizationWhereUniqueInput
+  $company: OrganizationUpdateOneWithoutOwnerInput
   $firstName: String
   $lastName: String
   $active_flag: Active
@@ -29,7 +29,7 @@ mutation upsertUser(
     create: {
       name: $name
       email: $email
-      company: { connect: $company }
+      company: $company
       password: $password
       firstName: $firstName
       lastName: $lastName
@@ -39,7 +39,7 @@ mutation upsertUser(
     update: {
       name: $name
       email: $email
-      company: { connect: $company }
+      company: $company
       password: $password
       firstName: $firstName
       lastName: $lastName

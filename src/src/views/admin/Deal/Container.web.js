@@ -1,6 +1,7 @@
 import { graphql, compose, withApollo } from "react-apollo";
 import { upsertDeal, deal, dealsub, deleteDeal, deals } from "./query.gql";
 import Comp from "./index";
+import { loader } from "../loader";
 
 const DealOut = compose(
   withApollo,
@@ -25,7 +26,7 @@ const DealOut = compose(
           query: dealsub,
           fetchPolicy: "network-only",
           variables: {
-            where: { mutation_in: ["CREATED"] }
+            where: { mutation_in: ["CREATED", "UPDATED", "DELETED"] }
           }
         }),
       deal: ({ title }) =>
@@ -70,6 +71,7 @@ const DealOut = compose(
           ]
         })
     })
-  })
+  }),
+  loader
 )(Comp);
 export default DealOut;

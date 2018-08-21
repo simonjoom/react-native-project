@@ -18,8 +18,8 @@ mutation upsertProduct(
   $namewhere: String
   $unit: String
   $code: String
-  $owner: UserWhereUniqueInput
-  $deals: [DealWhereUniqueInput!]
+  $owner: UserUpdateOneInput
+  $deals: DealUpdateManyWithoutProductsInput
 ) {
   upsertProduct(
     where: { name: $namewhere }
@@ -27,15 +27,15 @@ mutation upsertProduct(
       name: $name
       unit: $unit
       code: $code
-      owner: { connect: $owner }
-      deals: { connect: $deals }
+      owner: $owner
+      deals: $deals
     }
     update: {
       name: $name
       unit: $unit
       code: $code
-      owner: { connect: $owner }
-      deals: { connect: $deals }
+      owner: $owner
+      deals: $deals
     }
   ) {
     ...ProductFragment
@@ -57,7 +57,7 @@ query products {
   }
 }
 
-subscription productsub($where: PipelineSubscriptionWhereInput) {
+subscription productsub($where: ProductSubscriptionWhereInput) {
   product(where: $where) {
     mutation
     node {

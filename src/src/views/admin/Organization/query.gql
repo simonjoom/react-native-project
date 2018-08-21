@@ -11,39 +11,31 @@ fragment OrganizationFragment on Organization {
 mutation upsertOrganization(
   $namewhere: String
   $name: String!
-  $owner: UserWhereUniqueInput
-  $persons: [PersonWhereUniqueInput!]
+  $owner: UserUpdateOneWithoutCompanyInput
+  $persons: PersonUpdateManyInput
 ) {
   upsertOrganization(
     where: { name: $namewhere }
-    create: {
-      name: $name
-      owner: { connect: $owner }
-      persons: { connect: $persons }
-    }
-    update: {
-      name: $name
-      owner: { connect: $owner }
-      persons: { connect: $persons }
-    }
+    create: { name: $name, owner: $owner, persons: $persons }
+    update: { name: $name, owner: $owner, persons: $persons }
   ) {
-      ...OrganizationFragment
+    ...OrganizationFragment
   }
 }
 mutation deleteOrganization($name: String) {
   deleteOrganization(where: { name: $name }) {
-      ...OrganizationFragment
+    ...OrganizationFragment
   }
 }
 query organization($name: String) {
   organization(where: { name: $name }) {
-      ...OrganizationFragment
+    ...OrganizationFragment
   }
 }
 
 query organizations {
   organizations {
-      ...OrganizationFragment
+    ...OrganizationFragment
   }
 }
 

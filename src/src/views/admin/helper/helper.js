@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableOpacity, Modal, View, Text, Image } from "react-native";
+import { TouchableOpacity, Modal, View, Text } from "react-native";
 import Input from "src/components/input/Input";
 import { translate } from "src/i18n";
 import NavigationButton from "src/components/navigation-button/NavigationButton";
@@ -33,19 +33,6 @@ function isEntitie(str) {
   //return obj.indexOf("[") !== -1 && obj.indexOf("]") !== -1;
   //it's a node like "[Product!]!","[OrderableProduct!]!","ENUM",
 }
-function updateInCollection(collection, object) {
-  return collection.reduce(function(tally, el) {
-    var pick = el.id === object.id ? object : el;
-    tally.push(pick);
-    return tally;
-  }, []);
-}
-function addInCollection(collection, object) {
-  return [...collection, object];
-}
-function removeInCollection(collection, object) {
-  return collection.filter(tally => tally.id !== object.id);
-}
 
 function isRequired(string) {
   return string.indexOf("*") !== -1;
@@ -60,13 +47,9 @@ function getType(string) {
     .replace("[", "")
     .replace("]", "");
 }
-function dup(obj) {
-  return JSON.parse(JSON.stringify(obj)); // Clone source oect.
-}
-
 function removeEmpty(obj, showid) {
-  const o = dup(obj); // Clone source oect.
-
+  if (Array.isArray(obj)) return obj.map(o => removeEmpty(o));
+  const o = Object.assign({}, obj);
   Object.keys(o).forEach(key => {
     if (key !== "__typename") {
       if (o[key] && typeof o[key] === "object") o[key] = removeEmpty(o[key]);
@@ -84,7 +67,7 @@ function removeField(fields, id) {
   return fields.filter(field => field.id !== id);
 }
 const styleb = { flexGrow: 1 };
-const styleInput = { flexGrow: 5 };
+const styleInput = { flexGrow: 5, marginTop: 5, marginLeft: 10 };
 const stylerow = { marginLeft: 10, flexDirection: "row" };
 const rowMargin = { marginBottom: 10, alignSelf: "flex-start" };
 
@@ -98,9 +81,10 @@ class Helper extends Component {
         if (data.id === props.selectedId) this.index_current = i;
       });
     this.state = {
+      FileOut: {},
       tofetch: [...datas],
       selected: this.index_current,
-      labelid: datas[this.index_current].id,
+      row: datas[this.index_current],
       fields: removeEmpty(datas[this.index_current]),
       modal: [],
       root: props.root,
@@ -118,28 +102,14 @@ class Helper extends Component {
     this.renderFields = this.renderFields.bind(this);
     this.setModalVisible = this.setModalVisible.bind(this);
     this.saveId = this.saveId.bind(this);
-
+    this.prepareFordtb = this.prepareFordtb.bind(this);
+    this.addInCollection = this.addInCollection.bind(this);
+    this.removeInCollection = this.removeInCollection.bind(this);
+    this.updateInCollection = this.updateInCollection.bind(this);
     this.renderModal = this.renderModal.bind(this);
     // this.navigate = this.props.navigation.navigate;
     this.selectorVal = this.state.fields[props.selector];
   }
-
-  /*
-  componentWillReceiveProps(newProps, newstate) {
-    const { tofetch, selectedId } = newProps;
-    if (this.state.tofetch.length !== tofetch.length) {
-      if (selectedId)
-        tofetch.forEach((data, i) => {
-          if (data.id === selectedId) this.index = i;
-        });
-      this.setState({
-        tofetch: [...tofetch],
-        selected: this.index,
-        labelid: null,
-        fields: removeEmpty(tofetch[this.index])
-      });
-    }
-  }*/
 
   componentDidMount() {
     const that = this;
@@ -152,24 +122,22 @@ class Helper extends Component {
           if (el.mutation === "CREATED") {
             const out = el.node;
             that.index_current = that.state.tofetch.length;
-            const res = addInCollection(that.state.tofetch, out);
-            that.fetchState(out, out.id, that.index_current, res);
+            const res = that.addInCollection(out);
+            that.fetchState(out, that.index_current, res);
           } else if (el.mutation === "DELETED") {
             const out = el.previousValues;
             that.index_current = that.index_current - 1;
-            const collec = removeInCollection(that.state.tofetch, out);
-            console.log(collec);
+            const collec = that.removeInCollection(out);
             const curr = collec[0];
-            that.selectorVal = curr[that.props.selector];
-            that.fetchState(curr, curr.id, 0, collec);
+            that.selectorVal = curr ? curr[that.props.selector] : "";
+            that.fetchState(curr, 0, collec);
           } else if (el.mutation === "UPDATED") {
             const out = el.node;
             that.selectorVal = out[that.props.selector];
             that.fetchState(
               out,
-              out.id,
               that.index_current,
-              updateInCollection(that.state.tofetch, out)
+              that.updateInCollection(out)
             );
           }
         }
@@ -188,8 +156,8 @@ class Helper extends Component {
   updateDatabaseQ = (toupd, error) => {
     const { selector, selectQuery, upsertQuery } = this.props;
     var ErrorP = reason => Promise.reject(new Error("fail " + reason));
-    toupd.namewhere = this.selectorVal;
-    if (selector === "id") return upsertQuery(toupd);
+    //toupd.namewhere = this.selectorVal;
+    if (selector === "id" || !toupd.id) return upsertQuery(toupd);
     else
       return selectQuery({ [selector]: toupd[selector] }).then(
         ({ data }) => {
@@ -202,47 +170,105 @@ class Helper extends Component {
         }
       );
   };
+  updateInCollection = object => {
+    const collection = this.state.tofetch;
+    return collection.reduce(function(tally, el) {
+      var pick = el.id === object.id ? object : el;
+      tally.push(pick);
+      return tally;
+    }, []);
+  };
+  addInCollection = object => {
+    const collection = this.state.tofetch;
+    return [...collection, object];
+  };
+  removeInCollection = object => {
+    const collection = this.state.tofetch;
+    return collection.filter(tally => tally.id !== object.id);
+  };
 
-  saveId(entitie, id) {
+  prepareFordtb = (object, wherecheck) => {
+    let outobj = {};
+    Object.keys(object).map((key, index) => {
+      const vals = object[key];
+      const placehold = this.props.placeholder[key];
+      if (isEntitie(placehold)) {
+        const many = isMany(placehold);
+
+        if (many) {
+          const mapids = vals.map(val => ({
+            id: val.id ? val.id : val
+          }));
+          outobj[key] =
+            Array.isArray(vals) && !vals.length
+              ? { connect: [] }
+              : { connect: mapids };
+        } else {
+          outobj[key] =
+            vals == null ? {} : { connect: { id: vals.id ? vals.id : vals } };
+        }
+      } else
+        outobj[key] =
+          isRequired(placehold) && vals === "" ? "dummy_" + key : vals;
+    });
+    if (this.props.selector === "id" && wherecheck) outobj.id = 0; //to create in case no id (where is set only in create)
+    if (outobj.id === "") {
+      delete outobj.id;
+    }
+    if (!wherecheck) outobj.namewhere = outobj[this.props.selector];
+    //on update where defined on old
+    else outobj.namewhere = wherecheck; // on create we check that the slot not exist
+    console.log("debugfefef", outobj);
+    return outobj;
+  };
+  saveId(entitie, out, wherecheck) {
+    console.log("saveID", entitie, out, this);
+
+    const selector = out.filename ? out.filename : out.id ? out.id : false;
+
     const obj = Object.keys(this.state.fields);
     let many = false;
-    const selector = isFile(entitie) ? "file" : "id";
-    const getkey = obj.find(key => {
-      console.log(getType(this.props.placeholder[key]), entitie);
-      if (getType(this.props.placeholder[key]) === entitie) {
-        many = isMany(this.props.placeholder[key]);
-        return true;
+    let getkey, vals, valout;
+    if (entitie) {
+      getkey = obj.find(key => {
+        console.log(getType(this.props.placeholder[key]), entitie);
+        if (getType(this.props.placeholder[key]) === entitie) {
+          many = isMany(this.props.placeholder[key]);
+          return true;
+        }
+      });
+      if (!getkey) {
+        console.log("traceerrorfin", getkey);
+        return;
       }
-    });
-    if (!getkey) {
-      console.log("traceerrorfin", getkey);
-      return;
+    } else {
+      getkey = out.filename ? "file" : "id";
     }
-
-    let connect;
-    var vals = this.state.fields[getkey];
-    if (!isFile(entitie)) {
+    vals = this.state.fields[getkey];
+    if (!out.filename) {
       var cp;
+      //find if vals already have got this data in collection (find id and add in)
       if (Array.isArray(vals)) {
         cp = vals.slice();
         cp = cp.map(o => o.id);
       }
-      let outids = Array.isArray(cp)
-        ? (!cp.includes(id) && cp.push(id) && cp) || cp
-        : id;
-      if (many)
-        connect = outids.map(val => ({
-          id: val
-        }));
-      else connect = { id };
+      valout = Array.isArray(cp)
+        ? (!cp.includes(selector) && cp.push(out.id) && cp) || cp
+        : selector;
     } else {
-      connect = vals.split(",");
-      if (connect.indexOf(id) !== -1) return;
-      connect.push(id);
-      connect = connect.join();
+      if (wherecheck) {
+        valout = selector ? selector : "";
+      } else {
+        valout = vals === "" ? [] : vals.split(",");
+        if (valout.indexOf(selector) !== -1) return;
+        valout.push(selector);
+        valout = valout.join();
+      }
     }
-
-    const toupd = { ...this.state.fields, [getkey]: connect };
+    console.log("valout", valout);
+    let toupd = { ...this.state.fields, [getkey]: valout };
+    toupd = this.prepareFordtb(toupd, wherecheck);
+    console.log("toupd", toupd);
     return this.updateDatabaseQ(toupd, "Something happend not good");
     /*.then(() =>
       this.setState(prevState => ({
@@ -251,10 +277,9 @@ class Helper extends Component {
     );**/
   }
 
-  setModalVisible(type, visible,id) {
+  setModalVisible(type, visible) {
     console.log("setModalVisiblehelper", type);
     this.state.modal[type] = visible;
-    this.state.labelid = id;
     this.forceUpdate();
   }
 
@@ -275,7 +300,7 @@ class Helper extends Component {
               saveId={this.saveId}
               selectedId={this.selectedId[type]}
               parent={this.props.root}
-              parentId={this.state.labelid}
+              parentId={this.state.fields.id}
             />
           </Gradient>
         </Modal>
@@ -301,10 +326,9 @@ class Helper extends Component {
     //else
   }
 
-  fetchState(fields, labelid, selected, tofetch) {
+  fetchState(fields, selected, tofetch) {
     const tomod = {
       fields,
-      labelid,
       selected,
       tofetch: tofetch ? tofetch : undefined
     };
@@ -353,6 +377,7 @@ class Helper extends Component {
   ) {
     //console.log("renderPicker",datas.length - 1)
     var index = selected == -1 ? datas.length - 1 : selected;
+    console.log(datas);
     const datapic = datas.map((data, i) => data[selector]);
 
     if (selectedId && !this.eventpicker) {
@@ -384,25 +409,14 @@ class Helper extends Component {
         onPickerConfirm={el => {
           if (el) {
             // this.fetchState(null, null, 0);
-            deleteQuery({ [selector]: el[0] }).then(({ data }) => {
-              /* const out = data["delete" + this.props.root];
-              this.selectorVal = out[selector];
-              this.fetchState(
-                null,
-                null,
-                0,
-                removeInCollection(this.state.tofetch, out)
-              );*/
-              // runfetch(out, out[0], out[0] ? out[0].id : "", 0)
-              //this.setState({ [delete_result_select]: out, fields: out[0], labelid: out[0] ? out[0].id : "", selected: 0 })
-            });
+            return deleteQuery({ [selector]: el[0] });
           }
         }}
         onValueChange={(el, index) => {
           console.log("valchange", index);
           if (this.index_current != index) {
             //prevent bug onpropschangepicker
-            this.index_current = index ;
+            this.index_current = index;
             this.eventpicker = true;
             if (el) {
               console.log(el[0]);
@@ -413,13 +427,13 @@ class Helper extends Component {
                   if (out) {
                     this.selectorVal = out[selector];
                     //delete out.__typename;
-                    this.fetchState(out, out.id, index );
+                    this.fetchState(out, index);
                   }
                 }
-                //this.setState({ fields: out, labelid: out.id, selected: index })
+                //this.setState({ fields: out, row: out.id, selected: index })
               });
             } else {
-              this.fetchState(null, null, index );
+              this.fetchState(null, index);
             }
           }
         }}
@@ -428,9 +442,8 @@ class Helper extends Component {
   }
   renderFields(fields, placeholder, style, selectResultSelect, type) {
     if (fields)
-      return Object.keys(fields).map((key, index) => {
+      return Object.keys(placeholder).map((key, index) => {
         const val = fields[key];
-        console.log("debug", val, placeholder, key);
         const placehold = placeholder[key];
         if (key !== "id" && isEntitie(placehold)) {
           console.log("entitie:", placehold);
@@ -441,15 +454,14 @@ class Helper extends Component {
           const isSameEntitieParent = this.props.parent === type;
 
           this.selectedId[type] = val && val.id ? val.id : false;
-          console.log("isSameEntitieParent", isSameEntitieParent, type);
-          console.log("renderFields.ids", this.state.fields);
+          console.log("trans", key + "_" + selectResultSelect);
           //  if (fields[key])
           return (
             <View
               style={[stylerow, rowMargin]}
               key={key + "_" + selectResultSelect + index}
             >
-              <Text style={style}>{type.toUpperCase()}</Text>
+              {<Text style={style}>{type.toUpperCase()}</Text>}
               {isSameEntitieParent && (
                 <Input
                   type={"small"}
@@ -460,34 +472,49 @@ class Helper extends Component {
                   placeholderTextColor="gray"
                   key={key + "_field_" + selectResultSelect + index}
                   style={styleInput}
-                  label={translate(key + "_" + selectResultSelect)}
                   value={this.props.parentId}
                 />
               )}
               {!isSameEntitieParent && (
                 <>
-                  <Input
-                    type={"small"}
-                    widthAuto
-                    noborder
-                    editable={false}
-                    placeholder={type}
-                    placeholderTextColor="gray"
-                    style={styleInput}
-                    key={key + "_field_" + selectResultSelect + index}
-                    ref={selectResultSelect + index}
-                    label={translate(key + "_" + selectResultSelect)}
-                    value={
-                      val && val.id
-                        ? val.id
-                        : !many
-                          ? this.state.fields[type]
-                          : vals
-                    }
-                    onSubmit={() =>
-                      this.focusNextField(selectResultSelect + (index + 1))
-                    }
-                  />
+                  {many ? (
+                    vals.map((val, i) => (
+                      <Input
+                        type={"small"}
+                        widthAuto
+                        noborder
+                        editable={false}
+                        placeholder={type}
+                        placeholderTextColor="gray"
+                        style={styleInput}
+                        key={
+                          key + "_field_" + selectResultSelect + index + "" + i
+                        }
+                        ref={selectResultSelect + index}
+                        value={val}
+                        onSubmit={() =>
+                          this.focusNextField(selectResultSelect + (index + 1))
+                        }
+                      />
+                    ))
+                  ) : (
+                    <Input
+                      type={"small"}
+                      widthAuto
+                      noborder
+                      editable={false}
+                      placeholder={type}
+                      placeholderTextColor="gray"
+                      style={styleInput}
+                      key={key + "_field_" + selectResultSelect + index}
+                      ref={selectResultSelect + index}
+                      value={val && val.id ? val.id : val}
+                      onSubmit={() =>
+                        this.focusNextField(selectResultSelect + (index + 1))
+                      }
+                    />
+                  )}
+
                   {(!this.state.fields[type] || (val && val.id) || many) && (
                     <TouchableOpacity
                       onPress={() => {
@@ -496,11 +523,7 @@ class Helper extends Component {
                       style={{ alignSelf: "flex-start" }}
                     >
                       <Icon
-                        name={
-                          val && val.id && !many
-                            ? "square-edit-outline"
-                            : "plus"
-                        }
+                        name={val && val.id && !many ? "tooltip-edit" : "plus"}
                         size={30}
                         style={{ padding: 10 }}
                       />
@@ -524,17 +547,18 @@ class Helper extends Component {
                   key={key + "_field_" + selectResultSelect + index}
                   ref={selectResultSelect + index}
                   label={translate(key + "_" + selectResultSelect)}
-                  value={val}
+                  value={val && val.file ? val.file : val}
                 />
               }
               saveUp={out => {
-                return this.saveId("File", out.filename);
+                return this.setState({ FileOut: out });
               }}
             />
           );
         } else if (isEnum(placehold)) {
           return <>{this.renderPickerEnum(getEnum(placehold), val, key)}</>;
         } else {
+          console.log(key + "_" + selectResultSelect);
           return (
             <Input
               autoFocus
@@ -543,7 +567,7 @@ class Helper extends Component {
               type={key !== "id" ? type : "small"}
               editable={key !== "id"}
               noborder={key === "id"}
-              placeholder={placeholder[key]}
+              placeholder={placehold}
               placeholderTextColor="gray"
               key={key + "_field_" + selectResultSelect + index}
               ref={selectResultSelect + index}
@@ -569,44 +593,31 @@ class Helper extends Component {
       text={text}
       onPress={() => {
         if (validator)
-          try {
-            const toupd = { ...this.state.fields };
-            console.log("beforeUpdated", toupd);
-            this.updateDatabaseQ(toupd, error).then(({ data }) => {
-              const out = data["upsert" + this.props.root];
-              console.log("afteUpdated", out);
-              /*
-              // const item = out[this.index_current];
-              this.selectorVal = out[selector];
-              this.fetchState(
-                out,
-                out.id,
-                this.index_current,
-                updateInCollection(this.state.tofetch, out)
-              );*/
-            });
-          } catch (err) {
-            console.log(err);
-          }
+          return this.saveId(false, {
+            ...this.state.fields,
+            ...this.state.FileOut
+          });
       }}
     />
   );
-  createButton = ({
-    text,
-    upsertQuery,
-    selector,
-    mutateResultSelect,
-    validator,
-    error
-  }) => (
+  createButton = ({ text, selector, validator, error }) => (
     <NavigationButton
       enabled={validator}
       text={text}
       onPress={() => {
         if (validator) {
-          const toupd = { ...this.state.fields, id: 0 };
-          toupd.namewhere = toupd[selector];
-         return upsertQuery(toupd);
+          console.log("create", this.state.FileOut, {
+            ...this.state.fields,
+            ...this.state.FileOut
+          });
+          return this.saveId(
+            false,
+            { ...this.state.fields, ...this.state.FileOut },
+            this.state.fields[selector]
+          );
+          //let toupd = { ...this.state.fields };
+          // toupd = this.prepareFordtb(toupd, toupd[selector]);
+          // return upsertQuery(toupd);
         }
       }}
     />
@@ -633,8 +644,8 @@ class Helper extends Component {
       connected
     } = this.props;
     const selected = this.state.selected;
-    console.log("DEBUGS", this.state.labelid, this.props.selectedId);
-    console.log("debugstate.fields", this.state.fields, placeholder);
+    console.log("DEBUGS", this.state.row, this.props.selectedId);
+    console.log("debugstate.fields", this.state.fields, connected);
     //  const resorts = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allResorts;
 
     const Arr = Object.keys(childrenTree).map(key =>
@@ -680,22 +691,32 @@ class Helper extends Component {
           mutateResultSelect={mutateResultSelect}
           error="Error Exist"
         />
-        <this.createButton
-          text="Create"
-          validator={this.validateFields()}
-          upsertQuery={upsertQuery}
-          selector={selector}
-          mutateResultSelect={mutateResultSelect}
-        />
+        {this.props.root === "Picture" ? (
+          <this.createButton
+            text="Create"
+            validator={this.validateFields() && this.state.FileOut.filename}
+            upsertQuery={upsertQuery}
+            selector={selector}
+            mutateResultSelect={mutateResultSelect}
+          />
+        ) : (
+          <this.createButton
+            text="Create"
+            validator={this.validateFields()}
+            upsertQuery={upsertQuery}
+            selector={selector}
+            mutateResultSelect={mutateResultSelect}
+          />
+        )}
 
         {connected &&
-          (this.state.labelid || selectedId) && (
+          this.state.fields &&
+          this.state.fields.id && (
             <Button
-              style={{ marginBottom: 20 }}
               onPress={() => {
                 this.props.saveId(
                   this.props.root,
-                  this.state.labelid || selectedId
+                  this.props.tofetch[this.index_current]
                 );
                 setModalVisible(this.props.root, false);
               }}

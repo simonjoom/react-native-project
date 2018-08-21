@@ -35,7 +35,7 @@ const ProductOut = compose(
           query: productsub,
           fetchPolicy: "network-only",
           variables: {
-            mutation_in: ["CREATED"]
+            mutation_in: ["CREATED", "UPDATED", "DELETED"] 
           }
         }),
       product: ({ name }) =>

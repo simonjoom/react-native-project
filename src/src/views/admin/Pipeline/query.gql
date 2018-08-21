@@ -14,7 +14,7 @@ mutation upsertPipeline(
   $namewhere: String
   $order_nr: String
   $deal_probability: Probability
-  $deals: [DealWhereUniqueInput!]
+  $deals: DealUpdateManyInput
 ) {
   upsertPipeline(
     where: { name: $namewhere }
@@ -22,13 +22,13 @@ mutation upsertPipeline(
       name: $name
       order_nr: $order_nr
       deal_probability: $deal_probability
-      deals: { connect: $deals }
+      deals: $deals 
     }
     update: {
       name: $name
       order_nr: $order_nr
       deal_probability: $deal_probability
-      deals: { connect: $deals }
+      deals: $deals
     }
   ) {
     ...PipelineFragment
