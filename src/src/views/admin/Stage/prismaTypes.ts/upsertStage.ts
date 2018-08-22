@@ -1,7 +1,7 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
-import { Probability, PipelineWhereUniqueInput } from "../../../../../../prismaTypes.ts/globalTypes";
+import { Probability, PipelineUpdateOneInput } from "../../../../../../prismaTypes.ts/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: upsertStage
@@ -28,5 +28,5 @@ export interface upsertStageVariables {
   namewhere?: string | null;
   order_nr?: string | null;
   deal_probability?: Probability | null;
-  pipeline?: PipelineWhereUniqueInput | null;
+  pipeline?: PipelineUpdateOneInput | null;
 }

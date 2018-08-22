@@ -1,7 +1,7 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
-import { UserWhereUniqueInput, PersonWhereUniqueInput } from "../../../../../../prismaTypes.ts/globalTypes";
+import { UserUpdateOneWithoutCompanyInput, PersonUpdateManyInput } from "../../../../../../prismaTypes.ts/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: upsertOrganization
@@ -9,7 +9,6 @@ import { UserWhereUniqueInput, PersonWhereUniqueInput } from "../../../../../../
 
 export interface upsertOrganization_upsertOrganization_owner {
   id: string;
-  name: string;
 }
 
 export interface upsertOrganization_upsertOrganization_persons {
@@ -30,6 +29,6 @@ export interface upsertOrganization {
 export interface upsertOrganizationVariables {
   namewhere?: string | null;
   name: string;
-  owner?: UserWhereUniqueInput | null;
-  persons?: PersonWhereUniqueInput[] | null;
+  owner?: UserUpdateOneWithoutCompanyInput | null;
+  persons?: PersonUpdateManyInput | null;
 }

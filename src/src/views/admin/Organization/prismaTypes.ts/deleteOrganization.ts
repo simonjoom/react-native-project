@@ -7,7 +7,6 @@
 
 export interface deleteOrganization_deleteOrganization_owner {
   id: string;
-  name: string;
 }
 
 export interface deleteOrganization_deleteOrganization_persons {

@@ -1,7 +1,7 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
-import { UserWhereUniqueInput, DealWhereUniqueInput } from "../../../../../../prismaTypes.ts/globalTypes";
+import { UserUpdateOneInput, DealUpdateManyWithoutProductsInput } from "../../../../../../prismaTypes.ts/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: upsertProduct
@@ -35,6 +35,6 @@ export interface upsertProductVariables {
   namewhere?: string | null;
   unit?: string | null;
   code?: string | null;
-  owner?: UserWhereUniqueInput | null;
-  deals?: DealWhereUniqueInput[] | null;
+  owner?: UserUpdateOneInput | null;
+  deals?: DealUpdateManyWithoutProductsInput | null;
 }

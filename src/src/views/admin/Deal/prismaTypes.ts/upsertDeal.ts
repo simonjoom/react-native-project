@@ -1,7 +1,7 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
-import { UserWhereUniqueInput, OrganizationWhereUniqueInput, StageWhereUniqueInput, PersonWhereUniqueInput, ProductWhereUniqueInput, OrderStatus } from "../../../../../../prismaTypes.ts/globalTypes";
+import { UserUpdateOneInput, OrganizationUpdateOneInput, PersonUpdateManyWithoutDealsInput, ProductUpdateManyWithoutDealsInput, StageUpdateOneInput, OrderStatus } from "../../../../../../prismaTypes.ts/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: upsertDeal
@@ -50,11 +50,11 @@ export interface upsertDealVariables {
   namewhere: string;
   value: string;
   currency: string;
-  owner?: UserWhereUniqueInput | null;
-  org?: OrganizationWhereUniqueInput | null;
-  stage?: StageWhereUniqueInput | null;
-  participants?: PersonWhereUniqueInput[] | null;
-  products?: ProductWhereUniqueInput[] | null;
+  owner?: UserUpdateOneInput | null;
+  org?: OrganizationUpdateOneInput | null;
+  participants?: PersonUpdateManyWithoutDealsInput | null;
+  products?: ProductUpdateManyWithoutDealsInput | null;
+  stage?: StageUpdateOneInput | null;
   status?: OrderStatus | null;
   probability?: string | null;
 }

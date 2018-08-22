@@ -1,7 +1,7 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
-import { OrganizationWhereUniqueInput, Active, Role } from "../../../../../../prismaTypes.ts/globalTypes";
+import { OrganizationUpdateOneWithoutOwnerInput, Active, Role } from "../../../../../../prismaTypes.ts/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: upsertUser
@@ -33,7 +33,7 @@ export interface upsertUserVariables {
   namewhere?: string | null;
   email: string;
   password: string;
-  company?: OrganizationWhereUniqueInput | null;
+  company?: OrganizationUpdateOneWithoutOwnerInput | null;
   firstName?: string | null;
   lastName?: string | null;
   active_flag?: Active | null;

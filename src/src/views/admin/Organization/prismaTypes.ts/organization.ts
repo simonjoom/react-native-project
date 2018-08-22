@@ -7,7 +7,6 @@
 
 export interface organization_organization_owner {
   id: string;
-  name: string;
 }
 
 export interface organization_organization_persons {
