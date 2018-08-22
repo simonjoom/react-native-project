@@ -16,7 +16,7 @@ const apollo_server_core_1 = require("apollo-server-core");
 const accepts = require("accepts");
 const typeis = require("type-is");
 const expressApollo_1 = require("./expressApollo");
-const apollo_upload_server_1 = require("apollo-upload-server");
+const apollo_upload_server_1 = require("@apollographql/apollo-upload-server");
 //var apollo_server_core_2 = require("apollo-server-core");
 exports.GraphQLExtension = apollo_server_core_1.GraphQLExtension;
 const fileUploadMiddleware = (uploadsConfig, server) => (req, res, next) => {

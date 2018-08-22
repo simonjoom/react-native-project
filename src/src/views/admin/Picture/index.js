@@ -13,7 +13,7 @@ class Picture extends Component {
     ];
     this.initplaceholder = {
       id: "ID",
-      file: "[File]*"
+      file: "[File]"
     };
   }
 
@@ -23,6 +23,7 @@ class Picture extends Component {
       deletePicture,
       picturesub,
       upsertPicture,
+      getInfo,
       picture, 
       navigation,
       connected,
@@ -44,6 +45,7 @@ class Picture extends Component {
         placeholder={this.initplaceholder}
         selector="id"
         navigation={navigation}
+        getInfo={getInfo}
         subscribe={picturesub}
         upsertQuery={upsertPicture}
         deleteQuery={deletePicture}

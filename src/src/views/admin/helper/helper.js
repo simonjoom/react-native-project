@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { TouchableOpacity, Modal, View, Text } from "react-native";
+import {
+  TouchableHighlight,
+  TouchableOpacity,
+  Modal,
+  View,
+  Text,
+  Image
+} from "react-native";
 import Input from "src/components/input/Input";
 import { translate } from "src/i18n";
 import NavigationButton from "src/components/navigation-button/NavigationButton";
@@ -10,6 +17,10 @@ import Button from "src/components/button/Button";
 import Gradient from "src/components/gradient/Gradient";
 import CompUpload from "../Upload/Container";
 
+const pathbase =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:4000/"
+    : "http://ns327841.ip-37-187-112.eu/static/media/";
 function isFile(str) {
   return str.indexOf("File") !== -1;
 }
@@ -83,6 +94,7 @@ class Helper extends Component {
         if (data.id === props.selectedId) this.index_current = i;
       });
     this.state = {
+      pictures: [],
       FileOut: {},
       tofetch: [...datas],
       selected: this.index_current,
@@ -102,7 +114,7 @@ class Helper extends Component {
     this.validateFields = this.validateFields.bind(this);
     this.focusNextField = this.focusNextField.bind(this);
     this.renderFields = this.renderFields.bind(this);
-    this.setModalVisible = this.setModalVisible.bind(this); 
+    this.setModalVisible = this.setModalVisible.bind(this);
     this.saveId = this.saveId.bind(this);
     this.prepareFordtb = this.prepareFordtb.bind(this);
     this.addInCollection = this.addInCollection.bind(this);
@@ -157,8 +169,10 @@ class Helper extends Component {
   }
   getUniques = () => {
     const obj = Object.keys(this.props.placeholder);
-    const o= obj.filter(key => this.props.placeholder[key].indexOf("@") !== -1);
-    return o.map(k=>translate(k + "_" + this.props.selectResultSelect))
+    const o = obj.filter(
+      key => this.props.placeholder[key].indexOf("@") !== -1
+    );
+    return o.map(k => translate(k + "_" + this.props.selectResultSelect));
   };
   updateDatabaseQ = toupd => {
     /*const error= 'Slot exist in DATABASE'
@@ -166,9 +180,11 @@ class Helper extends Component {
     var ErrorP = reason => Promise.reject(new Error("fail " + reason));*/
     //toupd.namewhere = this.selectorVal;
     return this.props.upsertQuery(toupd).catch(reason => {
-      console.log(reason)
+      console.log(reason);
       const un = this.getUniques();
-      alert("Fields already exist in database please change : " + un.join(" or "));
+      alert(
+        "Fields already exist in database please change : " + un.join(" or ")
+      );
     });
     /* if (selector === "id" || !toupd.id) return upsertQuery(toupd);
     else
@@ -231,7 +247,8 @@ class Helper extends Component {
     if (!wherecheck) outobj.namewhere = this.selectorVal;
     //on update where defined on old
     else outobj.namewhere = wherecheck; // on create we check that the slot not exist
-    console.log("debugfefef", outobj);
+
+    console.log("trace", this.selectorVal, wherecheck, outobj);
     return outobj;
   };
   saveId(entitie, out, wherecheck) {
@@ -556,8 +573,15 @@ class Helper extends Component {
                   value={val && val.file ? val.file : val}
                 />
               }
-              saveUp={out => {
-                return this.setState({ FileOut: out });
+              preview={this.state.FileOut}
+              saveUp={(out, allpictures) => {
+                const obj = removeEmpty({
+                  ...this.state,
+                  FileOut: out,
+                  pictures: allpictures
+                });
+                console.log("saveUp", obj);
+                return this.setState(obj);
               }}
             />
           );
@@ -612,14 +636,10 @@ class Helper extends Component {
       text={text}
       onPress={() => {
         if (validator) {
-          console.log("create", this.state.FileOut, {
-            ...this.state.fields,
-            ...this.state.FileOut
-          });
           return this.saveId(
             false,
             { ...this.state.fields, ...this.state.FileOut },
-            this.state.fields[selector]
+            this.state.fields[selector] ? this.state.fields[selector] : -1
           );
           //let toupd = { ...this.state.fields };
           // toupd = this.prepareFordtb(toupd, toupd[selector]);
@@ -647,13 +667,23 @@ class Helper extends Component {
       mutateResultSelect,
       selectedId,
       setModalVisible,
-      connected
+      connected,
+      getInfo,
+      root
     } = this.props;
     const selected = this.state.selected;
     console.log("DEBUGS", this.state.row, this.props.selectedId);
     console.log("debugstate.fields", this.state.fields, connected);
     //  const resorts = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allResorts;
-
+    let mapPictures = [];
+    console.log("trace", this.state);
+    console.log("updateHelper");
+    /* if (!!this.state.fields["file"]) {
+      console.log("trace",this.state.fields["file"])
+      this.state.fields["file"].split(",").map(file => {
+        getInfo({ file }).then(data => console.log("getInfo ", data)).catch(err=>console.log(err));
+      });
+    }*/
     const Arr = Object.keys(childrenTree).map(key =>
       this.renderModal(childrenTree[key], key)
     );
@@ -662,7 +692,7 @@ class Helper extends Component {
       <KeyboardAwareCenteredView>
         <TouchableOpacity
           onPress={() => {
-            setModalVisible(this.props.root, false);
+            setModalVisible(root, false);
           }}
         >
           <Icon
@@ -693,8 +723,8 @@ class Helper extends Component {
         <this.updateButton
           text="Update"
           validator={this.validateFields(
-            this.props.root !== "Picture" ||
-              (this.props.root === "Picture" && this.state.FileOut.filename)
+            root !== "Picture" ||
+              (root === "Picture" && this.state.FileOut.filename)
           )}
           selector={selector}
           mutateResultSelect={mutateResultSelect}
@@ -703,8 +733,8 @@ class Helper extends Component {
         <this.createButton
           text="Create"
           validator={this.validateFields(
-            this.props.root !== "Picture" ||
-              (this.props.root === "Picture" && this.state.FileOut.filename)
+            root !== "Picture" ||
+              (root === "Picture" && this.state.FileOut.filename)
           )}
           upsertQuery={upsertQuery}
           selector={selector}
@@ -726,6 +756,44 @@ class Helper extends Component {
               fontSize={14}
             />
           )}
+        {root === "Picture" && (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              flexWrap: "wrap",
+              width: 400,
+              flexGrow: 0.4
+            }}
+          >
+            {this.state.pictures.map(pic => {
+              return (
+                <TouchableHighlight
+                  onPress={() => {
+                    const obj = removeEmpty({
+                      ...this.state,
+                      FileOut: pic
+                    });
+                    console.log("saveUp", obj);
+                    return this.setState(obj);
+                  }}
+                >
+                  <Image
+                    style={{
+                      width: 100,
+                      height: 100,
+                      resizeMode: Image.resizeMode.contain,
+                      borderWidth: 1,
+                      borderColor: "blue"
+                    }}
+                    key={pic.filename + "gl"}
+                    source={{ uri: pathbase + pic.path }}
+                  />
+                </TouchableHighlight>
+              );
+            })}
+          </View>
+        )}
       </KeyboardAwareCenteredView>
     );
   }

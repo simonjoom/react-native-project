@@ -4,7 +4,8 @@ import {
   picture,
   picturesub,
   deletePicture,
-  pictures
+  pictures,
+  getInfo
 } from "./query.gql";
 import Comp from "./index";
 import { loader } from "../loader";
@@ -31,6 +32,14 @@ const PictureOut = compose(
   }),
   graphql(upsertPicture, {
     props: ({ mutate, ownProps }) => ({
+      getInfo: ({ file }) =>
+        ownProps.client.query({
+          query: getInfo,
+          fetchPolicy: "network-only",
+          variables: {
+            file
+          }
+        }),
       picturesub: () =>
         ownProps.client.subscribe({
           query: picturesub,

@@ -3,6 +3,7 @@ import { makeExecutableSchema, mergeSchemas } from "apollo-server-express";
 import { readFileSync } from "fs";
 import { storeFS, storeDB, lwdb, existInDB } from "./lowdb";
 import promisesAll from "promises-all";
+import { find } from "lodash";
 var path = require("path");
 import { parse } from "graphql";
 import { importSchema } from "graphql-import";
@@ -22,23 +23,30 @@ import {
   prepareTopLevelSubscriptionResolvers,
   addFragmentToFieldResolvers
 } from "./services/utilities";
-import { GraphQLUpload } from "apollo-upload-server";
+import { GraphQLUpload } from "@apollographql/apollo-upload-server";
 
-const processUpload = async upload => {
-  const { stream, filename, mimetype, encoding } = await upload;
-
-  const el = existInDB(filename);
-  if (el.length > 0) {
-    var out = el.map(a => Object.assign({}, a));
-    stream.resume();
-    stream.on("end", () => {
-      console.log("got to the end, but did not read anything");
+const processUpload = upload => {
+  // const { stream, filename, mimetype, encoding } = await upload;
+  return new Promise((resolve, reject) => {
+    return upload.then(({ stream, filename, mimetype, encoding }) => {
+      const el = existInDB(filename);
+      if (el.length > 0) {
+        var out = el.map(a => Object.assign({}, a));
+        stream.resume();
+        stream.on("end", () => {
+          console.log("got to the end, but did not read anything");
+        });
+        return out[0];
+      } else {
+        console.log("processUpload");
+        return storeFS({ stream, filename }).then(({ id, path }) => {
+          console.log("processUploadstorefinish");
+          storeDB({ id, filename, mimetype, encoding, path });
+          resolve({ id, filename, mimetype, encoding, path });
+        });
+      }
     });
-    return out[0];
-  } else {
-    const { id, path } = await storeFS({ stream, filename });
-    return storeDB({ id, filename, mimetype, encoding, path });
-  }
+  });
 };
 
 const preparedFieldResolvers = addFragmentToFieldResolvers(
@@ -90,12 +98,19 @@ export const resolvers = {
   Upload: GraphQLUpload,
   Query: {
     ...preparedTopLevelQueryResolvers,
+    getInfo: (obj, data, ctx) => {
+      console.log("getInfo", data);
+      find(lwdb.get("uploads").value(), { filename: data.file });
+    },
     uploads: () => lwdb.get("uploads").value()
   },
   Mutation: {
     ...preparedTopLevelMutationResolvers,
-    singleUpload: (obj, { file }, ctx) => processUpload(file),
-    async multipleUpload(obj, { files }) {
+    singleUpload: async (obj, data, ctx) => { 
+      const out = await processUpload(data.file); 
+      return out;
+    },
+    multipleUpload: async (obj, { files }) => {
       const { resolve, reject } = await promisesAll.all(
         files.map(processUpload)
       );

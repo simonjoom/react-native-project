@@ -8,7 +8,7 @@ const UploadOut = compose(
   graphql(uploads),
   graphql(singleUpload, {
     props: ({ mutate, ownProps, ...other }) => ({
-      handleUpload: file => {
+      handleUpload: file => { 
         return mutate({
           variables: { file },
           update(
@@ -16,9 +16,12 @@ const UploadOut = compose(
             {
               data: { singleUpload }
             }
-          ) { 
+          ) {
             const data = proxy.readQuery({ query: uploads });
-            data.uploads.push(singleUpload);
+            var sc = data.uploads.find(
+              a => a.filename === singleUpload.filename
+            );
+            if (!sc) data.uploads.push(singleUpload);
             proxy.writeQuery({ query: uploads, data });
           }
         });

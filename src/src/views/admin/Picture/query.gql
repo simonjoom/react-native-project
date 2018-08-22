@@ -27,7 +27,15 @@ query pictures {
     ...PictureFragment
   }
 }
-
+query getInfo($file: String!) {
+  getInfo(file: $file) {  
+    id
+  filename
+  encoding
+  mimetype
+  path
+  }
+}
 subscription picturesub($where: PictureSubscriptionWhereInput) {
   picture(where: $where) {
     mutation
