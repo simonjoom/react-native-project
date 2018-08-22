@@ -172,36 +172,41 @@ Click on backend button on main page to see and to work on this feature:
 
 The helper interesting is ./src/src/views/admin/helper/helper.js
 
-Every folder in ./src/src/views/admin/ is the same structure as ./src/src/views/admin/shop
+Every folder in ./src/src/views/admin/ is the same structure as ./src/src/views/admin/user
 
 
 **to be hired and work on this project
-you have to understand what the folder shop implies:**
+you have to understand what the folder user implies:**
 
-Please first refer to ./src/src/views/admin/shop 
 
-./src/src/views/admin/shop will be (i think) the main root of my database. 
+### I try here to explain: 
+
+You can as well push in api button when you run the application (i added some tips)
+Please first refer to ./src/src/views/admin/user 
+
+./src/src/views/admin/user is taken here as an example of template. 
 query.gpl is the queries to the database
 
-ShopContainer.web.js is a container working as maptostate props of redux to pass some function to mutate the node shop or some queries result as allShops in the current database.
+UserContainer.web.js is a container working as maptostate props of redux to pass some function to mutate the node user or some queries result as allUsers in the current database.
 
-of course Shop.js is the component.
+of course User.js is the component.
 
 Nota extension web.js take priority for browser. So we will use only .web.js before to test after in native mode with IOS/Android
 
+
 - 3 files are working together
-   - query.gpl / shopContainer.web / Shop.js
+   - query.gpl / UserContainer.web / User.js
 
 Helper is a component who take in params:
 
--   tofetch is the data taken of the database shops (so all the shops)
+-   tofetch is the data taken of the database users (so all the users)
 -   placeholder define the format input of each ...typicaly it's following the schema specification
 - selector is used by the picker (slider) it should be defined the one to be shown in picker list (name or id ) , the property have to be unique in Schema  
-- deleteQuery={deleteShop} ... easy to understand is the function call to delete one shop
-- selectQuery={shop} ... easy to understand is the function call to select
--  upsertQuery={upsertShop} allow to update or create a element
--  selectResultSelect="shop" used by the app to properly take the select result
--  mutateResultSelect="shops"  used by the app to properly take the mutation results 
+- deleteQuery={deleteUser} ... easy to understand is the function call to delete one user
+- selectQuery={user} ... easy to understand is the function call to select
+-  upsertQuery={upsertUser} allow to update or create a element
+-  selectResultSelect="user" used by the app to properly take the select result
+-  mutateResultSelect="users"  used by the app to properly take the mutation results 
 
 Yeah it's seems complicate, but it's nice, this is compatible for every database you can create in prisma
 
@@ -209,7 +214,7 @@ react-native-picker is defined in src/myPicker.js
 see https://github.com/jarvisluong/react-native-picker-js
 
 
-The ui have to be changed , the interest is to have a utility working for all types of node running with prisma. So it could be work not only with my database. By example i could add very fast one shop, in 2 click. change this shop-data and connect or change the nodes of this shop (like user_owners by example)
+The ui have to be changed , the interest is to have a utility working for all types of node running with prisma. So it could be work not only with my database. By example i could add very fast one user, in 2 click. change this user-data and connect or change the nodes of this user (like user_owners by example)
 
 ![https://github.com/simonjoom/react-native-project/blob/master/copyscreen.png](https://github.com/simonjoom/react-native-project/blob/master/copyscreen.png)
 
@@ -223,18 +228,18 @@ user can be a:
 -> type User {..}
 
 "type UserAdmin" somebody who register as a ski instructor or superUser (me)
-Each instructor is connected to one Shop (type shop)
+Each instructor is connected to one User (type user)
 -> type UserAdmin {..}
 
-One Shop is inserted by the superUser for the moment (by hand with backend)
+One User is inserted by the superUser for the moment (by hand with backend)
 
-One Shop is connected to one or more resort -> so the Instructor is connected to the resorts he works, because he is a child of a Shop.
+One User is connected to one or more resort -> so the Instructor is connected to the resorts he works, because he is a child of a User.
 
 One Resort is a resort.. (easy)
 
 For me
 products==instructors
-shops==ski_schools
+users==ski_schools
 
 I need to think about the architecture of my application;
 
@@ -245,14 +250,14 @@ type Category {
 id: ID! @unique
 name: String!
 options: [Option!]! @relation(name: "CategoryOptions", onDelete: CASCADE)
-shop: Shop!
+user: User!
 }
 
 type Attribute {
 id: ID! @unique
 value: String!
 category: Category!
-shop: Shop!
+user: User!
 products: [Product!]!
 }
 
@@ -261,7 +266,7 @@ id: ID! @unique
 name: String!
 values: [OptionValue!]! @relation(name: "OptionOptionValues", onDelete: CASCADE)
 category: Category! @relation(name: "CategoryOptions", onDelete: CASCADE)
-shop: Shop!
+user: User!
 }
 
 type OptionValue {
@@ -296,12 +301,12 @@ So if i have got OptionValue who can take value AM,PM,FullDay i think the schema
 #Ex Category:
 name:instructor,
 options:[{name:ski,values:[AM,PM,FullDay],{name:snowboard,values:[AM,PM,FullDay]}],
-shop:shop
+user:user
 
 #Ex Category2:
 name:photograph,
 options:[{name:photo_portrait,values:[AM,PM,FullDay],{name:photo_action,values:[AM,PM,FullDay]}],
-shop:shop
+user:user
 ```
 The Variant allow us to define different price for different options selected..
 
