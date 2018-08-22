@@ -166,7 +166,8 @@ So we have to pass time in the folder for now  ./src/src/views/admin/
 
 Well, You have no need really to know how i want to implement my database to work on it; 
 
-I want to create a fast utility to display all fields of one graphql node to allow to update/upsert/create this node fast. (it's not very user friendly but i don't care it's for my use only for the moment)
+I just finished my utility to add/remove/update row in a database managed by prisma
+
 
 Click on backend button on main page to see and to work on this feature:
 
@@ -208,7 +209,7 @@ Helper is a component who take in params:
 -  selectResultSelect="user" used by the app to properly take the select result
 -  mutateResultSelect="users"  used by the app to properly take the mutation results 
 
-Yeah it's seems complicate, but it's nice, this is compatible for every database you can create in prisma
+Yeah it's seems complicate, but it's nice, It's compatible for every database you can create in prisma
 
 react-native-picker is defined in src/myPicker.js
 see https://github.com/jarvisluong/react-native-picker-js
@@ -219,9 +220,17 @@ The ui have to be changed , the interest is to have a utility working for all ty
 ![https://github.com/simonjoom/react-native-project/blob/master/copyscreen.png](https://github.com/simonjoom/react-native-project/blob/master/copyscreen.png)
 
 
-### Database:
+### About SChema/Database implementation:
 Just to explain what i try to do:
 it's a e-commerce website to find ski instructor
+
+I did my schema from this Api because it's almost similar i what i want to do, but i ve no need all the features:
+
+Look here!:
+https://developers.pipedrive.com/docs/api/v1/
+
+
+
 user can be a:
 
 "type User" somebody who want to find ski instructor and who want to pay when he find it.
@@ -234,83 +243,7 @@ Each instructor is connected to one User (type user)
 One User is inserted by the superUser for the moment (by hand with backend)
 
 One User is connected to one or more resort -> so the Instructor is connected to the resorts he works, because he is a child of a User.
-
-One Resort is a resort.. (easy)
-
-For me
-products==instructors
-users==ski_schools
-
-I need to think about the architecture of my application;
-
-I try to understand
-
-```
-type Category {
-id: ID! @unique
-name: String!
-options: [Option!]! @relation(name: "CategoryOptions", onDelete: CASCADE)
-user: User!
-}
-
-type Attribute {
-id: ID! @unique
-value: String!
-category: Category!
-user: User!
-products: [Product!]!
-}
-
-type Option {
-id: ID! @unique
-name: String!
-values: [OptionValue!]! @relation(name: "OptionOptionValues", onDelete: CASCADE)
-category: Category! @relation(name: "CategoryOptions", onDelete: CASCADE)
-user: User!
-}
-
-type OptionValue {
-id: ID! @unique
-name: String!
-}
-
-type SelectedOption {
-id: ID! @unique
-deletedAt: DateTime # For soft-deletion
-option: Option!
-variant: Variant! @relation(name: "VariantOnSelectedOptions")
-value: OptionValue!
-}
-
-type Variant {
-id: ID! @unique
-deletedAt: DateTime # For soft-deletion
-selectedOptions: [SelectedOption!]! @relation(name: "VariantOnSelectedOptions", onDelete: CASCADE)
-price: Float!
-available: Boolean!
-product: Product @relation(name: "ProductVariants") # Variants can be disconnected from product when soft-deleted
-}
-```
-
-I think category could be a service of one user .. so UserAdmin can be instructor or photograph.. whatever
-
-So if i have got OptionValue who can take value AM,PM,FullDay i think the schema is correct.
-
-#OptionValue = [AM,PM,FullDay] Morning time , afternoon, fullDay
-```
-#Ex Category:
-name:instructor,
-options:[{name:ski,values:[AM,PM,FullDay],{name:snowboard,values:[AM,PM,FullDay]}],
-user:user
-
-#Ex Category2:
-name:photograph,
-options:[{name:photo_portrait,values:[AM,PM,FullDay],{name:photo_action,values:[AM,PM,FullDay]}],
-user:user
-```
-The Variant allow us to define different price for different options selected..
-
-Any thought?
+ 
 
 
 ### frontend
