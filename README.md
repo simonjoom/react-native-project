@@ -53,10 +53,14 @@ Ok let's go to have a taste:
 
 To install the project:
 
+Use yarn
+npm install -g yarn
+
 first go to ./prisma folder 
 to install dependencies
 
-> npm install
+
+> yarn install
 > 
 > sh script.sh    # update pug package and fix dependencies
 
