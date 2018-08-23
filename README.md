@@ -88,13 +88,7 @@ if no error:
 So continue in root folder install dependencies
 
 in the root:
-> npm install
-> cd babel-eslint
-> npm install
-> cd ..
-
-Yeah i use the last babel-eslint, i could not use npm link for this folder (it's failing) so just copy the folder in node_module manually after you npm install it!
-> cp -Rf ./babel-eslint ./node_modules/
+> yarn install
 
 Please to resolve problem with react-native-vector-icons:
 
