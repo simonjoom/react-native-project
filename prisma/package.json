@@ -1,6 +1,7 @@
 {
   "name": "myapp-prisma",
   "scripts": {
+    "postinstall": "test -n \"$NOYARNPOSTINSTALL\" || sh ./postinstall.sh",
     "start": "nodemon -e js,graphql -x ts-node -r dotenv/config src/index.ts",
     "debug": "nodemon -e js,graphql -x ts-node --inspect -r dotenv/config src/index.ts",
     "playground": "graphql playground",
@@ -44,6 +45,7 @@
     "@types/lodash": "^4.14.116",
     "@types/nodemailer": "^4.6.2",
     "@types/stripe": "^5.0.21",
+    "@types/graphql": "0.13.4",
     "dotenv-cli": "1.4.0",
     "email-templates": "^4.0.3",
     "nodemon": "latest",
