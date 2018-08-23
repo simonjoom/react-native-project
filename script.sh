@@ -6,6 +6,6 @@ yarn install
 cd ..
 cp -Rf ./react-native-vector-icons ./node_modules/
 cp -Rf ./react-native-web-modal ./node_modules/
-cp -Rf ./react-scipts ./node_modules/
+cp -Rf ./react-scripts ./node_modules/
 rm -Rf ./node_modules/expo-web/node_modules/
 cp -Rf ./babel-eslint ./node_modules/
