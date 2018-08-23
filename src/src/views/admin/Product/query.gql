@@ -1,0 +1,72 @@
+    fragment ProductFragment on Product {
+    id
+    name
+    unit
+    code
+    owner {
+      id
+      name
+    }
+    deals {
+      id
+      title
+    }
+  }
+
+mutation upsertProduct(
+  $name: String!
+  $namewhere: String
+  $unit: String
+  $code: String
+  $owner: UserUpdateOneInput
+  $deals: DealUpdateManyWithoutProductsInput
+) {
+  upsertProduct(
+    where: { name: $namewhere }
+    update: {
+      name: $name
+      unit: $unit
+      code: $code
+      owner: $owner
+      deals: $deals
+    }
+    create: {
+      name: $name
+      unit: $unit
+      code: $code
+      owner: $owner
+      deals: $deals
+    }
+  ) {
+    ...ProductFragment
+  }
+}
+mutation deleteProduct($name: String) {
+  deleteProduct(where: { name: $name }) {
+   ...ProductFragment
+  }
+}
+query product($name: String) {
+  product(where: { name: $name }) {
+...ProductFragment
+  }
+}
+query products {
+  products {
+    ...ProductFragment
+  }
+}
+
+subscription productsub($where: ProductSubscriptionWhereInput) {
+  product(where: $where) {
+    mutation
+    node {
+      ...ProductFragment
+    }
+    updatedFields
+    previousValues {
+      id
+      name
+    }
+  }
+}
