@@ -61,8 +61,9 @@ to install dependencies
 
 
 > yarn install
-> 
-> sh script.sh    # update pug package and fix dependencies
+
+In postinstall some hack will applied too
+-> update pug package and fix dependencies
 
 go to the root folder to test this install
 
@@ -89,11 +90,6 @@ So continue in root folder install dependencies
 
 in the root:
 > yarn install
-
-Please to resolve problem with react-native-vector-icons:
-
-> 
-> sh script.sh    
 
 
 3 folder was a bit hacked to resolve bug with react-native-web
