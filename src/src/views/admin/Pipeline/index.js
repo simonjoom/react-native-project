@@ -34,7 +34,7 @@ class Pipeline extends Component {
       upsertPipeline,
       connected,
       parent,
-      saveId,
+      connectEntitie,
       parentId,
       selectedId,
       setModalVisible
@@ -60,7 +60,7 @@ class Pipeline extends Component {
         root="Pipeline"
         connected={connected}
         parent={parent}
-        saveId={saveId}
+        connectEntitie={connectEntitie}
         parentId={parentId}
         selectedId={selectedId}
         childrenTree={{ Deal }}

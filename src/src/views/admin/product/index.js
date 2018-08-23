@@ -35,7 +35,7 @@ class Product extends Component {
       connected,
       upsertProduct,
       parent,
-      saveId,
+      connectEntitie,
       parentId,
       selectedId,
       productsub,
@@ -62,7 +62,7 @@ class Product extends Component {
         root="Product"
         connected={connected}
         parent={parent}
-        saveId={saveId}
+        connectEntitie={connectEntitie}
         parentId={parentId}
         selectedId={selectedId}
         childrenTree={{ User, Deal }}

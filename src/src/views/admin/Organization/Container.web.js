@@ -46,20 +46,22 @@ const OrganizationOut = compose(
           fetchPolicy: "network-only",
           variables: { name }
         }),
-      upsertOrganization: ({ namewhere, name, owner, persons }) =>
-        mutate({
-          variables: {
-            namewhere,
-            name,
-            owner,
-            persons
-          },
+      upsertOrganization: ({ namewhere, name, owner, persons }) => {
+        const variables = {
+          namewhere,
+          name,
+          owner,
+          persons
+        };
+        return mutate({
+          variables,
           refetchQueries: [
             {
               query: organizations
             }
           ]
-        })
+        });
+      }
     })
   }),
   loader

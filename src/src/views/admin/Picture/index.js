@@ -28,7 +28,7 @@ class Picture extends Component {
       navigation,
       connected,
       parent,
-      saveId,
+      connectEntitie,
       parentId,
       selectedId,
       setModalVisible
@@ -55,7 +55,7 @@ class Picture extends Component {
         root="Picture"
         connected={connected}
         parent={parent}
-        saveId={saveId}
+        connectEntitie={connectEntitie}
         parentId={parentId}
         selectedId={selectedId}
         childrenTree={{}}

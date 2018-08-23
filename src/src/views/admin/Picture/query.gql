@@ -6,8 +6,8 @@ fragment PictureFragment on Picture {
 mutation upsertPicture($id: ID!, $file: String!) {
   upsertPicture(
     where: { id: $id }
-    create: { file: $file }
-    update: { file: $file }
+    update: {file: $file }
+    create: {file: $file }
   ) {
     ...PictureFragment
   }

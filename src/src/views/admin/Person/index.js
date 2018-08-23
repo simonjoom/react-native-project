@@ -45,7 +45,7 @@ class Person extends Component {
       navigation,
       connected,
       parent,
-      saveId,
+      connectEntitie,
       parentId,
       selectedId,
       setModalVisible
@@ -71,7 +71,7 @@ class Person extends Component {
         root="Person"
         connected={connected}
         parent={parent}
-        saveId={saveId}
+        connectEntitie={connectEntitie}
         parentId={parentId}
         selectedId={selectedId}
         childrenTree={{ Picture, Product, Deal, User }}

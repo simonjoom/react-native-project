@@ -50,7 +50,7 @@ class Deal extends Component {
       navigation,
       connected,
       parent,
-      saveId,
+      connectEntitie,
       parentId,
       selectedId,
       setModalVisible
@@ -76,7 +76,7 @@ class Deal extends Component {
         root="Deal"
         connected={connected}
         parent={parent}
-        saveId={saveId}
+        connectEntitie={connectEntitie}
         selectedId={selectedId}
         parentId={parentId}
         childrenTree={{ User, Person, Product, Stage, Organization }}

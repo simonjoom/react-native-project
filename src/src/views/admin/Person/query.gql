@@ -29,16 +29,16 @@ mutation upsertPerson(
 ) {
   upsertPerson(
     where: { name: $namewhere }
-    create: {
+    update: {
       name: $name
-      owner: $owner 
+      owner: $owner
       email: $email
       phone: $phone
       pictures: $pictures
       products: $products
       deals: $deals
     }
-    update: {
+    create: {
       name: $name
       owner: $owner
       email: $email

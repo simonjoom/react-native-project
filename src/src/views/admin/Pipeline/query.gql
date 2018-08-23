@@ -18,13 +18,13 @@ mutation upsertPipeline(
 ) {
   upsertPipeline(
     where: { name: $namewhere }
-    create: {
+    update: {
       name: $name
       order_nr: $order_nr
       deal_probability: $deal_probability
-      deals: $deals 
+      deals: $deals
     }
-    update: {
+    create: {
       name: $name
       order_nr: $order_nr
       deal_probability: $deal_probability

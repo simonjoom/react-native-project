@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/public-greenslayer-136/pipedrive/dev
-# timestamp: Mon Aug 20 2018 00:43:05 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Aug 23 2018 14:55:59 GMT+0200 (Central European Summer Time)
 
 enum Active {
   ACTIVATED
@@ -571,14 +571,14 @@ type Mutation {
   deletePicture(where: PictureWhereUniqueInput!): Picture
   deleteOrganization(where: OrganizationWhereUniqueInput!): Organization
   deleteStage(where: StageWhereUniqueInput!): Stage
-  upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
-  upsertDeal(where: DealWhereUniqueInput!, create: DealCreateInput!, update: DealUpdateInput!): Deal!
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  upsertPerson(where: PersonWhereUniqueInput!, create: PersonCreateInput!, update: PersonUpdateInput!): Person!
-  upsertPipeline(where: PipelineWhereUniqueInput!, create: PipelineCreateInput!, update: PipelineUpdateInput!): Pipeline!
-  upsertPicture(where: PictureWhereUniqueInput!, create: PictureCreateInput!, update: PictureUpdateInput!): Picture!
-  upsertOrganization(where: OrganizationWhereUniqueInput!, create: OrganizationCreateInput!, update: OrganizationUpdateInput!): Organization!
-  upsertStage(where: StageWhereUniqueInput!, create: StageCreateInput!, update: StageUpdateInput!): Stage!
+  upsertProduct(where: ProductWhereUniqueInput!, create: ProductUpdateInput!, update: ProductUpdateInput!): Product!
+  upsertDeal(where: DealWhereUniqueInput!, create: DealUpdateInput!, update: DealUpdateInput!): Deal!
+  upsertUser(where: UserWhereUniqueInput!, create: UserUpdateInput!, update: UserUpdateInput!): User!
+  upsertPerson(where: PersonWhereUniqueInput!, create: PersonUpdateInput!, update: PersonUpdateInput!): Person!
+  upsertPipeline(where: PipelineWhereUniqueInput!, create: PipelineUpdateInput!, update: PipelineUpdateInput!): Pipeline!
+  upsertPicture(where: PictureWhereUniqueInput!, create: PictureUpdateInput!, update: PictureUpdateInput!): Picture!
+  upsertOrganization(where: OrganizationWhereUniqueInput!, create: OrganizationUpdateInput!, update: OrganizationUpdateInput!): Organization!
+  upsertStage(where: StageWhereUniqueInput!, create: StageUpdateInput!, update: StageUpdateInput!): Stage!
   updateManyProducts(data: ProductUpdateInput!, where: ProductWhereInput): BatchPayload!
   updateManyDeals(data: DealUpdateInput!, where: DealWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!

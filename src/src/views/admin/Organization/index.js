@@ -33,7 +33,7 @@ class Organization extends Component {
       navigation,
       connected,
       parent,
-      saveId,
+      connectEntitie,
       parentId,
       selectedId,
       setModalVisible
@@ -61,7 +61,7 @@ class Organization extends Component {
         root="Organization"
         connected={connected}
         parent={parent}
-        saveId={saveId}
+        connectEntitie={connectEntitie}
         selectedId={selectedId}
         parentId={parentId}
         childrenTree={{ Person, User }}

@@ -8,6 +8,7 @@ fragment OrganizationFragment on Organization {
     id
   }
 }
+
 mutation upsertOrganization(
   $namewhere: String
   $name: String!

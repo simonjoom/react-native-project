@@ -62,7 +62,6 @@ mutation upsertDeal(
       probability: $probability
     }
   ) {
-    
 ...FragmentDeal
   }
 }

@@ -23,14 +23,14 @@ mutation upsertProduct(
 ) {
   upsertProduct(
     where: { name: $namewhere }
-    create: {
+    update: {
       name: $name
       unit: $unit
       code: $code
       owner: $owner
       deals: $deals
     }
-    update: {
+    create: {
       name: $name
       unit: $unit
       code: $code

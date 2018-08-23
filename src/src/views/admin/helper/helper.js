@@ -115,7 +115,7 @@ class Helper extends Component {
     this.focusNextField = this.focusNextField.bind(this);
     this.renderFields = this.renderFields.bind(this);
     this.setModalVisible = this.setModalVisible.bind(this);
-    this.saveId = this.saveId.bind(this);
+    this.connectEntitie = this.connectEntitie.bind(this);
     this.prepareFordtb = this.prepareFordtb.bind(this);
     this.addInCollection = this.addInCollection.bind(this);
     this.removeInCollection = this.removeInCollection.bind(this);
@@ -216,87 +216,142 @@ class Helper extends Component {
     return collection.filter(tally => tally.id !== object.id);
   };
 
-  prepareFordtb = (object, wherecheck) => {
+  prepareFordtb = (object, iscreate, getkey = false, disconnectid = false) => {
     let outobj = {};
+    console.log("prepareFordtb", object);
     Object.keys(object).map((key, index) => {
-      const vals = object[key];
+      const valps = object[key];
       const placehold = this.props.placeholder[key];
       if (isEntitie(placehold)) {
         const many = isMany(placehold);
 
         if (many) {
-          const mapids = vals.map(val => ({
-            id: val.id ? val.id : val
+          let vals = valps.map(val => (val.id ? val.id : val));
+          console.log(vals);
+          let idtoconnect =
+            getkey === getType(placehold)
+              ? vals.filter(val => val !== disconnectid)
+              : vals;
+          let idtodisconnect =
+            getkey === getType(placehold)
+              ? vals.find(val => val === disconnectid)
+              : undefined;
+          idtoconnect = idtoconnect.map(val => ({
+            id: val
           }));
+          console.log(idtodisconnect);
+          idtodisconnect = idtodisconnect
+            ? new Array({ id: idtodisconnect })
+            : undefined;
           outobj[key] =
             Array.isArray(vals) && !vals.length
-              ? { connect: [] }
-              : { connect: mapids };
+              ? {}
+              : removeEmpty({
+                  connect: idtoconnect,
+                  disconnect: idtodisconnect
+                });
+          console.log("tarce", outobj[key]);
         } else {
-          outobj[key] =
-            vals == null ? {} : { connect: { id: vals.id ? vals.id : vals } };
+          if (valps == null) outobj[key] = {};
+          else {
+            const conn = { id: valps.id ? valps.id : valps };
+            let idtoconnect = valps.id !== disconnectid ? conn : undefined;
+            let idtodisconnect = valps.id === disconnectid ? conn : undefined;
+            outobj[key] = removeEmpty({
+              connect: idtoconnect,
+              disconnect: idtodisconnect
+            });
+          }
         }
       } else
         outobj[key] =
-          isRequired(placehold) && vals === "" ? "dummy_" + key : vals;
+          isRequired(placehold) && valps === "" ? "dummy_" + key : valps;
     });
-    if (this.props.selector === "id" && wherecheck) outobj.id = 0; //to create in case no id (where is set only in create)
+    if (this.props.selector === "id" && iscreate) outobj.id = 0; //to create in case no id (where is set only in iscreate)
     if (outobj.id === "") {
       delete outobj.id;
     }
-    if (!wherecheck) outobj.namewhere = this.selectorVal;
+    if (!iscreate) outobj.namewhere = this.selectorVal;
     //on update where defined on old
-    else outobj.namewhere = wherecheck; // on create we check that the slot not exist
+    else outobj.namewhere = iscreate; // on create we check that the slot not exist
 
-    console.log("trace", this.selectorVal, wherecheck, outobj);
+    console.log("trace", this.selectorVal, iscreate, outobj);
     return outobj;
   };
-  saveId(entitie, out, wherecheck) {
-    console.log("saveID", entitie, out, this);
 
-    const selector = out.filename ? out.filename : out.id ? out.id : false;
-
-    const obj = Object.keys(this.state.fields);
-    let many;
+  saveId = iscreate => {
     let getkey, vals, valout;
-    if (entitie) {
-      getkey = obj.find(key => {
-        console.log(getType(this.props.placeholder[key]), entitie);
-        if (getType(this.props.placeholder[key]) === entitie) {
-          many = isMany(this.props.placeholder[key]);
-          return true;
-        }
-      });
-      if (!getkey) {
-        console.log("traceerrorfin", getkey);
-        return;
-      }
-    } else {
-      getkey = out.filename ? "file" : "id";
-    }
+    const { filename } = this.state.FileOut;
+    getkey = filename ? "file" : "id";
     vals = this.state.fields[getkey];
-    if (!out.filename) {
-      var cp;
-      //find if vals already have got this data in collection (find id and add in)
-      if (Array.isArray(vals)) {
-        cp = vals.slice();
-        cp = cp.map(o => o.id);
-      }
-      valout = Array.isArray(cp)
-        ? (!cp.includes(selector) && cp.push(out.id) && cp) || cp
-        : selector;
-    } else {
-      if (wherecheck) {
+    const selector = filename
+      ? filename
+      : this.state.fields.id
+        ? this.state.fields.id
+        : 0;
+
+    if (filename) {
+      if (!iscreate) {
         valout = selector ? selector : "";
       } else {
+        // add file at the list :
+        // input string "file1,file2" output "file1,file2,file3"
         valout = vals === "" ? [] : vals.split(",");
         if (valout.indexOf(selector) !== -1) return;
         valout.push(selector);
         valout = valout.join();
       }
+    } else {
+      valout = selector;
     }
+    let toupd = {
+      ...this.state.fields,
+      [getkey]: valout
+    };
+    toupd = this.prepareFordtb(toupd, iscreate);
+    return this.updateDatabaseQ(toupd);
+  };
+
+  removeId(entitie, out, selectorId) {
+    let toupd = { ...this.state.fields };
+    toupd = this.prepareFordtb(toupd, false, entitie, selectorId);
+    return this.updateDatabaseQ(toupd);
+  }
+
+  connectEntitie(entitie, out, iscreate) {
+    console.log("saveID", entitie, out, this);
+    const selector = out.filename ? out.filename : out.id ? out.id : false;
+
+    const obj = Object.keys(this.state.fields);
+    let getkey, vals, valout;
+    // if (entitie) {
+    getkey = obj.find(key => {
+      console.log(getType(this.props.placeholder[key]), entitie);
+      if (getType(this.props.placeholder[key]) === entitie) {
+        return true;
+      }
+    });
+    if (!getkey) {
+      console.log("traceerrorfin", getkey);
+      return;
+    }
+    //   } else {
+    //   getkey = out.filename ? "file" : "id";
+    // }
+    vals = this.state.fields[getkey];
+    //if (!out.filename) {
+    var cp;
+    //find if vals already have got this data in collection (find id and add in)
+    if (Array.isArray(vals)) {
+      cp = vals.slice();
+      cp = cp.map(o => o.id);
+    }
+    valout = Array.isArray(cp)
+      ? (!cp.includes(selector) && cp.push(out.id) && cp) || cp
+      : selector;
+    // }
     let toupd = { ...this.state.fields, [getkey]: valout };
-    toupd = this.prepareFordtb(toupd, wherecheck);
+    toupd = this.prepareFordtb(toupd, iscreate);
     return this.updateDatabaseQ(toupd);
   }
 
@@ -320,7 +375,7 @@ class Helper extends Component {
             <Comp
               setModalVisible={this.setModalVisible}
               connected
-              saveId={this.saveId}
+              connectEntitie={this.connectEntitie}
               selectedId={this.selectedId[type]}
               parent={this.props.root}
               parentId={this.state.fields.id}
@@ -466,17 +521,15 @@ class Helper extends Component {
   renderFields(fields, placeholder, style, selectResultSelect, type) {
     if (fields)
       return Object.keys(placeholder).map((key, index) => {
-        const val = fields[key];
+        const vals = fields[key];
         const placehold = placeholder[key];
         if (key !== "id" && isEntitie(placehold)) {
           console.log("entitie:", placehold);
           const type = getType(placehold);
           const many = isMany(placehold);
-          let vals;
-          if (many) vals = val.map(o => o.id);
           const isSameEntitieParent = this.props.parent === type;
 
-          this.selectedId[type] = val && val.id ? val.id : false;
+          this.selectedId[type] = vals && vals.id ? vals.id : false;
           console.log("trans", key + "_" + selectResultSelect);
           //  if (fields[key])
           return (
@@ -502,23 +555,44 @@ class Helper extends Component {
                 <>
                   {many ? (
                     vals.map((val, i) => (
-                      <Input
-                        type={"small"}
-                        widthAuto
-                        noborder
-                        editable={false}
-                        placeholder={type}
-                        placeholderTextColor="gray"
-                        style={styleInput}
-                        key={
-                          key + "_field_" + selectResultSelect + index + "" + i
-                        }
-                        ref={selectResultSelect + index}
-                        value={val}
-                        onSubmit={() =>
-                          this.focusNextField(selectResultSelect + (index + 1))
-                        }
-                      />
+                      <>
+                        <Input
+                          type={"small"}
+                          widthAuto
+                          noborder
+                          editable={false}
+                          placeholder={type}
+                          placeholderTextColor="gray"
+                          style={styleInput}
+                          key={
+                            key +
+                            "_field_" +
+                            selectResultSelect +
+                            index +
+                            "" +
+                            i
+                          }
+                          ref={selectResultSelect + index}
+                          value={val.id}
+                          onSubmit={() =>
+                            this.focusNextField(
+                              selectResultSelect + (index + 1)
+                            )
+                          }
+                        />
+                        <TouchableOpacity
+                          onPress={() => {
+                            this.removeId(type, vals, val.id);
+                          }}
+                          style={{ alignSelf: "flex-start" }}
+                        >
+                          <Icon
+                            name={"minus"}
+                            size={30}
+                            style={{ padding: 10 }}
+                          />
+                        </TouchableOpacity>
+                      </>
                     ))
                   ) : (
                     <Input
@@ -531,14 +605,14 @@ class Helper extends Component {
                       style={styleInput}
                       key={key + "_field_" + selectResultSelect + index}
                       ref={selectResultSelect + index}
-                      value={val && val.id ? val.id : val}
+                      value={vals && vals.id ? vals.id : vals}
                       onSubmit={() =>
                         this.focusNextField(selectResultSelect + (index + 1))
                       }
                     />
                   )}
 
-                  {(!this.state.fields[type] || (val && val.id) || many) && (
+                  {(!this.state.fields[type] || (vals && vals.id) || many) && (
                     <TouchableOpacity
                       onPress={() => {
                         this.setModalVisible(type, true);
@@ -546,12 +620,29 @@ class Helper extends Component {
                       style={{ alignSelf: "flex-start" }}
                     >
                       <Icon
-                        name={val && val.id && !many ? "tooltip-edit" : "plus"}
+                        name={
+                          vals && vals.id && !many ? "tooltip-edit" : "plus"
+                        }
                         size={30}
                         style={{ padding: 10 }}
                       />
                     </TouchableOpacity>
                   )}
+                  {vals &&
+                    vals.id && (
+                      <TouchableOpacity
+                        onPress={() => {
+                          this.removeId(type, vals, vals.id);
+                        }}
+                        style={{ alignSelf: "flex-start" }}
+                      >
+                        <Icon
+                          name={"minus"}
+                          size={30}
+                          style={{ padding: 10 }}
+                        />
+                      </TouchableOpacity>
+                    )}
                 </>
               )}
             </View>
@@ -570,7 +661,7 @@ class Helper extends Component {
                   key={key + "_field_" + selectResultSelect + index}
                   ref={selectResultSelect + index}
                   label={translate(key + "_" + selectResultSelect)}
-                  value={val && val.file ? val.file : val}
+                  value={vals && vals.file ? vals.file : vals}
                 />
               }
               preview={this.state.FileOut}
@@ -586,7 +677,7 @@ class Helper extends Component {
             />
           );
         } else if (isEnum(placehold)) {
-          return <>{this.renderPickerEnum(getEnum(placehold), val, key)}</>;
+          return <>{this.renderPickerEnum(getEnum(placehold), vals, key)}</>;
         } else {
           console.log(key + "_" + selectResultSelect);
           return (
@@ -607,7 +698,7 @@ class Helper extends Component {
                   fields: { ...prevState.fields, [key]: value }
                 }))
               }
-              value={val}
+              value={vals && vals.id ? vals.id : vals}
               onSubmit={() =>
                 this.focusNextField(selectResultSelect + (index + 1))
               }
@@ -617,19 +708,16 @@ class Helper extends Component {
       });
   }
 
-  updateButton = ({ text, selector, mutateResultSelect, validator, error }) => (
+  updateButton = ({ text, validator, error }) => (
     <NavigationButton
       enabled={validator}
       text={text}
       onPress={() => {
-        if (validator)
-          return this.saveId(false, {
-            ...this.state.fields,
-            ...this.state.FileOut
-          });
+        if (validator) return this.saveId();
       }}
     />
   );
+
   createButton = ({ text, selector, validator, error }) => (
     <NavigationButton
       enabled={validator}
@@ -637,8 +725,6 @@ class Helper extends Component {
       onPress={() => {
         if (validator) {
           return this.saveId(
-            false,
-            { ...this.state.fields, ...this.state.FileOut },
             this.state.fields[selector] ? this.state.fields[selector] : -1
           );
           //let toupd = { ...this.state.fields };
@@ -726,8 +812,6 @@ class Helper extends Component {
             root !== "Picture" ||
               (root === "Picture" && this.state.FileOut.filename)
           )}
-          selector={selector}
-          mutateResultSelect={mutateResultSelect}
           error="Error Exist"
         />
         <this.createButton
@@ -746,7 +830,7 @@ class Helper extends Component {
           this.state.fields.id && (
             <Button
               onPress={() => {
-                this.props.saveId(
+                this.props.connectEntitie(
                   this.props.root,
                   this.props.tofetch[this.index_current]
                 );
