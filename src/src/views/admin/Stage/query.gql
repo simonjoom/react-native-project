@@ -19,7 +19,7 @@ mutation upsertStage(
     where: { name: $namewhere }
     create: {
       name: $name
-      pipeline: $pipeline 
+      pipeline: $pipeline
       order_nr: $order_nr
       deal_probability: $deal_probability
     }

@@ -43,7 +43,7 @@ class User extends Component {
       parent,
       parentId,
       selectedId,
-      saveId,
+      connectEntitie,
       setModalVisible
     } = this.props;
     //const selected = this.state.selected;
@@ -67,7 +67,7 @@ class User extends Component {
         setModalVisible={setModalVisible}
         root="User"
         parent={parent}
-        saveId={saveId}
+        connectEntitie={connectEntitie}
         selectedId={selectedId}
         parentId={parentId}
         connected={connected}

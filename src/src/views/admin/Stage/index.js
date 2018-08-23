@@ -34,7 +34,7 @@ class Stage extends Component {
       navigation,
       connected,
       parent,
-      saveId,
+      connectEntitie,
       parentId,
       selectedId,
       setModalVisible
@@ -60,7 +60,7 @@ class Stage extends Component {
         root="Stage"
         connected={connected}
         parent={parent}
-        saveId={saveId}
+        connectEntitie={connectEntitie}
         parentId={parentId}
         selectedId={selectedId}
         childrenTree={{ Pipeline }}
