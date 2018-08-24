@@ -19,7 +19,7 @@ import CompUpload from "../Upload/Container";
 
 const pathbase =
   process.env.NODE_ENV === "development"
-    ? "http://localhost:4000/"
+    ? "http://localhost:3000/static/media/"
     : "http://ns327841.ip-37-187-112.eu/static/media/";
 function isFile(str) {
   return str.indexOf("File") !== -1;

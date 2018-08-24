@@ -373,7 +373,7 @@ module.exports = {
                       }
                     ],
                     "@babel/plugin-transform-flow-strip-types",
-                    [
+                   /* [
                       "@babel/plugin-proposal-decorators",
                       {
                         legacy: true
@@ -388,10 +388,10 @@ module.exports = {
                     [
                       "@babel/plugin-transform-runtime",
                       { helpers: false, regenerator: true }
-                    ]
+                    ]*/
                   ],
                   // The 'react-native' preset is recommended to match React Native's packager
-                  presets: ["module:metro-react-native-babel-preset"],
+                  presets:[require.resolve('babel-preset-react-app'),"module:metro-react-native-babel-preset"],
                   /*
                   presets: [require.resolve('babel-preset-react-app')],
                   plugins: [
@@ -437,7 +437,7 @@ module.exports = {
                   plugins: [
                     "expo-web",
                     "@babel/plugin-transform-flow-strip-types",
-                    [
+                   /* [
                       "@babel/plugin-proposal-decorators",
                       {
                         legacy: true
@@ -452,9 +452,9 @@ module.exports = {
                     [
                       "@babel/plugin-transform-runtime",
                       { helpers: false, regenerator: true }
-                    ]
+                    ]*/
                   ],
-                  presets: ["module:metro-react-native-babel-preset"],
+                  presets: [require.resolve('babel-preset-react-app/dependencies'),"module:metro-react-native-babel-preset"],
                   /*  presets: [
                     require.resolve('babel-preset-react-app/dependencies'),
                   ],*/

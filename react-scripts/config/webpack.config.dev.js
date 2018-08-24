@@ -11,6 +11,7 @@
 const autoprefixer = require("autoprefixer");
 const path = require("path");
 const webpack = require("webpack");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const InterpolateHtmlPlugin = require("react-dev-utils/InterpolateHtmlPlugin");
@@ -341,7 +342,7 @@ module.exports = {
                       }
                     ],
                     "@babel/plugin-transform-flow-strip-types",
-                    [
+                   /* [
                       "@babel/plugin-proposal-decorators",
                       {
                         legacy: true
@@ -356,10 +357,10 @@ module.exports = {
                     [
                       "@babel/plugin-transform-runtime",
                       { helpers: false, regenerator: true }
-                    ]
+                    ]*/
                   ],
                   // The 'react-native' preset is recommended to match React Native's packager
-                  presets: ["module:metro-react-native-babel-preset"],
+                  presets: [require.resolve('babel-preset-react-app'),"module:metro-react-native-babel-preset"],
                   /*
                   presets: [require.resolve('babel-preset-react-app')],
                   plugins: [
@@ -404,7 +405,7 @@ module.exports = {
                   compact: false,
                   plugins: [
                     "expo-web",
-                    "@babel/plugin-transform-flow-strip-types",
+                   /* "@babel/plugin-transform-flow-strip-types",
                     [
                       "@babel/plugin-proposal-decorators",
                       {
@@ -420,9 +421,9 @@ module.exports = {
                     [
                       "@babel/plugin-transform-runtime",
                       { helpers: false, regenerator: true }
-                    ]
+                    ]*/
                   ],
-                  presets: ["module:metro-react-native-babel-preset"],
+                  presets: [require.resolve('babel-preset-react-app/dependencies'),"module:metro-react-native-babel-preset"],
                   /*  presets: [
                     require.resolve('babel-preset-react-app/dependencies'),
                   ],*/
@@ -512,6 +513,27 @@ module.exports = {
     ]
   },
   plugins: [
+        new CopyWebpackPlugin([{
+        from: paths.uploadsPath,
+        to: paths.appPublic+"/"+"static/media/"
+      }], {
+        ignore: [
+          // Doesn't copy any files with a txt extension
+          '*.txt', //'*.jpg', '*.png',
+          '*.css',
+          '*.scss',
+          '*.mp4',
+          '*.flv',
+          '*.webm',
+          // Doesn't copy any file, even if they start with a dot
+          {glob: 'tiles/16/**/*', dot: true},
+          {glob: 'tiles/17/**/*', dot: true},
+          {glob: 'tiles/18/**/*', dot: true},
+          {glob: 'tiles/19/**/*', dot: true},
+          {glob: 'tiles/20/**/*', dot: true}
+        ],
+        copyUnmodified: false
+      }),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
