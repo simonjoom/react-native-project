@@ -1,3 +1,4 @@
+
 import { AsyncStorage } from "react-native";
 
 import { ApolloClient } from "apollo-client";
@@ -12,8 +13,15 @@ import { createUploadLink } from "apollo-upload-client";
 import { getMainDefinition } from "apollo-utilities";
 
 import StorageKeys from "../statics/storage-keys";
-
+//require('dotenv').config()
 let cachedToken = "";
+let pathbackend="http://ns327841.ip-37-187-112.eu/graphql/";
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  // dev code
+  pathbackend="http://localhost:4000/graphql/"
+}
+
+const uriwebsocket=process.env.REACT_APP_ENDPOINT;
 const isFile = value => {
   console.log("isFile?",value)
   console.log("isFile?",value instanceof File)
@@ -38,7 +46,7 @@ export function setupApolloClient() {
   };
 
   const wsLink = new WebSocketLink({
-    uri: "wss://eu1.prisma.sh/public-greenslayer-136/pipedrive/dev",
+    uri: "wss://"+uriwebsocket,
     // uri: "ws://localhost:4000/subscriptions",
     options: {
       reconnect: true,
@@ -47,7 +55,7 @@ export function setupApolloClient() {
   });
 
   const httpLink = new createHttpLink({
-    uri: "http://localhost:4000/"
+    uri: pathbackend
   });
   /*
     const authMiddleware = setContext(
@@ -111,7 +119,7 @@ export function setupApolloClient() {
     return kind === "OperationDefinition" && operation === "subscription";
   };
 
-  const UploadLink = createUploadLink({ uri: "http://localhost:4000/" });
+  const UploadLink = createUploadLink({ uri: pathbackend });
   const httpLinkWithAuth = middlewareAuthLink.concat(httpLink);
 
   const requestLink = split(isSubscriptionOperation, wsLink, httpLinkWithAuth);
