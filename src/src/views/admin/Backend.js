@@ -200,11 +200,22 @@ export default class BackendFoo {
     Object.keys(this.routes).map(key => {
       this.arr_child[key] = {};
       //this.Routes[el].path = el;
-      this.arr_child[key] = { [key]: TestAsync };
-      this.routes[key].map(elc => { 
+      this.arr_child[key] = {
+        [key]: {
+          screen: TestAsync,
+          path: ""
+        }
+      };
+      this.routes[key].map(elc => {
         this.arr_child[key][key + "_" + elc] = dismissableStackNavigator(
-          { [key + "_" + elc]: TestAsync },
           {
+            [key + "_" + elc]: {
+              screen: TestAsync,
+              path: ""
+            }
+          },
+          {
+            mode: "modal",
             headerMode: "none"
           }
         );
@@ -212,15 +223,7 @@ export default class BackendFoo {
       this.Routes[key] = createStackNavigator(this.arr_child[key], {
         headerMode: "none"
       });
-    });
-    console.log(this.routes);
-    /*   this.routes.forEach(element => {
-  //    this.Routes[element] = {};
-    //  this.Routes[element].path = element + "p";
- 
-
-      this.Routes[element] = TestAsync;
-    }); */
+    });  
     console.log(this.Routes);
     return this.Routes;
   }
