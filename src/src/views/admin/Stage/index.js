@@ -32,17 +32,15 @@ class Stage extends Component {
       stagesub,
       upsertStage,
       navigation,
-      connected,
-      parent,
-      connectEntitie,
       parentId,
-      selectedId,
-      setModalVisible
+      screenProps
     } = this.props;
     //const selected = this.state.selected;
     console.log("updateStage", data.stages, this.props);
     //  const stages = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allStages;
-
+    const passProps = {
+      ...this.props.navigation.state.params,
+    };
     let datas = data.stages;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
     return (
@@ -56,14 +54,10 @@ class Stage extends Component {
         selectQuery={stage}
         subscribe={stagesub}
         selectResultSelect="stage"
-        setModalVisible={setModalVisible}
         root="Stage"
-        connected={connected}
-        parent={parent}
-        connectEntitie={connectEntitie}
         parentId={parentId}
-        selectedId={selectedId}
-        childrenTree={{ Pipeline }}
+        passProps={passProps}
+        screenProps={screenProps}
       />
     );
   }
@@ -71,7 +65,6 @@ class Stage extends Component {
 //
 Stage.propTypes = {};
 Stage.defaultProps = {
-  setModalVisible: () => {},
   parent: "",
   parentId: 0,
   selectedId: false

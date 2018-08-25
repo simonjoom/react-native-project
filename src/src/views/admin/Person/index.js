@@ -43,17 +43,16 @@ class Person extends Component {
       personsub,
       upsertPerson,
       navigation,
-      connected,
-      parent,
-      connectEntitie,
-      parentId,
-      selectedId,
-      setModalVisible
+      screenProps,
+      parentId
     } = this.props; 
     //const selected = this.state.selected;
     console.log("updatePerson", data.persons, this.props);
     //  const persons = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allPersons;
+    const passProps = {
+      ...this.props.navigation.state.params,
 
+    };
     let datas = data.persons;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
     return (
@@ -67,14 +66,10 @@ class Person extends Component {
         selectQuery={person}
         upsertQuery={upsertPerson}
         selectResultSelect="person"
-        setModalVisible={setModalVisible}
-        root="Person"
-        connected={connected}
-        parent={parent}
-        connectEntitie={connectEntitie}
+        root="Person" 
         parentId={parentId}
-        selectedId={selectedId}
-        childrenTree={{ Picture, Product, Deal, User }}
+        passProps={passProps}
+        screenProps={screenProps}
       />
     );
   }
@@ -82,11 +77,10 @@ class Person extends Component {
 //
 Person.propTypes = {};
 Person.defaultProps = {
-  setModalVisible: () => {},
   connected: false,
   parent: "",
   parentId: 0,
   selectedId: null
 };
-
+//childrenTree={{ Picture, Product, Deal, User }}
 export default Person;

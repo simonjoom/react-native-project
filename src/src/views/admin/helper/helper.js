@@ -7,7 +7,9 @@ import {
   Text,
   Image
 } from "react-native";
+import { Drawer } from "src/App";
 import Input from "src/components/input/Input";
+//import mRoute from "src/AdminStack";
 import { translate } from "src/i18n";
 import NavigationButton from "src/components/navigation-button/NavigationButton";
 import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
@@ -24,6 +26,10 @@ const pathbase =
 function isFile(str) {
   return str.indexOf("File") !== -1;
 }
+function isSameEntitie(parent, type) {
+  return parent && parent.indexOf(type) !== -1;
+}
+
 function isEnum(str) {
   return str.indexOf("Enum") !== -1;
 }
@@ -89,10 +95,11 @@ class Helper extends Component {
     super(props);
     const datas = props.tofetch;
     this.index_current = 0;
-    if (props.selectedId)
+    if (props.passProps.selectedId)
       datas.forEach((data, i) => {
-        if (data.id === props.selectedId) this.index_current = i;
+        if (data.id === props.passProps.selectedId) this.index_current = i;
       });
+
     this.state = {
       pictures: [],
       FileOut: {},
@@ -114,13 +121,13 @@ class Helper extends Component {
     this.validateFields = this.validateFields.bind(this);
     this.focusNextField = this.focusNextField.bind(this);
     this.renderFields = this.renderFields.bind(this);
-    this.setModalVisible = this.setModalVisible.bind(this);
+    // this.setModalVisible = this.setModalVisible.bind(this);
     this.connectEntitie = this.connectEntitie.bind(this);
     this.prepareFordtb = this.prepareFordtb.bind(this);
     this.addInCollection = this.addInCollection.bind(this);
     this.removeInCollection = this.removeInCollection.bind(this);
     this.updateInCollection = this.updateInCollection.bind(this);
-    this.renderModal = this.renderModal.bind(this);
+    // this.renderModal = this.renderModal.bind(this);
     // this.navigate = this.props.navigation.navigate;
     this.selectorVal = this.state.fields[props.selector];
   }
@@ -354,7 +361,7 @@ class Helper extends Component {
     toupd = this.prepareFordtb(toupd, iscreate);
     return this.updateDatabaseQ(toupd);
   }
-
+  /*
   setModalVisible(type, visible) {
     console.log("setModalVisiblehelper", type);
     this.state.modal[type] = visible;
@@ -375,6 +382,7 @@ class Helper extends Component {
             <Comp
               setModalVisible={this.setModalVisible}
               connected
+              screenProps={this.screenProps}
               connectEntitie={this.connectEntitie}
               selectedId={this.selectedId[type]}
               parent={this.props.root}
@@ -383,7 +391,7 @@ class Helper extends Component {
           </Gradient>
         </Modal>
       );
-  }
+  }*/
 
   validateFields(testmore) {
     //one field not filled || required  === not validated
@@ -492,7 +500,7 @@ class Helper extends Component {
         }}
         onValueChange={(el, index) => {
           console.log("valchange", index);
-          if (this.index_current != index) {
+          if (this.index_current !== index) {
             //prevent bug onpropschangepicker
             this.index_current = index;
             this.eventpicker = true;
@@ -518,7 +526,7 @@ class Helper extends Component {
       />
     );
   }
-  renderFields(fields, placeholder, style, selectResultSelect, type) {
+  renderFields(fields, placeholder, style, selectResultSelect, parent) {
     if (fields)
       return Object.keys(placeholder).map((key, index) => {
         const vals = fields[key];
@@ -527,9 +535,10 @@ class Helper extends Component {
           console.log("entitie:", placehold);
           const type = getType(placehold);
           const many = isMany(placehold);
-          const isSameEntitieParent = this.props.parent === type;
+          const isSameEntitieParent = isSameEntitie(parent, type);
 
-          this.selectedId[type] = vals && vals.id ? vals.id : false;
+          this.selectedId[type] =
+            vals && vals.id ? vals.id : vals ? vals : false;
           console.log("trans", key + "_" + selectResultSelect);
           //  if (fields[key])
           return (
@@ -548,7 +557,7 @@ class Helper extends Component {
                   placeholderTextColor="gray"
                   key={key + "_field_" + selectResultSelect + index}
                   style={styleInput}
-                  value={this.props.parentId}
+                  value={this.selectedId[type]}
                 />
               )}
               {!isSameEntitieParent && (
@@ -615,7 +624,22 @@ class Helper extends Component {
                   {(!this.state.fields[type] || (vals && vals.id) || many) && (
                     <TouchableOpacity
                       onPress={() => {
-                        this.setModalVisible(type, true);
+                        const params = {
+                          connected: true,
+                          screenProps: this.screenProps,
+                          connectEntitie: this.connectEntitie,
+                          selectedId: this.selectedId[type],
+                          parent: parent
+                            ? parent + "_" + type
+                            : this.props.root + "_" + type,
+                          parentId: this.state.fields.id
+                        };
+                        const tt = isSameEntitieParent ? type : params.parent;
+                        const action = Drawer.router.getActionForPathAndParams(
+                          tt,
+                          params
+                        );
+                        this.props.navigation.navigate(tt, params, action);
                       }}
                       style={{ alignSelf: "flex-start" }}
                     >
@@ -654,7 +678,7 @@ class Helper extends Component {
                 <Input
                   autoFocus
                   widthAuto
-                  type={type}
+                  type={"big"}
                   editable={false}
                   placeholder={placeholder[key]}
                   placeholderTextColor="gray"
@@ -685,7 +709,7 @@ class Helper extends Component {
               autoFocus
               widthAuto
               style={rowMargin}
-              type={key !== "id" ? type : "small"}
+              type={key !== "id" ? "big" : "small"}
               editable={key !== "id"}
               noborder={key === "id"}
               placeholder={placehold}
@@ -743,7 +767,6 @@ class Helper extends Component {
 
   render() {
     const {
-      childrenTree,
       placeholder,
       selector,
       deleteQuery,
@@ -751,14 +774,16 @@ class Helper extends Component {
       upsertQuery,
       selectResultSelect,
       mutateResultSelect,
-      selectedId,
-      setModalVisible,
-      connected,
-      getInfo,
       root
     } = this.props;
+    const {
+      connectEntitie,
+      connected,
+      selectedId,
+      parent
+    } = this.props.passProps;
     const selected = this.state.selected;
-    console.log("DEBUGS", this.state.row, this.props.selectedId);
+    console.log("DEBUGS", this.state.row, selectedId);
     console.log("debugstate.fields", this.state.fields, connected);
     //  const resorts = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allResorts;
     let mapPictures = [];
@@ -770,31 +795,17 @@ class Helper extends Component {
         getInfo({ file }).then(data => console.log("getInfo ", data)).catch(err=>console.log(err));
       });
     }*/
-    const Arr = Object.keys(childrenTree).map(key =>
-      this.renderModal(childrenTree[key], key)
-    );
+
     //{resorts && resorts.map((resort, i) => (<Title key={"tt" + i}>{resort.name}</Title>))}
     return (
       <KeyboardAwareCenteredView>
-        <TouchableOpacity
-          onPress={() => {
-            setModalVisible(root, false);
-          }}
-        >
-          <Icon
-            name="window-close"
-            size={30}
-            style={{ padding: 10, alignSelf: "flex-end" }}
-          />
-        </TouchableOpacity>
-        {Arr}
         {this.state.fields &&
           this.renderFields(
             this.state.fields,
             placeholder,
             styleb,
             selectResultSelect,
-            "big"
+            parent
           )}
         {this.renderPicker(
           this.state.tofetch,
@@ -830,11 +841,10 @@ class Helper extends Component {
           this.state.fields.id && (
             <Button
               onPress={() => {
-                this.props.connectEntitie(
-                  this.props.root,
-                  this.props.tofetch[this.index_current]
-                );
-                setModalVisible(this.props.root, false);
+                this.props.screenProps.dismiss();
+                connectEntitie(root, this.props.tofetch[this.index_current]);
+
+                // setModalVisible(this.props.root, false);
               }}
               label={translate("Connect")}
               fontSize={14}

@@ -24,18 +24,17 @@ class Picture extends Component {
       picturesub,
       upsertPicture,
       getInfo,
-      picture, 
+      picture,
+      screenProps,
       navigation,
-      connected,
-      parent,
-      connectEntitie,
-      parentId,
-      selectedId,
-      setModalVisible
+      parentId
     } = this.props;
     //const selected = this.state.selected;
     console.log("updatePicture", data.pictures, this.props);
     //  const pictures = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allPictures;
+    const passProps = {
+      ...this.props.navigation.state.params,
+    };
 
     let datas = data.pictures;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
@@ -51,14 +50,10 @@ class Picture extends Component {
         deleteQuery={deletePicture}
         selectQuery={picture}
         selectResultSelect="picture"
-        setModalVisible={setModalVisible}
         root="Picture"
-        connected={connected}
-        parent={parent}
-        connectEntitie={connectEntitie}
         parentId={parentId}
-        selectedId={selectedId}
-        childrenTree={{}}
+        passProps={passProps}
+        screenProps={screenProps}
       />
     );
   }

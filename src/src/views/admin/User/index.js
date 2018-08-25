@@ -39,17 +39,15 @@ class User extends Component {
       usersub,
       navigation,
       upsertUser,
-      connected,
-      parent,
       parentId,
-      selectedId,
-      connectEntitie,
-      setModalVisible
+      screenProps
     } = this.props;
     //const selected = this.state.selected;
     console.log("updateUser", data.users, this.props);
     //  const users = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allUsers;
-
+    const passProps = {
+      ...this.props.navigation.state.params,
+    };
     let datas = data.users;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
     //{users && users.map((user, i) => (<Title key={"tt" + i}>{user.name}</Title>))}
@@ -63,15 +61,11 @@ class User extends Component {
         upsertQuery={upsertUser}
         selectQuery={user}
         subscribe={usersub}
-        selectResultSelect="user"
-        setModalVisible={setModalVisible}
+        selectResultSelect="user" 
         root="User"
-        parent={parent}
-        connectEntitie={connectEntitie}
-        selectedId={selectedId}
         parentId={parentId}
-        connected={connected}
-        childrenTree={{ Organization }}
+        passProps={passProps}
+        screenProps={screenProps}
       />
     );
   }
@@ -79,7 +73,6 @@ class User extends Component {
 //
 User.propTypes = {};
 User.defaultProps = {
-  setModalVisible: () => {},
   connected: false,
   parent: "",
   parentId: 0,

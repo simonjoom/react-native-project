@@ -32,17 +32,15 @@ class Pipeline extends Component {
       pipelinesub,
       navigation,
       upsertPipeline,
-      connected,
-      parent,
-      connectEntitie,
       parentId,
-      selectedId,
-      setModalVisible
+      screenProps
     } = this.props;
     //const selected = this.state.selected;
     console.log("updatePipeline", data.pipelines, this.props);
     //  const pipelines = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allPipelines;
-
+    const passProps = {
+      ...this.props.navigation.state.params,
+    };
     let datas = data.pipelines;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
     return (
@@ -56,14 +54,10 @@ class Pipeline extends Component {
         deleteQuery={deletePipeline}
         selectQuery={pipeline}
         selectResultSelect="pipeline"
-        setModalVisible={setModalVisible}
         root="Pipeline"
-        connected={connected}
-        parent={parent}
-        connectEntitie={connectEntitie}
         parentId={parentId}
-        selectedId={selectedId}
-        childrenTree={{ Deal }}
+        passProps={passProps}
+        screenProps={screenProps}
       />
     );
   }
@@ -71,7 +65,6 @@ class Pipeline extends Component {
 //
 Pipeline.propTypes = {};
 Pipeline.defaultProps = {
-  setModalVisible: () => {},
   parent: "",
   parentId: 0,
   selectedId: false

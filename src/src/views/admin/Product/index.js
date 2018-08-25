@@ -32,18 +32,16 @@ class Product extends Component {
       deleteProduct,
       product,
       navigation,
-      connected,
       upsertProduct,
-      parent,
-      connectEntitie,
       parentId,
-      selectedId,
       productsub,
-      setModalVisible
+      screenProps
     } = this.props;
 
     //  const products = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allProducts;
-
+    const passProps = {
+      ...this.props.navigation.state.params,
+    };
     let datas = data.products;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
     //{products && products.map((product, i) => (<Title key={"tt" + i}>{product.name}</Title>))}
@@ -58,14 +56,10 @@ class Product extends Component {
         selectQuery={product}
         subscribe={productsub}
         selectResultSelect="product"
-        setModalVisible={setModalVisible}
         root="Product"
-        connected={connected}
-        parent={parent}
-        connectEntitie={connectEntitie}
         parentId={parentId}
-        selectedId={selectedId}
-        childrenTree={{ User, Deal }}
+        passProps={passProps}
+        screenProps={screenProps}
       />
     );
   }

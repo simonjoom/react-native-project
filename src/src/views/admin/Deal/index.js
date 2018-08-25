@@ -48,18 +48,17 @@ class Deal extends Component {
       deal,
       dealsub,
       navigation,
-      connected,
-      parent,
-      connectEntitie,
       parentId,
-      selectedId,
-      setModalVisible
+      screenProps
     } = this.props; 
     //const selected = this.state.selected;
     console.log("updateDeal", data.deals, this.props);
 
     let datas = data.deals;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
+    const passProps = {
+      ...this.props.navigation.state.params
+    };
 
     return (
       <Helper
@@ -72,14 +71,10 @@ class Deal extends Component {
         subscribe={dealsub}
         selectQuery={deal}
         selectResultSelect="deal"
-        setModalVisible={setModalVisible}
         root="Deal"
-        connected={connected}
-        parent={parent}
-        connectEntitie={connectEntitie}
-        selectedId={selectedId}
         parentId={parentId}
-        childrenTree={{ User, Person, Product, Stage, Organization }}
+        passProps={passProps}
+        screenProps={screenProps}
       />
     );
   }

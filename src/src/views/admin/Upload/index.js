@@ -39,8 +39,7 @@ class Uploads extends Component {
     console.log("componentWillMount");
     this.uploads = [];
   }
-  componentWillReceiveProps(newprops, state) {
-    console.log("componentWillReceiveProps", newprops, this.uploads);
+  componentWillReceiveProps(newprops, state) { 
     const { data } = newprops;
     //if (!data.loading) {
     if (data && data.uploads && data.uploads.length !== this.uploads.length) {
@@ -50,8 +49,7 @@ class Uploads extends Component {
     // }
   }
   componentDidMount() {
-    const { data } = this.props;
-    console.log("componentDidMount");
+    const { data } = this.props; 
     if (data && data.uploads) this.props.saveUp({}, data.uploads);
   }
   render() {
@@ -100,5 +98,4 @@ Uploads.propTypes = {};
 Uploads.defaultProps = {};
 
 export default Uploads;
-
-//require("../../../uploads/" + this.props.preview.path)
+ 

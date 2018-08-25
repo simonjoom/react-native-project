@@ -1,8 +1,10 @@
-import React, { Component } from "react"; 
+import React, { Component } from "react";
 import Helper from "../helper/helper";
+import { createSwitchNavigator } from "react-navigation";
 
-import Person from "../Person/Container";
-import User from "../User/Container";
+//import { mRoute } from "src/config/AdminStack";
+//import Person from "../Person/Container";
+//import User from "../User/Container";
 
 class Organization extends Component {
   constructor(props) {
@@ -30,13 +32,9 @@ class Organization extends Component {
       upsertOrganization,
       organization,
       organizationsub,
+      screenProps,
       navigation,
-      connected,
-      parent,
-      connectEntitie,
       parentId,
-      selectedId,
-      setModalVisible
     } = this.props;
 
     //const selected = this.state.selected;
@@ -45,6 +43,15 @@ class Organization extends Component {
 
     let datas = data.organizations;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
+    const passProps = {
+      ...this.props.navigation.state.params
+    };
+/*
+    const SwitchChildren = createSwitchNavigator({
+      Person: mRoute.Routes["Person"],
+      User: mRoute.Routes["User"]
+    });*/
+    
     //{organizations && organizations.map((organization, i) => (<Title key={"tt" + i}>{organization.name}</Title>))}
     return (
       <Helper
@@ -57,14 +64,10 @@ class Organization extends Component {
         upsertQuery={upsertOrganization}
         selectQuery={organization}
         selectResultSelect="organization"
-        setModalVisible={setModalVisible}
         root="Organization"
-        connected={connected}
-        parent={parent}
-        connectEntitie={connectEntitie}
-        selectedId={selectedId}
-        parentId={parentId}
-        childrenTree={{ Person, User }}
+        parentId={parentId} 
+        passProps={passProps}
+        screenProps={screenProps}
       />
     );
   }
@@ -72,7 +75,6 @@ class Organization extends Component {
 //
 Organization.propTypes = {};
 Organization.defaultProps = {
-  setModalVisible: () => {},
   connected: false,
   parent: "",
   parentId: 0,

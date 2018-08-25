@@ -45,7 +45,7 @@ const paths = require('../config/paths');
 const config = require('../config/webpack.config.dev');
 const createDevServerConfig = require('../config/webpackDevServer.config');
 
-const isInteractive = process.stdout.isTTY;
+const isInteractive = process.stdout.isTTY&&false;
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
