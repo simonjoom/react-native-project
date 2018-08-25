@@ -341,23 +341,7 @@ module.exports = {
                         root: paths.appSrc
                       }
                     ],
-                    "@babel/plugin-transform-flow-strip-types",
-                   /* [
-                      "@babel/plugin-proposal-decorators",
-                      {
-                        legacy: true
-                      }
-                    ],
-                    [
-                      "@babel/plugin-proposal-class-properties",
-                      {
-                        loose: true
-                      }
-                    ],
-                    [
-                      "@babel/plugin-transform-runtime",
-                      { helpers: false, regenerator: true }
-                    ]*/
+                    "@babel/plugin-transform-flow-strip-types", 
                   ],
                   // The 'react-native' preset is recommended to match React Native's packager
                   presets: [require.resolve('babel-preset-react-app'),"module:metro-react-native-babel-preset"],
@@ -404,29 +388,9 @@ module.exports = {
                   babelrc: false,
                   compact: false,
                   plugins: [
-                    "expo-web",
-                   /* "@babel/plugin-transform-flow-strip-types",
-                    [
-                      "@babel/plugin-proposal-decorators",
-                      {
-                        legacy: true
-                      }
-                    ],
-                    [
-                      "@babel/plugin-proposal-class-properties",
-                      {
-                        loose: true
-                      }
-                    ],
-                    [
-                      "@babel/plugin-transform-runtime",
-                      { helpers: false, regenerator: true }
-                    ]*/
+                    "expo-web", 
                   ],
-                  presets: [require.resolve('babel-preset-react-app/dependencies'),"module:metro-react-native-babel-preset"],
-                  /*  presets: [
-                    require.resolve('babel-preset-react-app/dependencies'),
-                  ],*/
+                  presets: [require.resolve('babel-preset-react-app/dependencies'),"module:metro-react-native-babel-preset"], 
                   cacheDirectory: false,
                   highlightCode: true
                 }

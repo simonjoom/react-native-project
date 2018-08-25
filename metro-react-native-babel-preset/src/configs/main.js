@@ -31,7 +31,10 @@ require('@babel/plugin-proposal-class-properties'),
 [require('@babel/plugin-transform-parameters')],
 [require('@babel/plugin-transform-shorthand-properties')],
 [require('@babel/plugin-transform-react-jsx')],
-[require('@babel/plugin-transform-regenerator')],
+[require('@babel/plugin-transform-regenerator'),{
+          // Async functions are converted to generators by @babel/preset-env
+          async: false,
+        }],
 [require('@babel/plugin-transform-sticky-regex')],
 [require('@babel/plugin-transform-unicode-regex')],
 [
@@ -58,7 +61,9 @@ const exponentiationOperator = [
 require('@babel/plugin-transform-exponentiation-operator')];
 
 const objectAssign = [require('@babel/plugin-transform-object-assign')];
-const objectRestSpread = [require('@babel/plugin-proposal-object-rest-spread')];
+const objectRestSpread = [require('@babel/plugin-proposal-object-rest-spread'),{
+          useBuiltIns: true,
+        }];
 const nullishCoalescingOperator = [
 require('@babel/plugin-proposal-nullish-coalescing-operator'),
 { loose: true }];

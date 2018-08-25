@@ -90,34 +90,21 @@ module.exports = function(api, opts) {
       // Necessary to include regardless of the environment because
       // in practice some other transforms (such as object-rest-spread)
       // don't work without it: https://github.com/babel/babel/issues/7215
-      require('@babel/plugin-transform-destructuring').default,
+     // require('@babel/plugin-transform-destructuring').default,
       // class { handleClick = () => { } }
       // Enable loose mode to use assignment instead of defineProperty
       // See discussion in https://github.com/facebook/create-react-app/issues/4263
-      [
-        require('@babel/plugin-proposal-class-properties').default,
-        {
-          loose: true,
-        },
-      ],
       // The following two plugins use Object.assign directly, instead of Babel's
       // extends helper. Note that this assumes `Object.assign` is available.
       // { ...todo, completed: true }
-      [
+     /* [
         require('@babel/plugin-proposal-object-rest-spread').default,
         {
           useBuiltIns: true,
         },
-      ],
+      ],*/
       // Polyfills the runtime needed for async/await and generators
-      [
-        require('@babel/plugin-transform-runtime').default,
-        {
-          helpers: false,
-        //  polyfill: false,
-          regenerator: true,
-        },
-      ],
+      
       isEnvProduction && [
         // Remove PropTypes from production build
         require('babel-plugin-transform-react-remove-prop-types').default,
@@ -125,14 +112,22 @@ module.exports = function(api, opts) {
           removeImport: true,
         },
       ],
+      [
+        require('@babel/plugin-transform-runtime').default,
+        {
+          helpers: false,
+        //  polyfill: false,
+          regenerator: true,
+        },
+      ], 
       // function* () { yield 42; yield 43; }
-      !isEnvTest && [
+     /* !isEnvTest && [
         require('@babel/plugin-transform-regenerator').default,
         {
           // Async functions are converted to generators by @babel/preset-env
           async: false,
         },
-      ],
+      ],*/
       // Adds syntax support for import()
       require('@babel/plugin-syntax-dynamic-import').default,
       isEnvTest &&
