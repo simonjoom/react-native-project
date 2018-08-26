@@ -21,10 +21,11 @@ const reducer = Navigator => (history, currState, action, basePath = '/') => {
     case NAVIGATE: {
       const state = Navigator.router.getStateForAction(action, currState) || Navigator.router.getStateForAction(action); 
       const { path, params = {} } = Navigator.router.getPathAndParamsForState(state);
+      let pathf = path.lastIndexOf('/') !== -1 ? path.slice(0, path.lastIndexOf('/')) : path;
       const qs = queryToString(params);
       if (!action.dontPushHistory) {
         history.push({
-          pathname: `${basePath}${path}`,
+          pathname: `${basePath}${pathf}`,
           search: qs,
         });
       }

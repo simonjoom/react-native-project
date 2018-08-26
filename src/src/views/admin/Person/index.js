@@ -1,11 +1,6 @@
 import React, { Component } from "react"; 
 
 import Helper from "../helper/helper";
-
-import Picture from "../Picture/Container";
-import Product from "../Product/Container";
-import Deal from "../Deal/Container";
-import User from "../User/Container";
  
 
 class Person extends Component {

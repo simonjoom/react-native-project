@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Helper from "../helper/helper";
-import { createSwitchNavigator } from "react-navigation";
 
 //import { mRoute } from "src/config/AdminStack";
 //import Person from "../Person/Container";

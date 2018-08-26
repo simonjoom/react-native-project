@@ -117,7 +117,8 @@ if (useTemplate) {
 
 module.exports.srcPaths = [module.exports.appSrc,
 resolveApp('node_modules/react-navigation'),
-/node_modules\/react-native-/,
+resolveApp('node_modules/react-native-web'),
+resolveApp('node_modules/react-native-web-linear-gradient'),
 //    resolveApp('node_modules/react-native-tab-view'),
 //    resolveApp('node_modules/react-native-paper'),
     resolveApp('node_modules/react-navigation-drawer'),
@@ -128,6 +129,17 @@ resolveApp('node_modules/react-navigation'),
     resolveApp('node_modules/@expo/vector-icons'),
 //    resolveApp('node_modules/react-native-platform-touchable'),
 ];
+module.exports.srcPathsExc = [module.exports.appSrc,
+resolveApp('node_modules/react-navigation'),
+resolveApp('node_modules/react-native-web'),
+resolveApp('node_modules/react-native-web-linear-gradient'), 
+    resolveApp('node_modules/react-navigation-drawer'),
+     resolveApp('node_modules/react-navigation-deprecated-tab-navigator'), 
+    resolveApp('node_modules/@expo/vector-icons'),
+    resolveApp('node_modules/react-dom'),
+    resolveApp('node_modules/react'),
+];
+
 module.exports.picker =resolveApp('src/myPicker.js');
 module.exports.vectoricons =resolveApp("node_modules/react-native-vector-icons");
 module.exports.useYarn = fs.existsSync(

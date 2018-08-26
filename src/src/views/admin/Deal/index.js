@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import Helper from "../helper/helper";
 
-import User from "../User/Container";
-import Person from "../Person/Container";
-import Product from "../Product/Container";
-import Stage from "../Stage/Container";
-import Organization from "../Organization/Container";
-
 class Deal extends Component {
   constructor(props) {
     super(props);

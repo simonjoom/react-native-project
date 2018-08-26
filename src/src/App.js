@@ -1,21 +1,12 @@
 import React, { Component } from "react";
 import {
-  AsyncStorage,
-  Button,
-  Dimensions,
-  Text,
-  ScrollView,
-  StatusBar,
-  AppRegistry,
-  View
+  AsyncStorage
 } from "react-native";
 import { ApolloProvider } from "react-apollo";
 import Colors from "./statics/colors";
 import {
-  createStackNavigator,
   createBottomTabNavigator,
   createSwitchNavigator,
-  SafeAreaView,
   createDrawerNavigator
 } from "react-navigation";
 import { withBrowserHistory } from "./browserhistory";
@@ -146,20 +137,20 @@ export const Drawer = createDrawerNavigator(
 const apolloClient = setupApolloClient();
 
 const HistoryNavigator = withBrowserHistory(Drawer);
-//AppRegistry.registerComponent('pipedrive', () => Drawer);
-
-const HOST = true ? "http://localhost:3000" : "https://jekiwijaya.github.io";
+ 
+const HOST = process.env.__DEV__ ? "http://localhost:3000" : "http://ns327841.ip-37-187-112.eu/";
 //const BASE_PATH = true ? "/" : "/react-navigation-browser-history-helpers/";
 export default class App extends Component {
   render() {
     return (
       <ApolloProvider client={apolloClient}>
-        <HistoryNavigator uriPrefix={HOST} />
+        <HistoryNavigator
+          uriPrefix={HOST}
+          ref={navigatorRef => {
+            NavigationService.setTopLevelNavigator(navigatorRef);
+          }}
+        />
       </ApolloProvider>
     );
   }
 }
-
-/*ref={navigatorRef => {
-            NavigationService.setTopLevelNavigator(navigatorRef);
-          }}*/

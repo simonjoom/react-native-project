@@ -1,9 +1,10 @@
-
 //const RNWeb = require('react-native-web')
+//https://github.com/necolas/react-native-web/pull/850
+//https://github.com/Dekoruma/react-native-web-modal
 
-import {canUseDOM} from 'fbjs/lib/ExecutionEnvironment';
-import {Component} from 'react';
-import RNWeb,{ColorPropType} from 'react-native-web';
+import { canUseDOM } from "fbjs/lib/ExecutionEnvironment";
+import { Component } from "react";
+import RNWeb, { ColorPropType } from "react-native-web";
 
 type Props = {
   animated?: boolean,
@@ -11,15 +12,15 @@ type Props = {
   barStyle?: StatusBarStyle,
   hidden?: boolean,
   networkActivityIndicatorVisible?: boolean,
-  showHideTransition?: 'fade' | 'slide',
+  showHideTransition?: "fade" | "slide",
   translucent?: boolean
 };
-type StatusBarAnimation = 'none' | 'fade' | 'slide';
-type StatusBarStyle = 'default' | 'light-content' | 'dark-content';
+type StatusBarAnimation = "none" | "fade" | "slide";
+type StatusBarStyle = "default" | "light-content" | "dark-content";
 
 const { head } = document;
 
-let _barStyle = 'default';
+let _barStyle = "default";
 let _hidden = false;
 let _translucent = false;
 
@@ -29,7 +30,7 @@ function setMetaTag(attrName, content) {
   let tag = head.querySelector(`meta[name=${attrName}]`);
 
   if (!tag) {
-    tag = document.createElement('meta');
+    tag = document.createElement("meta");
     tag.name = attrName;
 
     head.appendChild(tag);
@@ -40,8 +41,8 @@ function setMetaTag(attrName, content) {
 
 function setAppleMobileWebAppCapable() {
   setMetaTag(
-    'apple-mobile-web-app-capable',
-    _hidden || _translucent || _barStyle !== 'default' ? 'yes' : 'no'
+    "apple-mobile-web-app-capable",
+    _hidden || _translucent || _barStyle !== "default" ? "yes" : "no"
   );
 }
 
@@ -49,14 +50,14 @@ function setAppleMobileWebAppStatusBarStyle() {
   setAppleMobileWebAppCapable();
 
   setMetaTag(
-    'apple-mobile-web-app-status-bar-style',
-    _translucent ? 'black-translucent' : _barStyle
+    "apple-mobile-web-app-status-bar-style",
+    _translucent ? "black-translucent" : _barStyle
   );
 }
 
 class StatusBar extends Component<Props> {
   static defaultProps = {
-    showHideTransition: 'fade'
+    showHideTransition: "fade"
   };
 
   static get currentHeight(): ?number {
@@ -68,11 +69,11 @@ class StatusBar extends Component<Props> {
   }
 
   static setBackgroundColor(color: string, animated?: boolean) {
-    setMetaTag('theme-color', color);
+    setMetaTag("theme-color", color);
   }
 
   static setBarStyle(style: StatusBarStyle, animated?: boolean) {
-    _barStyle = style === 'light-content' ? 'black' : 'default';
+    _barStyle = style === "light-content" ? "black" : "default";
 
     setAppleMobileWebAppStatusBarStyle();
   }
@@ -102,11 +103,14 @@ class StatusBar extends Component<Props> {
       translucent
     } = this.props;
 
-    if (backgroundColor) StatusBar.setBackgroundColor(backgroundColor, animated);
+    if (backgroundColor)
+      StatusBar.setBackgroundColor(backgroundColor, animated);
     if (barStyle) StatusBar.setBarStyle(barStyle, animated);
     if (hidden) StatusBar.setHidden(hidden, showHideTransition);
     if (networkActivityIndicatorVisible)
-      StatusBar.setNetworkActivityIndicatorVisible(networkActivityIndicatorVisible);
+      StatusBar.setNetworkActivityIndicatorVisible(
+        networkActivityIndicatorVisible
+      );
     if (translucent) StatusBar.setTranslucent(translucent);
 
     return null;
@@ -115,11 +119,7 @@ class StatusBar extends Component<Props> {
 // add any component override here:
 // note the .default for ES6 libraries
 
+//RNWeb.Modal = require("react-native-web-modal").default;
+RNWeb.StatusBar = StatusBar;
 
-RNWeb.Modal = require('react-native-web-modal').default 
-RNWeb.StatusBar=StatusBar;
-
-
-
-
-module.exports = RNWeb
+module.exports = RNWeb;

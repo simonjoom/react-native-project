@@ -122,11 +122,35 @@ module.exports = {
             // into invalid ecma 5 code. This is why the 'compress' and 'output'
             // sections only apply transformations that are ecma 5 safe
             // https://github.com/facebook/create-react-app/pull/4234
-            ecma: 8,
+           // ecma: 8,
           },
-          compress: {
-            ecma: 5,
-            warnings: false,
+          compress: { 
+        unsafe_comps: true,
+        properties: true,
+        keep_fargs: true,
+        pure_getters: true,
+        collapse_vars: true,
+        unsafe: true,
+        warnings: false,
+        sequences: true,
+        dead_code: true,
+        comparisons: true,
+        conditionals: true,
+        evaluate: true,
+        booleans: true,
+        loops: true,
+        hoist_funs: true,
+        if_return: true,
+        join_vars: true,
+        reduce_funcs: true,
+        expression: true,
+        //   inline: true,
+        drop_debugger: true,
+        drop_console: true,
+        //  top_retain: ["global","bHH"],
+        reduce_vars: true,
+        unused: false,
+         //   ecma: 5, 
             // Disabled because of an issue with Uglify breaking seemingly valid code:
             // https://github.com/facebook/create-react-app/issues/2376
             // Pending further investigation:
@@ -134,19 +158,25 @@ module.exports = {
             comparisons: false,
           },
           mangle: {
+        toplevel: true,
+        properties: {
+          regex: /^(classCallCheck|defineProperty|inheritsLoose|interopRequireDefault|possibleConstructorReturn|slicedToArray|slicedToArrayLoose|toConsumableArray|objectWithoutProperties|interopRequireWildcard|instanceof|inherits|createClass|asyncToGenerator)$/
+        },
+        reserved: ["exports","babelHelpers","import", "$", "_", "require", "React", "ReactDOM", "Object"],
             safari10: true,
           },
           output: {
-            ecma: 5,
+         //   ecma: 5,
             comments: false,
             // Turned on because emoji and regex is not minified properly using default
             // https://github.com/facebook/create-react-app/issues/2488
             ascii_only: true,
           },
+      nameCache: {},
         },
         // Use multi-process parallel running to improve the build speed
         // Default number of concurrent runs: os.cpus().length - 1
-        parallel: true,
+        parallel: false,
         // Enable file caching
         cache: true,
         sourceMap: shouldUseSourceMap,
@@ -163,7 +193,7 @@ module.exports = {
           chunks: 'all',
           reuseExistingChunk: true
         },*/
-        main: {
+       main: {
           name: 'main',
           chunks: 'all',
           enforce: false,
@@ -171,7 +201,7 @@ module.exports = {
           reuseExistingChunk: true
         },
         commons: {
-          test: /(node_modules\/.*\.js)/,
+          test: /(node_modules\/)|babelhelper/,
           name: "vendors",
           chunks: "all",
           enforce: false,
@@ -189,6 +219,7 @@ module.exports = {
     runtimeChunk: true
   },
   resolve: {
+  mainFields: ['jsnext:main', 'browser', 'main'],
     // This allows you to set a fallback for where Webpack should look for modules.
     // We placed these paths second because we want `node_modules` to "win"
     // if there are any conflicts. This matches Node resolution mechanism.
@@ -214,6 +245,10 @@ module.exports = {
       ".graphql"
     ],
     alias: {
+    "react":require.resolve("react/cjs/react.production.min.js"),
+    "react-dom/unstable-native-dependencies":require.resolve("react-dom/cjs/react-dom-unstable-native-dependencies.production.min.js"),
+    "react-dom":require.resolve("react-dom/cjs/react-dom.production.min.js"),
+    
       // @remove-on-eject-begin
       // Resolve Babel runtime relative to react-scripts.
       // It usually still works on npm 3 without this but it would be
@@ -279,7 +314,7 @@ module.exports = {
           }
         ],
         include: paths.srcPaths,
-        exclude: [/[/\\\\]node_modules[/\\\\]/]
+        exclude: [/[/\\\\]node_modules[/\\\\]/,/babelhelper/]
       },
       {
         // "oneOf" will traverse all following loaders until one will
@@ -348,7 +383,7 @@ module.exports = {
           {
             test: /\.(js|jsx|mjs)$/,
             include: paths.srcPaths,
-            exclude: /node_modules\/react-native-web\//,
+           // exclude: /node_modules\/react-native-web\//,
             use: [
               // This loader parallelizes code compilation, it is optional but
               // improves compile time on larger projects
@@ -365,14 +400,14 @@ module.exports = {
                   babelrc: false,
                   // @remove-on-eject-end
                   plugins: [
+                  "@babel/plugin-external-helpers",
                     "expo-web",
                     [
                       "module-resolver",
                       {
                         root: paths.appSrc
                       }
-                    ],
-                    "@babel/plugin-transform-flow-strip-types",
+                    ]
                   ],
                   // The 'react-native' preset is recommended to match React Native's packager
                   presets:[require.resolve('babel-preset-react-app'),"module:metro-react-native-babel-preset"], 
@@ -389,7 +424,7 @@ module.exports = {
           // Unlike the application JS, we only compile the standard ES features.
           {
             test: /\.js$/,
-            exclude: paths.srcPaths,
+            exclude: paths.srcPathsExc,
             use: [
               // This loader parallelizes code compilation, it is optional but
               // improves compile time on larger projects
@@ -405,10 +440,9 @@ module.exports = {
                   babelrc: false,
                   compact: false,
                   plugins: [
-                    "expo-web",
-                    "@babel/plugin-transform-flow-strip-types",
+                    "expo-web"
                   ],
-                  presets: [require.resolve('babel-preset-react-app/dependencies'),"module:metro-react-native-babel-preset"],
+                  presets: [require.resolve('babel-preset-react-app/dependencies')],
                   /*  presets: [
                     require.resolve('babel-preset-react-app/dependencies'),
                   ],*/

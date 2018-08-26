@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import Helper from "../helper/helper";
-import Deal from "../Deal/Container";
 
 class Pipeline extends Component {
   constructor(props) {

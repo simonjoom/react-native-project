@@ -1,7 +1,6 @@
 import React, { Component } from "react"; 
 import Helper from "../helper/helper"; 
-
-import Organization from "../Organization/Container";
+ 
 class User extends Component {
   constructor(props) {
     super(props);

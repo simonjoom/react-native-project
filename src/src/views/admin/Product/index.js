@@ -1,7 +1,5 @@
 import React, { Component } from "react"; 
-import Helper from "../helper/helper";
-import Deal from "../Deal/Container";
-import User from "../User/Container";  
+import Helper from "../helper/helper"; 
 
 class Product extends Component {
   constructor(props) {

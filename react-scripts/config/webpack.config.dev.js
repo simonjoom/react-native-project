@@ -131,16 +131,16 @@ module.exports = {
           test: /\.(sc|c)ss$/,
           chunks: 'all',
           reuseExistingChunk: true
-        },
+        },*/
         main: {
           name: 'main',
           chunks: 'all',
           enforce: false,
           test: /App|main/,
           reuseExistingChunk: true
-        },*/
+        },
         commons: {
-          test: /(node_modules\/(?!webpack-hot).*\.js)/,
+          test: /(node_modules\/(?!webpack-hot))|babelhelper/,
           name: "vendors",
           chunks: "all",
           enforce: false,
@@ -249,7 +249,7 @@ module.exports = {
           }
         ],
         include: paths.srcPaths,
-        exclude: [/[/\\\\]node_modules[/\\\\]/]
+        exclude: [/[/\\\\]node_modules[/\\\\]/,/babelhelper/]
       },
       {
         // "oneOf" will traverse all following loaders until one will
@@ -317,7 +317,7 @@ module.exports = {
           {
             test: /\.(js|jsx|mjs)$/,
             include: paths.srcPaths,
-            exclude: /node_modules\/react-native-web\//,
+         //   exclude: /node_modules\/react-native-web\//,
             use: [
               // This loader parallelizes code compilation, it is optional but
               // improves compile time on larger projects
@@ -334,6 +334,7 @@ module.exports = {
                   babelrc: false,
                   // @remove-on-eject-end
                   plugins: [
+                  "@babel/plugin-external-helpers",
                     "expo-web",
                     [
                       "module-resolver",
@@ -341,24 +342,10 @@ module.exports = {
                         root: paths.appSrc
                       }
                     ],
-                    "@babel/plugin-transform-flow-strip-types", 
                   ],
                   // The 'react-native' preset is recommended to match React Native's packager
                   presets: [require.resolve('babel-preset-react-app'),"module:metro-react-native-babel-preset"],
-                  /*
-                  presets: [require.resolve('babel-preset-react-app')],
-                  plugins: [
-                    [
-                      require.resolve('babel-plugin-named-asset-import'),
-                      {
-                        loaderMap: {
-                          svg: {
-                            ReactComponent: 'svgr/webpack![path]',
-                          },
-                        },
-                      },
-                    ],
-                  ],*/
+                   
                   // This is a feature of `babel-loader` for webpack (not Babel itself).
                   // It enables caching results in ./node_modules/.cache/babel-loader/
                   // directory for faster rebuilds.
@@ -390,7 +377,7 @@ module.exports = {
                   plugins: [
                     "expo-web", 
                   ],
-                  presets: [require.resolve('babel-preset-react-app/dependencies'),"module:metro-react-native-babel-preset"], 
+                  presets: [require.resolve('babel-preset-react-app/dependencies')], 
                   cacheDirectory: false,
                   highlightCode: true
                 }
