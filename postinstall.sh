@@ -5,7 +5,7 @@ export NOYARNPOSTINSTALL="yes"
 cp -Rf ./babel-preset-react-app ./node_modules/
 cp -Rf ./metro-react-native-babel-preset ./node_modules/
 cp -Rf ./react-native-vector-icons ./node_modules/
-cp -Rf ./react-native-web-modal ./node_modules/
+cp -Rf ./react-native-web ./node_modules/
 cp -Rf ./eslint-config-react-app ./node_modules/
 cp -Rf ./react-dev-utils ./node_modules/
 cp -Rf ./react-scripts ./node_modules/
