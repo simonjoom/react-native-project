@@ -9,6 +9,7 @@ cp -Rf ./react-native-web ./node_modules/
 cp -Rf ./eslint-config-react-app ./node_modules/
 cp -Rf ./react-dev-utils ./node_modules/
 cp -Rf ./react-scripts ./node_modules/
+cp -Rf ./plugin-transform-typeof-symbol ./node_modules/@babel/
 rm -Rf ./node_modules/expo-web/node_modules/
 cp -Rf ./babel-eslint ./node_modules/
 echo "Succeed! The Web-App is ready to be run now"

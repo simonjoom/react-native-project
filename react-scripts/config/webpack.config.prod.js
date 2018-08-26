@@ -219,7 +219,7 @@ module.exports = {
     runtimeChunk: true
   },
   resolve: {
-  mainFields: ['jsnext:main', 'browser', 'main'],
+  mainFields: ['jsnext:main', 'module','browser', 'main'],
     // This allows you to set a fallback for where Webpack should look for modules.
     // We placed these paths second because we want `node_modules` to "win"
     // if there are any conflicts. This matches Node resolution mechanism.
@@ -237,7 +237,7 @@ module.exports = {
     extensions: [
       ".web.js",
       ".mjs",
-      ".js",
+      ".js", '.tsx', '.ts',
       ".json",
       ".web.jsx",
       ".jsx",
@@ -245,8 +245,11 @@ module.exports = {
       ".graphql"
     ],
     alias: {
+ "react-apollo":path.join(paths.appPath,"src/react-apollo-master"),  
     "react":require.resolve("react/cjs/react.production.min.js"),
-    "react-dom/unstable-native-dependencies":require.resolve("react-dom/cjs/react-dom-unstable-native-dependencies.production.min.js"),
+"lodash":"lodash-es",   "react-dom/unstable-native-dependencies":require.resolve("react-dom/cjs/react-dom-unstable-native-dependencies.production.min.js"),
+    "react-dom/server":require.resolve("react-dom/cjs/react-dom-server.browser.production.min.js"),
+    
     "react-dom":require.resolve("react-dom/cjs/react-dom.production.min.js"),
     
       // @remove-on-eject-begin
@@ -315,6 +318,11 @@ module.exports = {
         ],
         include: paths.srcPaths,
         exclude: [/[/\\\\]node_modules[/\\\\]/,/babelhelper/]
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
       },
       {
         // "oneOf" will traverse all following loaders until one will
@@ -440,6 +448,7 @@ module.exports = {
                   babelrc: false,
                   compact: false,
                   plugins: [
+                  "@babel/plugin-external-helpers",
                     "expo-web"
                   ],
                   presets: [require.resolve('babel-preset-react-app/dependencies')],
