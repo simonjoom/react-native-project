@@ -16,15 +16,16 @@ import StorageKeys from "../statics/storage-keys";
 //require('dotenv').config()
 let cachedToken = "";
 let pathbackend="http://ns327841.ip-37-187-112.eu/graphql/";
+let uriwebsocket="ws://ns327841.ip-37-187-112.eu/subscriptions";
+//+process.env.REACT_APP_ENDPOINT;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   // dev code
-  pathbackend="http://localhost:4000/graphql/"
+  pathbackend="http://localhost:4000/graphql/";
+  uriwebsocket="ws://localhost:4000/subscriptions";
 }
 
-const uriwebsocket=process.env.REACT_APP_ENDPOINT;
+//process.env.REACT_APP_ENDPOINT;
 const isFile = value => {
-  console.log("isFile?",value)
-  console.log("isFile?",value instanceof File)
   return (typeof File !== "undefined" && value instanceof File) ||
   (typeof Blob !== "undefined" && value instanceof Blob);
 }
@@ -46,8 +47,7 @@ export function setupApolloClient() {
   };
 
   const wsLink = new WebSocketLink({
-    uri: "wss://"+uriwebsocket,
-    // uri: "ws://localhost:4000/subscriptions",
+    uri: uriwebsocket, 
     options: {
       reconnect: true,
       connectionParams: connectionParams
@@ -116,6 +116,7 @@ export function setupApolloClient() {
   );
   const isSubscriptionOperation = ({ query }) => {
     const { kind, operation } = getMainDefinition(query);
+    console.log(query,kind)
     return kind === "OperationDefinition" && operation === "subscription";
   };
 
