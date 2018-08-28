@@ -5,13 +5,19 @@
 // GraphQL mutation operation: deletePicture
 // ====================================================
 
-export interface deletePicture_deletePicture {
-  id: string;
+export interface deletePicture_deleteBigpicture_upload {
+  path: string;
+  filename: string;
+}
+
+export interface deletePicture_deleteBigpicture {
+  id: string | null;
   file: string;
+  upload: deletePicture_deleteBigpicture_upload[] | null;
 }
 
 export interface deletePicture {
-  deletePicture: deletePicture_deletePicture | null;
+  deleteBigpicture: deletePicture_deleteBigpicture;
 }
 
 export interface deletePictureVariables {

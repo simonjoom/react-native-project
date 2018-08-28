@@ -29,7 +29,9 @@ function isFile(str) {
 function isSameEntitie(parent, type) {
   return parent && parent.indexOf(type) !== -1;
 }
-
+function isDisplayable(str) {
+  return str.indexOf("NoDisplay") === -1;
+}
 function isEnum(str) {
   return str.indexOf("Enum") !== -1;
 }
@@ -41,11 +43,14 @@ function isObject(value) {
 }
 
 function isEntitie(str) {
-  return !(
-    isFile(str) ||
-    str.indexOf("String") !== -1 ||
-    str.indexOf("ID") !== -1 ||
-    str.indexOf("Enum") !== -1
+  return (
+    isDisplayable(str) &&
+    !(
+      isFile(str) ||
+      str.indexOf("String") !== -1 ||
+      str.indexOf("ID") !== -1 ||
+      str.indexOf("Enum") !== -1
+    )
   );
   //return obj.indexOf("[") !== -1 && obj.indexOf("]") !== -1;
   //it's a node like "[Product!]!","[OrderableProduct!]!","ENUM",
@@ -102,7 +107,7 @@ class Helper extends Component {
 
     this.state = {
       pictures: [],
-      FileOut: {},
+      upload: [],
       tofetch: [...datas],
       selected: this.index_current,
       row: datas[this.index_current],
@@ -112,9 +117,6 @@ class Helper extends Component {
       subscription: null
     };
     console.log("datas", this.state.tofetch);
-    Object.keys(props.childrenTree).forEach(key => {
-      this.state.modal[key] = false;
-    });
     this.selectedId = [];
     this.fetchState = this.fetchState.bind(this);
     this.renderPicker = this.renderPicker.bind(this);
@@ -134,12 +136,16 @@ class Helper extends Component {
 
   componentDidMount() {
     const that = this;
+    const selectSub = that.props.selectSub
+      ? that.props.selectSub
+      : that.props.selectResultSelect;
+    console.log("this.props", this.props);
     this.handle = this.props.subscribe().subscribe({
       next({ data }) {
         console.log("Received key command: ", data);
         console.log("that.index_current", that.index_current);
         if (data) {
-          const el = data[that.props.selectResultSelect];
+          const el = data[selectSub];
           if (el.mutation === "CREATED") {
             const out = el.node;
             that.index_current = that.state.tofetch.length;
@@ -151,6 +157,7 @@ class Helper extends Component {
             const collec = that.removeInCollection(out);
             const curr = collec[0];
             that.selectorVal = curr ? curr[that.props.selector] : "";
+            that.setState({ upload: [], pictures: [] });
             that.fetchState(curr, 0, collec);
           } else if (el.mutation === "UPDATED") {
             const out = el.node;
@@ -158,7 +165,7 @@ class Helper extends Component {
             that.fetchState(
               out,
               that.index_current,
-              that.updateInCollection(out)
+              that.updateInCollection(that.state.tofetch, out)
             );
           }
         }
@@ -172,6 +179,7 @@ class Helper extends Component {
     });
   }
   componentWillUnmount() {
+    console.log("error", "WillUnmount");
     this.handle.unsubscribe();
   }
   getUniques = () => {
@@ -188,10 +196,12 @@ class Helper extends Component {
     //toupd.namewhere = this.selectorVal;
     return this.props.upsertQuery(toupd).catch(reason => {
       console.log(reason);
-      const un = this.getUniques();
-      alert(
-        "Fields already exist in database please change : " + un.join(" or ")
-      );
+      if (reason) {
+        const un = this.getUniques();
+        alert(
+          "Fields already exist in database please change : " + un.join(" or ")
+        );
+      }
     });
     /* if (selector === "id" || !toupd.id) return upsertQuery(toupd);
     else
@@ -206,27 +216,43 @@ class Helper extends Component {
         }
       );*/
   };
-  updateInCollection = object => {
-    const collection = this.state.tofetch;
+  updateInCollection = (collection, object, key = "id") => {
     return collection.reduce(function(tally, el) {
-      var pick = el.id === object.id ? object : el;
+      var pick = el[key] === object[key] ? object : el;
       tally.push(pick);
       return tally;
     }, []);
   };
+
+  updateelseaddInCollection = (collection, object, key = "id") => {
+    let find = false;
+    let coll = collection.reduce(function(tally, el) {
+      var pick = el[key] === object[key] ? object : el;
+      tally.push(pick);
+      find = !find ? el[key] === object[key] : find;
+      return tally;
+    }, []);
+    if (!find) {
+      coll.push(object);
+    }
+    return coll;
+  };
+
   addInCollection = object => {
     const collection = this.state.tofetch;
     return [...collection, object];
   };
   removeInCollection = object => {
     const collection = this.state.tofetch;
+    console.log("removeInCollection", collection, object);
+    collection.delete;
     return collection.filter(tally => tally.id !== object.id);
   };
 
   prepareFordtb = (object, iscreate, getkey = false, disconnectid = false) => {
     let outobj = {};
-    console.log("prepareFordtb", object);
     Object.keys(object).map((key, index) => {
+      console.log("prepareFordtb", object, key);
       const valps = object[key];
       const placehold = this.props.placeholder[key];
       if (isEntitie(placehold)) {
@@ -288,22 +314,26 @@ class Helper extends Component {
 
   saveId = iscreate => {
     let getkey, vals, valout;
-    const { filename } = this.state.FileOut;
-    getkey = filename ? "file" : "id";
+    const upload = this.state.upload;
+    getkey = upload && upload.length > 0 ? "file" : "id";
     vals = this.state.fields[getkey];
-    const selector = filename
-      ? filename
-      : this.state.fields.id
-        ? this.state.fields.id
-        : 0;
-
-    if (filename) {
-      if (!iscreate) {
+    const selector =
+      upload && upload.length > 0
+        ? upload[0].filename
+        : this.state.fields.id
+          ? this.state.fields.id
+          : 0;
+    console.log("trace", upload, iscreate);
+    if (upload && upload.length > 0) {
+      if (iscreate) {
         valout = selector ? selector : "";
       } else {
         // add file at the list :
         // input string "file1,file2" output "file1,file2,file3"
-        valout = vals === "" ? [] : vals.split(",");
+        //valout = updateelseaddInCollection(vals, object, "filename");
+        // console.log("updateelseaddInCollection", vals, object, valout);
+
+        valout = vals === "" ? "" : vals.split(",");
         if (valout.indexOf(selector) !== -1) return;
         valout.push(selector);
         valout = valout.join();
@@ -495,7 +525,8 @@ class Helper extends Component {
         onPickerConfirm={el => {
           if (el) {
             // this.fetchState(null, null, 0);
-            return deleteQuery({ [selector]: el[0] });
+            const test = deleteQuery({ [selector]: el[0] });
+            console.log("deleteQuery", test);
           }
         }}
         onValueChange={(el, index) => {
@@ -527,9 +558,11 @@ class Helper extends Component {
     );
   }
   renderFields(fields, placeholder, style, selectResultSelect, parent) {
+    console.log("runfields", fields);
     if (fields)
       return Object.keys(placeholder).map((key, index) => {
         const vals = fields[key];
+        console.log(fields, key, vals);
         const placehold = placeholder[key];
         if (key !== "id" && isEntitie(placehold)) {
           console.log("entitie:", placehold);
@@ -674,25 +707,16 @@ class Helper extends Component {
         } else if (isFile(placehold)) {
           return (
             <CompUpload
-              content={
-                <Input
-                  autoFocus
-                  widthAuto
-                  type={"big"}
-                  editable={false}
-                  placeholder={placeholder[key]}
-                  placeholderTextColor="gray"
-                  key={key + "_field_" + selectResultSelect + index}
-                  ref={selectResultSelect + index}
-                  label={translate(key + "_" + selectResultSelect)}
-                  value={vals && vals.file ? vals.file : vals}
-                />
-              }
-              preview={this.state.FileOut}
+              vals={vals}
+              placeholder={placeholder[key]}
+              mkey={key + "_field_" + selectResultSelect + index}
+              mref={selectResultSelect + index}
+              label={translate(key + "_" + selectResultSelect)}
+              preview={this.state.upload}
               saveUp={(out, allpictures) => {
                 const obj = removeEmpty({
                   ...this.state,
-                  FileOut: out,
+                  upload: out,
                   pictures: allpictures
                 });
                 console.log("saveUp", obj);
@@ -702,7 +726,7 @@ class Helper extends Component {
           );
         } else if (isEnum(placehold)) {
           return <>{this.renderPickerEnum(getEnum(placehold), vals, key)}</>;
-        } else {
+        } else if (isDisplayable(placehold)) {
           console.log(key + "_" + selectResultSelect);
           return (
             <Input
@@ -821,7 +845,9 @@ class Helper extends Component {
           text="Update"
           validator={this.validateFields(
             root !== "Picture" ||
-              (root === "Picture" && this.state.FileOut.filename)
+              (root === "Picture" &&
+                this.state.upload &&
+                this.state.upload.length > 0)
           )}
           error="Error Exist"
         />
@@ -829,7 +855,9 @@ class Helper extends Component {
           text="Create"
           validator={this.validateFields(
             root !== "Picture" ||
-              (root === "Picture" && this.state.FileOut.filename)
+              (root === "Picture" &&
+                this.state.upload &&
+                this.state.upload.length > 0)
           )}
           upsertQuery={upsertQuery}
           selector={selector}
@@ -866,7 +894,7 @@ class Helper extends Component {
                   onPress={() => {
                     const obj = removeEmpty({
                       ...this.state,
-                      FileOut: pic
+                      upload: [pic]
                     });
                     console.log("saveUp", obj);
                     return this.setState(obj);
@@ -896,10 +924,7 @@ class Helper extends Component {
 //
 Helper.propTypes = {};
 Helper.defaultProps = {
-  watchQuery: null,
-  setModalVisible: () => {},
   connected: false,
-  childrenTree: {},
   parentId: 0
 };
 

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { View, Image } from "react-native";
+import Input from "src/components/input/Input";
 import NavigationButton from "src/components/navigation-button/NavigationButton";
 
 const pathbase =
   process.env.NODE_ENV === "development"
-    ? "http://localhost:4000/"
+    ? "http://localhost:3000/static/media/"
     : "http://ns327841.ip-37-187-112.eu/static/media/";
 class Uploads extends Component {
   constructor(props) {
@@ -17,7 +18,8 @@ class Uploads extends Component {
   }
   openImagePicker = e => {
     this.props.handleUpload(this.state.file).then(({ data }) => {
-      if (data) return this.props.saveUp(data.singleUpload, undefined);
+      if (data)
+        return this.props.saveUp([data.singleUpload], undefined);
     });
   };
   onChangeFile = e => {
@@ -39,21 +41,21 @@ class Uploads extends Component {
     console.log("componentWillMount");
     this.uploads = [];
   }
-  componentWillReceiveProps(newprops, state) { 
+  componentWillReceiveProps(newprops, state) {
     const { data } = newprops;
     //if (!data.loading) {
     if (data && data.uploads && data.uploads.length !== this.uploads.length) {
       this.uploads = data.uploads;
-      this.props.saveUp({}, this.uploads);
+      this.props.saveUp([], this.uploads);
     }
     // }
   }
   componentDidMount() {
-    const { data } = this.props; 
-    if (data && data.uploads) this.props.saveUp({}, data.uploads);
+    const { data } = this.props;
+    if (data && data.uploads) this.props.saveUp([], data.uploads);
   }
   render() {
-    const { data, preview } = this.props;
+    const { data, preview, vals, mkey, mref, label, placeholder } = this.props;
     let datas;
     console.log("updateUpload");
     //const selected = this.state.selected;
@@ -65,7 +67,19 @@ class Uploads extends Component {
 
     return (
       <View>
-        {this.props.content}
+        {vals &&
+          vals.map(el => (
+            <Image
+              style={{
+                width: 70,
+                height: 70,
+                resizeMode: Image.resizeMode.contain,
+                borderWidth: 1,
+                borderColor: "blue"
+              }}
+              source={{ uri: pathbase + el.path }}
+            />
+          ))}
         <NavigationButton
           enabled={this.state.file}
           text="Upload"
@@ -98,4 +112,18 @@ Uploads.propTypes = {};
 Uploads.defaultProps = {};
 
 export default Uploads;
- 
+
+/*        {vals && (
+          <Input
+            autoFocus
+            widthAuto
+            type={"big"}
+            editable={false}
+            placeholder={placeholder}
+            placeholderTextColor="gray"
+            key={mkey}
+            ref={mref}
+            label={label}
+            value={vals}
+          />
+        )}*/

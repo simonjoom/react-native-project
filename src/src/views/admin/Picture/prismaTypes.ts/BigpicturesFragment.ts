@@ -2,20 +2,16 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: pictures
+// GraphQL fragment: BigpicturesFragment
 // ====================================================
 
-export interface pictures_bigpictures_upload {
+export interface BigpicturesFragment_upload {
   path: string;
   filename: string;
 }
 
-export interface pictures_bigpictures {
+export interface BigpicturesFragment {
   id: string | null;
   file: string;
-  upload: pictures_bigpictures_upload[] | null;
-}
-
-export interface pictures {
-  bigpictures: (pictures_bigpictures | null)[] | null;
+  upload: BigpicturesFragment_upload[] | null;
 }

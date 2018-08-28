@@ -1,7 +1,7 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
-import { OrganizationSubscriptionWhereInput, MutationType } from "../../../../../../prismaTypes.ts/globalTypes";
+import { MutationType } from "../../../../../../prismaTypes.ts/globalTypes";
 
 // ====================================================
 // GraphQL subscription operation: organizationsub
@@ -39,5 +39,5 @@ export interface organizationsub {
 }
 
 export interface organizationsubVariables {
-  where?: OrganizationSubscriptionWhereInput | null;
+  mutation?: MutationType[] | null;
 }

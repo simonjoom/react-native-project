@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/public-greenslayer-136/pipedrive/dev
-# timestamp: Thu Aug 23 2018 14:55:59 GMT+0200 (Central European Summer Time)
+# timestamp: Tue Aug 28 2018 05:25:22 GMT+0200 (Central European Summer Time)
 
 enum Active {
   ACTIVATED

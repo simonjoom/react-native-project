@@ -11,6 +11,7 @@
 const autoprefixer = require("autoprefixer");
 const path = require("path");
 const webpack = require("webpack");
+const WriteFilePlugin = require('write-file-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
@@ -109,7 +110,7 @@ module.exports = {
     // served by WebpackDevServer in development. This is the JS bundle
     // containing code from all our entry points, and the Webpack runtime.
     filename: "static/bundle.js",
-    path: path.resolve(paths.appPath, "./buildClient"),
+    path: paths.appBuilddev,
     // There are also additional JS chunk files if you use code splitting.
     chunkFilename: "static/[name].chunk.js",
     // This is the URL that app is served from. We use "/" in development.
@@ -464,9 +465,10 @@ module.exports = {
     ]
   },
   plugins: [
+    new WriteFilePlugin(),
         new CopyWebpackPlugin([{
         from: paths.uploadsPath,
-        to: paths.appPublic+"/"+"static/media/"
+        to: paths.appBuilddev+"/static/media/"
       }], {
         ignore: [
           // Doesn't copy any files with a txt extension

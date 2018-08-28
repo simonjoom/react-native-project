@@ -1,33 +1,27 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
-import { PictureSubscriptionWhereInput, MutationType } from "../../../../../../prismaTypes.ts/globalTypes";
+import { MutationType } from "../../../../../../prismaTypes.ts/globalTypes";
 
 // ====================================================
 // GraphQL subscription operation: picturesub
 // ====================================================
 
-export interface picturesub_picture_node {
-  id: string;
+export interface picturesub_bigpicture_node {
+  id: string | null;
   file: string;
 }
 
-export interface picturesub_picture_previousValues {
-  id: string;
-  file: string;
-}
-
-export interface picturesub_picture {
+export interface picturesub_bigpicture {
   mutation: MutationType;
-  node: picturesub_picture_node | null;
+  node: picturesub_bigpicture_node | null;
   updatedFields: string[] | null;
-  previousValues: picturesub_picture_previousValues | null;
 }
 
 export interface picturesub {
-  picture: picturesub_picture | null;
+  bigpicture: picturesub_bigpicture | null;
 }
 
 export interface picturesubVariables {
-  where?: PictureSubscriptionWhereInput | null;
+  mutation?: MutationType[] | null;
 }

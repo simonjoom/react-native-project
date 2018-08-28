@@ -37,7 +37,7 @@ const OrganizationOut = compose(
           query: organizationsub,
           fetchPolicy: "network-only",
           variables: {
-            where: { mutation_in: ["CREATED", "UPDATED", "DELETED"] }
+            mutation_in: ["CREATED", "UPDATED", "DELETED"]
           }
         }),
       organization: ({ name }) =>

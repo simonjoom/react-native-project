@@ -1,14 +1,7 @@
-# import User, Product,OrganizationSubscriptionWhereInput,OrganizationSubscriptionPayload from "./generated/prisma.graphql"
-# import ProductSubscriptionWhereInput,ProductSubscriptionPayload from "./generated/prisma.graphql"
-# import DealSubscriptionWhereInput,DealSubscriptionPayload from "./generated/prisma.graphql"
-# import StageSubscriptionWhereInput,StageSubscriptionPayload from "./generated/prisma.graphql"
-# import PersonSubscriptionWhereInput,PersonSubscriptionPayload from "./generated/prisma.graphql"
-# import PipelineSubscriptionWhereInput,PipelineSubscriptionPayload from "./generated/prisma.graphql"
-# import PictureSubscriptionWhereInput,PictureSubscriptionPayload from "./generated/prisma.graphql"
-# import UserSubscriptionWhereInput,UserSubscriptionPayload from "./generated/prisma.graphql"
+# import MutationType,PictureSubscriptionWhereInput,PictureSubscriptionPayload,User,File, Product from "./generated/prisma.graphql"
 
 scalar Upload
- 
+
 type File {
   id: ID
   path: String!
@@ -16,12 +9,62 @@ type File {
   mimetype: String!
   encoding: String!
 }
+type Bigpic {
+  id: ID
+  path: String!
+  filename: String!
+  mimetype: String!
+  encoding: String!
+}
+type Bigpicture {
+  id: ID
+  file: String!
+  upload: [Bigpic!]
+}
+type BigpicturePreviousValues {
+  id: ID!
+  file: String!
+  upload: [Bigpic!]
+}
+type BigpictureSubscriptionPayload {
+  mutation: MutationType!
+  node: Bigpicture
+  updatedFields: [String!]
+  previousValues: BigpicturePreviousValues
+}
 
 type Query {
   getInfo(file: String!): File
   uploads: [File]
+  bigpicture(
+    where: PictureWhereInput
+    orderBy: PictureOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): Bigpicture
+  bigpictures(
+    where: PictureWhereInput
+    orderBy: PictureOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Bigpicture]
 }
 type Mutation {
+  upsertBigpicture(
+    where: PictureWhereUniqueInput!
+    create: PictureUpdateInput!
+    update: PictureUpdateInput!
+  ): Bigpicture!
+
+  deleteBigpicture(
+    where: PictureWhereUniqueInput!
+  ): Bigpicture!
   singleUpload(file: Upload!): File!
   multipleUpload(files: [Upload!]!): [File!]!
 }
@@ -47,4 +90,10 @@ type Mutation {
     lastName: String!
   ): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
+}
+
+type Subscription {
+  bigpicture(
+    where: PictureSubscriptionWhereInput
+  ): BigpictureSubscriptionPayload
 }

@@ -38,15 +38,14 @@ const server = new ApolloServer({
   schema: ultimateSchema,
   subscriptions: "/subscriptions",
   cors: true,
-  context: ({ req, res }) => ({
+  context: async({ req, res }) => ({
     ...req,
     db,
     //mailer
   })
 });
 server.applyMiddleware({
-  app,
-  path: "/",
+  app, 
   //  bodyParserConfig:true,
   cors: true
 });

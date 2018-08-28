@@ -72,8 +72,9 @@ const resolveOwn = relativePath => path.resolve(__dirname, '..', relativePath);
 module.exports = {
   dotenv: resolveApp('.env'),
   appPath: resolveApp('.'),
-  uploadsPath: resolveApp('src/src/uploads'),
+  uploadsPath: resolveApp('build/static/media'),
   appBuild: resolveApp('build'),
+  appBuilddev: resolveApp('buildDev'),
   appPublic: resolveApp('public'),
   appHtml: resolveApp('public/index.html'),
   appIndexJs: resolveApp('src/index.js'),

@@ -40,8 +40,8 @@ query organizations {
   }
 }
 
-subscription organizationsub($where: OrganizationSubscriptionWhereInput) {
-  organization(where: $where) {
+subscription organizationsub($mutation: [MutationType!]) {
+  organization(where: { mutation_in: $mutation }) {
     mutation
     node {
       ...OrganizationFragment

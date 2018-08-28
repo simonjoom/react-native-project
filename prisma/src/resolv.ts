@@ -1,7 +1,15 @@
 //import { makeExecutableSchema } from "graphql-tools";
 import { makeExecutableSchema, mergeSchemas } from "apollo-server-express";
 import { readFileSync } from "fs";
-import { storeFS, storeDB, lwdb, existInDB } from "./lowdb";
+import { Context } from "./utils";
+import {
+  storeFS,
+  storeDB,
+  removeInDB,
+  getDB,
+  uploadsfromlistfilenameInDB,
+  uploadsfromfilenameInDB
+} from "./lowdb";
 import promisesAll from "promises-all";
 import { find } from "lodash";
 var path = require("path");
@@ -29,14 +37,15 @@ const processUpload = upload => {
   // const { stream, filename, mimetype, encoding } = await upload;
   return new Promise((resolve, reject) => {
     return upload.then(({ stream, filename, mimetype, encoding }) => {
-      const el = existInDB(filename);
+      const el = uploadsfromfilenameInDB(filename);
       if (el.length > 0) {
         var out = el.map(a => Object.assign({}, a));
         stream.resume();
         stream.on("end", () => {
           console.log("got to the end, but did not read anything");
         });
-        return out[0];
+        console.log(out);
+        resolve(out[0]);
       } else {
         console.log("processUpload");
         return storeFS({ stream, filename }).then(({ id, path }) => {
@@ -68,11 +77,15 @@ export const db = new Prisma({
   debug: true // log all GraphQL queries & mutations
   //fragmentReplacements: generatedFragmentReplacements
 });
+
 const preparedTopLevelQueryResolvers = prepareTopLevelResolvers(db.query);
 const preparedTopLevelMutationResolvers = prepareTopLevelResolvers(db.mutation);
 const preparedTopLevelSubscriptionResolvers = prepareTopLevelSubscriptionResolvers(
   db.subscription
 );
+/*const preparedTopLevelSubscriptionResolvers = prepareTopLevelSubscriptionResolvers(
+  db.subscription
+);*/
 
 /*
 export default {
@@ -100,15 +113,45 @@ export const resolvers = {
     ...preparedTopLevelQueryResolvers,
     getInfo: (obj, data, ctx) => {
       console.log("getInfo", data);
-      find(lwdb.get("uploads").value(), { filename: data.file });
+      find(getDB(), { filename: data.file });
     },
-    uploads: () => lwdb.get("uploads").value()
+    bigpicture: async (obj, data, ctx: Context) => {
+      const all = await resolvers.Query.bigpictures(obj, data, ctx);
+      return all[0];
+    },
+    bigpictures: async (obj, data, ctx: Context) => {
+      const filesets = await ctx.db.query.pictures(data);
+
+      const test = filesets.map(pic => {
+        const arr = pic.file.split(",");
+        const picupload = uploadsfromlistfilenameInDB(arr);
+        return {
+          file: pic.file,
+          upload: picupload,
+          id: pic.id
+        };
+      });
+      return test;
+    },
+    uploads: () => getDB()
   },
   Mutation: {
     ...preparedTopLevelMutationResolvers,
-    singleUpload: async (obj, data, ctx) => { 
-      const out = await processUpload(data.file); 
+    singleUpload: async (obj, data, ctx) => {
+      const out = await processUpload(data.file);
       return out;
+    },
+    upsertBigpicture: async (obj, data, ctx: Context, info) => {
+      return await ctx.db.mutation.upsertPicture(data, `{id file }`);
+    },
+    deleteBigpicture: async (obj, data, ctx: Context, info) => {
+      const pic = await ctx.db.query.picture(data);
+      console.log("delete", pic);
+      //const arr = pic.file.split(",");
+      // const uploadout = await removeInDB(arr);
+      // console.log(uploadout);
+      await ctx.db.mutation.deletePicture(data, info);
+      return pic;
     },
     multipleUpload: async (obj, { files }) => {
       const { resolve, reject } = await promisesAll.all(
@@ -125,58 +168,38 @@ export const resolvers = {
     }
   },
   Subscription: {
-    //...preparedTopLevelSubscriptionResolvers,
-    organization: {
-      subscribe: async (parent, args, context, info) => {
-        return await context.db.subscription.organization({}, info);
-      }
-    },
-    picture: {
-      subscribe: async (parent, args, context, info) => {
-        return await context.db.subscription.picture({}, info);
-      }
-    },
-    stage: {
-      subscribe: async (parent, args, context, info) => {
-        return await context.db.subscription.stage({}, info);
-      }
-    },
-    pipeline: {
-      subscribe: async (parent, args, context, info) => {
-        return await context.db.subscription.pipeline({}, info);
-      }
-    },
-    product: {
-      subscribe: async (parent, args, context, info) => {
-        return await context.db.subscription.product({}, info);
-      }
-    },
-    person: {
-      subscribe: async (parent, args, context, info) => {
-        return await context.db.subscription.person({}, info);
-      }
-    },
-    user: {
-      subscribe: async (parent, args, context, info) => {
-        return await context.db.subscription.user({}, info);
-      }
-    },
-    deal: {
-      subscribe: async (parent, args, context, info) => {
-        return await context.db.subscription.deal({}, info);
+    ...preparedTopLevelSubscriptionResolvers,
+    bigpicture: {
+      resolve: (payload, args, ctx: Context, info) => {
+        const data = Object.assign({}, payload.picture);
+        const pic = payload.picture.node && payload.picture.node.file;
+        if (pic) {
+          const arr = pic.split(",");
+          data.node.upload = uploadsfromlistfilenameInDB(arr);
+        }
+        console.log("SUBSCRIPTION RESOLVER", data);
+        return data;
+      },
+      subscribe: async (parent, args, ctx: Context, info) => {
+        return await ctx.db.subscription.picture(
+          {},
+          `{
+          mutation
+        node {
+          id
+          file
+        }
+        previousValues {
+          id
+          file
+        }
+      }`
+        );
       }
     }
-    /*organization: {
-      subscribe: async (parent, args, context, info) => {
-        console.log(info);
-        const test = await context.db.subscription.organization({}, info);
-        return test;
-      }
-    }*/
-  },
-  User
+  }
 };
-
+//console.log(db.subscription.organization)
 const firstSchema = importSchema(
   path.join(__dirname, "./generated/prisma.graphql")
 );
@@ -192,3 +215,4 @@ export const ultimateSchema = mergeSchemas({
   schemas: [schema, schema2],
   resolvers
 });
+//console.log(ultimateSchema.getSubscriptionType().getFields())

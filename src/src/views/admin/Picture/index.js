@@ -8,12 +8,14 @@ class Picture extends Component {
     this.initfetch = [
       {
         id: "",
-        file: ""
+        file: "",
+        upload: []
       }
     ];
     this.initplaceholder = {
       id: "ID",
-      file: "[File]"
+      file: "NoDisplay",
+      upload: "[File]"
     };
   }
 
@@ -22,34 +24,32 @@ class Picture extends Component {
       data,
       deletePicture,
       picturesub,
-      upsertPicture,
-      getInfo,
+      upsertPicture, 
       picture,
       screenProps,
       navigation,
       parentId
     } = this.props;
     //const selected = this.state.selected;
-    console.log("updatePicture", data.pictures, this.props);
+    console.log("updatePicture", data.bigpictures, this.props);
     //  const pictures = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allPictures;
     const passProps = {
       ...this.props.navigation.state.params,
     };
 
-    let datas = data.pictures;
+    let datas = data.bigpictures;
     if (!(datas && datas.length > 0)) datas = this.initfetch;
     return (
       <Helper
         tofetch={datas}
         placeholder={this.initplaceholder}
         selector="id"
-        navigation={navigation}
-        getInfo={getInfo}
+        navigation={navigation} 
         subscribe={picturesub}
         upsertQuery={upsertPicture}
         deleteQuery={deletePicture}
         selectQuery={picture}
-        selectResultSelect="picture"
+        selectResultSelect="bigpicture"
         root="Picture"
         parentId={parentId}
         passProps={passProps}
@@ -61,11 +61,8 @@ class Picture extends Component {
 //
 Picture.propTypes = {};
 Picture.defaultProps = {
-  setModalVisible: () => {},
-  connected: false,
-  parent: "",
-  parentId: 0,
-  selectedId: false
+  connected: false, 
+  parentId: 0
 };
 
 export default Picture;

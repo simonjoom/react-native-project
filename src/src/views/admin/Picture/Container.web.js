@@ -10,8 +10,7 @@ import {
 import Comp from "./index";
 import { loader } from "../loader";
 //import ResortComp from "../resort/ResortContainer";
-
-import { createStackNavigator } from "react-navigation";
+ 
 //TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
 const PictureOut = compose(
@@ -31,15 +30,7 @@ const PictureOut = compose(
     })
   }),
   graphql(upsertPicture, {
-    props: ({ mutate, ownProps }) => ({
-      getInfo: ({ file }) =>
-        ownProps.client.query({
-          query: getInfo,
-          fetchPolicy: "network-only",
-          variables: {
-            file
-          }
-        }),
+    props: ({ mutate, ownProps }) => ({ 
       picturesub: () =>
         ownProps.client.subscribe({
           query: picturesub,
