@@ -278,6 +278,7 @@ Nota use of jest.spyOn to test when database is acceeded or not.
 
 &nbsp;
 ○ multithread: 
+
 __tests__/testmultithread.ts
 
 Perform the tests full app together all feature upper are inside + multithread support
