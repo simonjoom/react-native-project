@@ -146,7 +146,9 @@ A setInterval who will be run in first action buy
 
 It's the heart of the process to write database result, i defined the interval every 3 second for testing purpose.
 
-We use listslug=["C1","C2","C3"...] **listslug** allow to calculate only for company requested by clients, others company are lazy and won't be fetched by the program (optimization) till one "ActionBuy" wake up them.
+We use listslug=["C1","C2","C3"...] 
+
+**listslug** allow to calculate only for company requested by clients, others company are lazy and won't be fetched by the program (optimization) till one "ActionBuy" wake up them.
 
 
 Here the process and comments:
@@ -230,7 +232,8 @@ Because this Map if some users buy others company they could perform it even if 
 #### LOGS:
 I decided to write log in format: Object of Array to be easier for program to use.
 { Passed: [ 'C1' ], Failed: [ 'C2', 'C3' ] }
-it will be easy to change in {C1, Passed},{C2,Failed},{C1,Passed} if needed
+But for now i use "fs" to write log in desired output {C1:"Passed"},{C2:"Failed}
+
 
 #### BID /BUDGET:
 Ok Bid is in cent, budget in dollards. How to properly format them?
@@ -250,6 +253,11 @@ All calls to the database are inside this module here. There is a little normali
 Nota it's not a test just a library
 
 log format: { Passed: [C1,..], Failed: [C2,..] }
+
+input is the parameters needed for the function
+output is not the stdout:  it's the result of the function.
+
+
 Inside:
 
 - **filtergoodinput**: 
