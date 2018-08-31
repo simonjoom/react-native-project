@@ -56,7 +56,7 @@ Server is running on http://localhost:4000
             In ./prisma/src/resolv.ts 
             ALL code of the implementation sit here.
 
-            In ./prisma/src/__tests__ 
+            In ./prisma/src/\__tests__ 
             ALL test code of the implementation sit here.
 
 
@@ -66,20 +66,20 @@ In other console (to see server running on other and see some output)
 I recommand to run separetly : (no watch)
 RUN IN ./PRISMA/SRC
 
-> jest __tests__/bidcheck.ts
+> jest \__tests__/bidcheck.ts
 > 
-> jest __tests__/basetargeting.ts
+> jest \__tests__/basetargeting.ts
 > 
-> jest __tests__/budgetcheck.ts 
+> jest \__tests__/budgetcheck.ts 
 > 
-> jest __tests__/FinalCheck.ts
+> jest \__tests__/FinalCheck.ts
 > 
-> jest __tests__/shortlisting.ts
+> jest \__tests__/shortlisting.ts
 > 
-> jest __tests__/lrucache.ts 
+> jest \__tests__/lrucache.ts 
 
 finally for multithreads tests:
-> jest __tests__/testmultithread.ts
+> jest \__tests__/testmultithread.ts
  
 ## Used:
 Exchange Endpoint: Prisma.
@@ -230,54 +230,54 @@ For - getBidCheck , getBudgetCheck  FilterEnd and getBaseTargeting:
 
 ## So we have done:
 
-○ Base Targeting:
+○ *Base Targeting*:
 
-__tests__/basetargeting.ts 
+\__tests__/basetargeting.ts 
 
 Match companies based on Country, Category. If no
 company passed from these filters then send response as “No Companies
 Passed from Targeting” to external client.
 
 &nbsp;
-○ Budget Check: 
+○ *Budget Check*: 
 
-__tests__/budgetcheck.ts 
+\__tests__/budgetcheck.ts 
 
 Check if Companies had some budget to sell stocks. If no
 companies passed from the filters then send response as “No Companies
 Passed from Budget” to external client. 
 
 &nbsp;
-○ BaseBid Check: 
+○ *BaseBid Check*: 
 
-__tests__/bidcheck.ts 
+\__tests__/bidcheck.ts 
 
 Check if the bid is more than the API base bid. If no
 companies passed from the filter then send response as “No Companies
 Passed from BaseBid check” to external client. 
 
 &nbsp;
-○ Shortlisting: 
+○ *Shortlisting*: 
 
-__tests__/shortlisting.ts
+\__tests__/shortlisting.ts
 
 If more than one company passed from BaseBid check then
 select the highest one and send response = CompanyID. Include in logs like:
 Winner = CompanyID.
 
 &nbsp;
-○ Lru-cache: 
+○ *Lru-cache*: 
 
-__tests__/lrucache.ts
+\__tests__/lrucache.ts
 
 Perform test using lrucache as a database 
 Nota use of jest.spyOn to test when database is acceeded or not.
 
 
 &nbsp;
-○ multithread: 
+○ *multithread*: 
 
-__tests__/testmultithread.ts
+\__tests__/testmultithread.ts
 
 Perform the tests full app together all feature upper are inside + multithread support
  
