@@ -138,17 +138,15 @@ If we need to wait like 200ms or more (because we use a public endpoint or the d
 
 A fast cache on memory is the best to reduce this delay at maximum. 
 
-&nbsp;
+&nbsp; 
 
-For that: 
 In the server i coded:
 
 A setInterval who will be run in first action buy 
 
 It's the heart of the process to write database result, i defined the interval every 3 second for testing purpose.
 
-
-We use listslug=["C1","C2","C3"...] listslug allow to calculate only for company requested by clients, others company are lazy and never fetched by the program (optimization)
+We use listslug=["C1","C2","C3"...] **listslug** allow to calculate only for company requested by clients, others company are lazy and never fetched by the program (optimization)
 
 
 Here the process and comments:
@@ -179,9 +177,11 @@ setInterval(() => {
           lockMap.set(slug, false); //use lock to be sure no collision
          
           //we will write the new budget in real database in production.
-          //In production we keep the code upper because our full application use the cache to //retrieve the datas. The lockMap has no need to be around here because the database is //external to the process, the cache is working.
+          //In production we keep the code upper because our full application use the cache to 
+          //retrieve the datas. The lockMap has no need to be around here because the database is 
+          //external to the process, the cache is working.
     
-    /* in real life we will uncomment this
+    /* So in real life we will uncomment this
           await db.mutation.updateOrganization({
             where: {
               name: slug
