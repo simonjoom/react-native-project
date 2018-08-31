@@ -34,14 +34,20 @@ If error, then run:
 
 my output with no error:
 ```
-[nodemon] 1.17.5
+> demo-prisma@ server /Users/simon/demo/prisma
+[nodemon] 1.18.4
+[nodemon] reading config ./nodemon.json
 [nodemon] to restart at any time, enter `rs`
-[nodemon] watching: /Users/simon/react-native-project/prisma/**/*
-[nodemon] starting `node -r ts-node/register -r @babel/register -r dotenv/config --inspect prisma/src/index.ts`
-Debugger listening on ws://127.0.0.1:9229/d892b242-c88d-484b-a370-b8a090682b29
+[nodemon] or send SIGHUP to 58696 to restart
+[nodemon] ignoring: ./node_modules/**/* ./src/__tests__/**/*
+[nodemon] watching: /Users/simon/demo/prisma/src/**/*
+[nodemon] watching extensions: ts,js,graphql
+[nodemon] starting `node -r ts-node/register -r dotenv/config --inspect src/index.ts`
+[nodemon] spawning
+[nodemon] child pid: 58698
+Debugger listening on ws://127.0.0.1:9229/640f583d-bd4a-4bae-ba79-1fb22cc2da27
 For help, see: https://nodejs.org/en/docs/inspector
-Type "Node" is missing a "resolveType" resolver. Pass false into "resolverValidationOptions.requireResolversForResolveType" to disable this warning.
-Server is running on http://localhost:4000
+[nodemon] watching 6 files
 ```
  
 
@@ -118,7 +124,9 @@ There is no concurrency at all here. Since the database connection is protected 
 
 #### Responsiveness/bottlenecks
 The problem when the access go to the database,
-With a lock when the user perform a click on buy and nothing can be happen because the lock and the time the database write , if we need to wait like 200ms or more (because we use a public endpoint or the database became lazy) it's can be a problem in Responsiveness.
+With a lock when the user perform a click on buy nothing can happen if he is exactly during the time the database write , 
+
+If we need to wait like 200ms or more (because we use a public endpoint or the database became lazy), then it's can be a problem in Responsiveness.
 
 A fast cache on memory is the best to reduce this delay at maximum. 
 
