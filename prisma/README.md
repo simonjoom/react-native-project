@@ -146,7 +146,7 @@ A setInterval who will be run in first action buy
 
 It's the heart of the process to write database result, i defined the interval every 3 second for testing purpose.
 
-We use listslug=["C1","C2","C3"...] **listslug** allow to calculate only for company requested by clients, others company are lazy and never fetched by the program (optimization)
+We use listslug=["C1","C2","C3"...] **listslug** allow to calculate only for company requested by clients, others company are lazy and won't be fetched by the program (optimization) till one "ActionBuy" wake up them.
 
 
 Here the process and comments:
