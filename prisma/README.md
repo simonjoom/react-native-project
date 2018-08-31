@@ -1,13 +1,12 @@
 
 # INSTALLATION
  
-Apollo2/prisma for backend 
- 
-To install the project:
+Apollo2/prisma for backend
 
 Use last yarn/ last prisma:
-npm install -g yarn
-npm install -g prisma
+
+        npm install -g yarn
+        npm install -g prisma
 
 ### start on ./prisma folder 
 
@@ -111,7 +110,7 @@ Because we use a database not hosted on the same computer!: (public endpoint)
 &nbsp;
 #### Concurrency
 IN Multithread we have to think on some case:
-Example somebody who want to buy in the same time that the process compute the new budget sold from others in the database.
+Common example is somebody who want to buy in the same time that the process compute the new budget sold from others in the database.
 If it's happen then still the new budget in not in memory this bad guy could pay even if the budget reach zero (and the process don't know).
 
 I wrapped a lock access to prevent this.
@@ -135,15 +134,15 @@ It'is the heart of the process to write database result, i defined the interval 
 
 &nbsp;
 
-We preprocess action "actionbuy" to be queued and will be then batch-execute them to the database in a single transaction in the SetInterval.
-Tis transaction is defined and doned by the Function:  "ActionBuyThing"
+We preprocess action "actionbuy" to be queued and will be then **batch-execute** them to the database in a single transaction in the SetInterval.
+This transaction is defined and done by the Function:  "ActionBuyThing"
 
 ActionBuyThing take a Company object and who add the transaction in Queue.
-This solution will send "thanks for the payment" even the system still didn't write the result in database.
+This solution will send "thanks for the payment" even the system still didn't write the result in database. It's not a problem as soon the process did calculate if the budget is still ok.
 
 &nbsp;
 
-The queue is stored in a HashMap "BidsMap" who will take all bids for every company.
+The queue is stored in a **HashMap "BidsMap"** who will take all bids for every company.
 So we have got something like BidsMap=[{"C1":40},{"C2":0},{"C3":20}]
 As Company name is unique "C1","C2"... ect we can use it like the keys of this HashMap.
 
@@ -155,7 +154,7 @@ I performed a simple setInterval to take all bids for all company every 3 second
 
 &nbsp;
 
-As well, i created one other HashMap lockMap who is a Map to store one lock for every company every 3 seconds.
+As well, i created one other **HashMap lockMap** who is a Map to store one lock for every company every 3 seconds.
 Because this Map if some users buy others company they could perform it even if the database is written for some company.. but i think this is maybe over engineering ,  not very important and just a simple lock will be enough for alls. (a write access now is very quick in memory cache)
  
 
@@ -187,27 +186,26 @@ Nota it's not a test just a library
 log format: { Passed: [C1,..], Failed: [C2,..] }
 Inside:
 
-- filtergoodinput: 
+- **filtergoodinput**: 
     - a little utility to filter good company entries;
     - if the company has got null entries like country or category we filter them
 
-- FilterEnd 
+- **FilterEnd**
     - input needed  ${country,    category,    bid}, {Inputcomp?,nocache?}
     - It's bidcheck/basetargeting/budgetcheck/Shortlisting working together
-    - output: {result={},log={[],},error=string} 
-    - output: One company winner in result and the logs 
+    - output: {result={},log={[],},error=string,winner={id:string}}  
 
-- getBidCheck
+- **getBidCheck**
     - input   {bid} {Inputcomp?,nocache?}
     - It's bidcheck
     - output:  {result=[{},{}...],log,error=string} 
   
-- getBudgetCheck
+- **getBudgetCheck**
     - input   {Inputcomp?,nocache?}
     - It's budgetcheck
     - output:  {result=[{},{}...],log,error=string} 
             
-- getBaseTargeting
+- **getBaseTargeting**
     - input   {country,    category},{Inputcomp?,nocache?}
     - It's budgetcheck
     - output:  {result=[{},{}...],log,error=string} 
