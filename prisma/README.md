@@ -234,6 +234,7 @@ I decided to write log in format: Object of Array to be easier for program to us
 { Passed: [ 'C1' ], Failed: [ 'C2', 'C3' ] }
 But for now i use "fs" to write log in desired output {C1:"Passed"},{C2:"Failed}
 
+All api logs are stored in ./prisma/src/debug.log. Nota: The file data is destroyed when the server restart
 
 #### BID /BUDGET:
 Ok Bid is in cent, budget in dollards. How to properly format them?
