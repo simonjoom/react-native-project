@@ -202,7 +202,8 @@ setInterval(() => {
 We preprocess action "actionbuy" to be queued and will be then **batch-execute** them to the database in a single transaction in the SetInterval.
 This transaction is defined and done by the Function:  "ActionBuyThing"
 
-ActionBuyThing take a Company object and who add the transaction in Queue.
+ActionBuyThing take a Company object and add his transaction's bid in Queue **if only his budget is ok to receive a new transaction**
+
 This solution will send "thanks for the payment" even the system still didn't write the result in database. It's not a problem as soon the process did calculate if the budget is still ok.
 
 &nbsp;
