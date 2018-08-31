@@ -109,9 +109,17 @@ Coding technique:
 
 
 ### Multithread:
+
 I decided to use lru-cache to help for testing purpose and give a boost.
+
 Because we use a database not hosted on the same computer!: (public endpoint)
-- it's a public endpoint, and the access to the database will be long and not convenient to have a nice responsible answer -> using docker in futur.
+- it's a public endpoint, and the access to the database will be long and not convenient to have a nice responsible answer -> thought using docker in futur.
+  
+- even with a docker a database can provide some latency if not well configured .
+  :https://hackernoon.com/another-reason-why-your-docker-containers-may-be-slow-d37207dec27f
+
+So certainly just a small cache system who can be controlled easier and faster will be more convenient for now.
+
 
 &nbsp;
 #### Concurrency
