@@ -1,14 +1,14 @@
 
 # INSTALLATION
- 
-Apollo2/prisma for backend
+Unzip:
+https://drive.google.com/open?id=1-m3Ho1sdYP38WnP-jpE55Kas9i4WX0qJ
 
 Use last yarn/ last prisma:
 
         npm install -g yarn
         npm install -g prisma
 
-### start on ./prisma folder 
+### Run on ./prisma folder 
 
 > cd prisma
 
