@@ -145,8 +145,57 @@ In the server i coded:
 
 A setInterval who will be run in first action buy 
 
-It'is the heart of the process to write database result, i defined the interval every 3 second for testing purpose.
+It's the heart of the process to write database result, i defined the interval every 3 second for testing purpose.
 
+
+We use listslug=["C1","C2","C3"...] listslug allow to calculate only for company requested by clients, others company are lazy and never fetched by the program (optimization)
+
+
+Here the process and comments:
+```
+setInterval(() => {
+  let data = cache.get("organizations");
+  // still no data mean nobody still tried to access the database.
+
+  if (data) {
+    console.log("The program is running for companies");
+    listslug.forEach(async slug => {
+      if (slug) {
+        if (BidsMap.has(slug)) {
+          lockMap.set(slug, true);
+          const budgetreduce = BidsMap.get(slug);
+          BidsMap.delete(slug);
+        
+          let budget;
+          //reduce Budget for the company '${slug}'
+          const newdata = data.map(el => {
+            if (el.name == slug)
+              budget = el.budget =
+                (dollardstocents(el.budget) - budgetreduce) / 1000;
+            return el;
+          });
+        
+          cache.set("organizations", newdata); //store the current in fast memory to prevent collision
+          lockMap.set(slug, false); //use lock to be sure no collision
+         
+          //we will write the new budget in real database in production.
+          //In production we keep the code upper because our full application use the cache to //retrieve the datas. The lockMap has no need to be around here because the database is //external to the process, the cache is working.
+    
+    /* in real life we will uncomment this
+          await db.mutation.updateOrganization({
+            where: {
+              name: slug
+            },
+            data: {
+              budget
+            }
+          });  in real life we will uncomment this*/
+        }
+      }
+    });
+  }
+}, 3000);
+```
 
 &nbsp;
 
